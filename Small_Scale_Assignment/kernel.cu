@@ -1,8 +1,12 @@
 
 #include "cuda_runtime.h"
 #include "device_launch_parameters.h"
-
+#include <iostream>
 #include <stdio.h>
+#include <cstdlib>
+#include <vector>
+#include <string>
+#include "ReadMatrix.h"
 
 cudaError_t addWithCuda(int *c, const int *a, const int *b, unsigned int size);
 
@@ -12,12 +16,23 @@ __global__ void addKernel(int *c, const int *a, const int *b)
     c[i] = a[i] + b[i];
 }
 
-int main()
+int main(int argc, char *argv[])
 {
     const int arraySize = 5;
     const int a[arraySize] = { 1, 2, 3, 4, 5 };
     const int b[arraySize] = { 10, 20, 30, 40, 50 };
     int c[arraySize] = { 0 };
+	std::vector<std::string> matriresList;
+
+	std::cout << "Runnig CUDA simulation" << std::endl;
+	std::cout << "List of matrices running on:" << std::endl;
+
+	std::string currentMattix = argv[1];
+	std::cout << "Argument 1 is: " << currentMattix << std::endl;
+	ReadMatrix matrix(currentMattix);
+	
+
+
 
     // Add vectors in parallel.
     cudaError_t cudaStatus = addWithCuda(c, a, b, arraySize);
@@ -36,7 +51,7 @@ int main()
         fprintf(stderr, "cudaDeviceReset failed!");
         return 1;
     }
-
+	system("pause");
     return 0;
 }
 
@@ -117,5 +132,6 @@ Error:
     cudaFree(dev_a);
     cudaFree(dev_b);
     
+	
     return cudaStatus;
 }
