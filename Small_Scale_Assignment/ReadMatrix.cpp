@@ -6,7 +6,7 @@ ReadMatrix::ReadMatrix(std::string matrixName)
 {
 	
 	if ((f = fopen(matrixName.c_str(), "r")) == NULL)
-	{it
+	{
 		exit(1);
 	}
 			
