@@ -16,6 +16,43 @@ __global__ void addKernel(int *c, const int *a, const int *b)
     c[i] = a[i] + b[i];
 }
 
+
+void displayValues(std::vector<int> JA, std::vector<int> IRP, std::vector<double> matrixValue )
+{
+
+	std::ofstream data("output4.txt");
+	if (data.is_open())
+	{
+		data << "JA has folllowing values: ";
+		for (std::vector<int>::const_iterator i = JA.begin(); i != JA.end(); ++i)
+		{
+			data << *i << ' ';
+		}
+
+		data << std::endl;
+
+		
+
+		data << "IRP has folllowing values: ";
+		for (std::vector<int>::const_iterator i = IRP.begin(); i != IRP.end(); ++i)
+		{
+			data << *i << ' ';
+		}
+
+		data << std::endl;
+
+		data << "AS has folllowing values: ";
+		for (std::vector<double>::const_iterator i = matrixValue.begin(); i != matrixValue.end(); ++i)
+		{
+			data << *i << ' ';
+		}
+
+		data << std::endl;
+
+	}
+
+}
+
 int main(int argc, char *argv[])
 {
     const int arraySize = 5;
@@ -31,6 +68,9 @@ int main(int argc, char *argv[])
 	std::cout << "Argument 1 is: " << currentMattix << std::endl;
 	ReadMatrix matrix(currentMattix);
 	
+
+	//std::vector<int> JA1 = matrix.getJA();
+	displayValues(matrix.getJA(), matrix.getIRP(), matrix.getAS());
 
 
 
