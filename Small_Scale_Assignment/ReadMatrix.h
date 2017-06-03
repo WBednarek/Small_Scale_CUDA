@@ -22,7 +22,7 @@ private:
 	std::string matrixName;
 	int * JA;
 	double * AS;
-	int * IRP;
+	int * IRP; // Pointer to IRP array
 
 	std::vector<std::pair<int, double> > rowsAndValues;
 	
