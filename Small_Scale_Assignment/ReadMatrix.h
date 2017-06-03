@@ -7,6 +7,7 @@
 #include <vector>
 #include <algorithm>
 #include <fstream>
+#include <tuple>
 
 
 class ReadMatrix
@@ -24,8 +25,8 @@ private:
 	double * AS;
 	int * IRP; // Pointer to IRP array
 
-	std::vector<std::pair<int, double> > rowsAndValues;
-	
+	//std::vector<std::pair<int, double> > rowsAndValues;
+	std::vector<std::tuple<int, int, double> > rowsAndValues;
 
 	void calculateCSRValues();
 

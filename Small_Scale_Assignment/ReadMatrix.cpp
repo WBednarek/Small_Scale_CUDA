@@ -72,11 +72,19 @@ ReadMatrix::ReadMatrix(std::string matrixName)
 	rowsAndValues.resize(nz);
 	for (int i = 0; i < nz; ++i)
 	{
-		rowsAndValues[i] = std::make_pair(I[i], matrixValue[i]);
+		rowsAndValues[i] = std::make_tuple(I[i], J[i], matrixValue[i]);
+		
 	}
 
-	std::sort(rowsAndValues.begin(), rowsAndValues.end(), [](const std::pair<int, double> &left, const std::pair<int, double> &right) {
-		return left.first < right.first;
+	//Lambda sorting
+	std::sort(rowsAndValues.begin(), rowsAndValues.end(), []( auto const &left, auto const &right) {
+		if (std::get<0>(left) < std::get<0>(right))
+			return true;
+		else if ( (std::get<0>(left) == std::get<0>(right)) && (std::get<1>(left) < std::get<1>(right)) )
+			return true;
+		else
+			return false;
+						
 	});
 
 	calculateCSRValues();
@@ -86,8 +94,8 @@ ReadMatrix::ReadMatrix(std::string matrixName)
 
 void ReadMatrix::calculateCSRValues()
 {
-	(*this).IRP = new int [M +1];
-	(*this).JA = new int[N + 1];
+	(*this).IRP = new int [M + 1];
+	(*this).JA = new int[nz];
 	(*this).AS = new double[nz];
 	(*this).IRP[0] = 0;
 	(*this).IRP[M] = nz;
@@ -99,9 +107,15 @@ void ReadMatrix::calculateCSRValues()
 	for (int i = 0; i < nz; ++i)
 	{
 		//Create AS vector
-		AS[i] = rowsAndValues[i].second;
+		//AS[i] = rowsAndValues[i].second;
+		AS[i] = std::get<2>(rowsAndValues[i]);
 
-		if (rowsAndValues[i].first == j)
+		//Create JA vector
+		JA[i] = std::get<1>(rowsAndValues[i]);
+
+		//Create IRP vector
+		//if (rowsAndValues[i].first == j)
+		if (std::get<0>(rowsAndValues[i]) == j)
 		{
 			k++;
 		}
@@ -109,7 +123,7 @@ void ReadMatrix::calculateCSRValues()
 		{
 			j++;
 			IRP[j] = k;	
-			while (rowsAndValues[i].first != j)
+			while (std::get<0>(rowsAndValues[i]) != j)
 			{
 				j++;
 				IRP[j] = k;
@@ -154,7 +168,7 @@ std::vector<double> ReadMatrix::getAS()
 
 std::vector<int> ReadMatrix::getJA()
 {
-	std::vector<int> jaVector(J, J + nz);
+	std::vector<int> jaVector(JA, JA + nz);
 	return jaVector;
 }
 
