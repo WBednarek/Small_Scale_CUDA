@@ -99,49 +99,37 @@ void ReadMatrix::calculateCSRValues()
 	(*this).AS = new double[nz];
 	(*this).IRP[0] = 0;
 	(*this).IRP[M] = nz;
-	int k = 0;
-	int j = 0;
+	int IRPValue = 0;
+	int IRPPos = 0;
 	
 	int columnNumber = J[0];
 
 	for (int i = 0; i < nz; ++i)
 	{
 		//Create AS vector
-		//AS[i] = rowsAndValues[i].second;
 		AS[i] = std::get<2>(rowsAndValues[i]);
 
 		//Create JA vector
 		JA[i] = std::get<1>(rowsAndValues[i]);
 
 		//Create IRP vector
-		//if (rowsAndValues[i].first == j)
-		if (std::get<0>(rowsAndValues[i]) == j)
+		if (std::get<0>(rowsAndValues[i]) == IRPPos)
 		{
-			k++;
+			IRPValue++;
 		}
 		else
 		{
-			j++;
-			IRP[j] = k;	
-			while (std::get<0>(rowsAndValues[i]) != j)
+			IRPPos++;
+			IRP[IRPPos] = IRPValue;	
+			while (std::get<0>(rowsAndValues[i]) != IRPPos)
 			{
-				j++;
-				IRP[j] = k;
+				IRPPos++;
+				IRP[IRPPos] = IRPValue;
 			}
-		k++;
+		IRPValue++;
 		}
 	}
 
-	std::cout << "IRP: ";
-	displayPointerArray(IRP);
-	std::cout << "AS: ";
-
-	std::cout << "JA: ";
-	displayPointerArray(J);
-	
-	int sa = 12;
-	double wd = 0.32;
-	wd += sa;
 
 }
 

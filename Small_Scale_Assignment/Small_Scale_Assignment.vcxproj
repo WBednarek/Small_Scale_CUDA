@@ -155,10 +155,12 @@ copy "$(CudaToolkitBinDir)\cudart*.dll" "$(OutDir)"</Command>
     </CudaCompile>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <CudaCompile Include="Cuda.cu" />
     <CudaCompile Include="kernel.cu" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CSRFormat.h" />
+    <ClInclude Include="Cuda.cuh" />
     <ClInclude Include="mmio.h" />
     <ClInclude Include="ReadMatrix.h" />
   </ItemGroup>
