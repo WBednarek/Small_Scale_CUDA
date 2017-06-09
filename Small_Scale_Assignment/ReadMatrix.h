@@ -10,7 +10,7 @@
 #include <tuple>
 
 
-class ReadMatrix
+class ReadMatrixCSR
 {
 
 private:
@@ -36,11 +36,14 @@ private:
 
 public:	
 
-	ReadMatrix(std::string matrixName);
-	~ReadMatrix();
+	ReadMatrixCSR(std::string matrixName);
+	~ReadMatrixCSR();
 	std::vector<int> getIRP();
 	std::vector<double> getAS();
 	std::vector<int> getJA();
+	int getM();
+	int getNZ();
+	int getN();
 
 };
 
