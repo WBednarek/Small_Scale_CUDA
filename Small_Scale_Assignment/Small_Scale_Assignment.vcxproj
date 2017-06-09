@@ -177,16 +177,22 @@ copy "$(CudaToolkitBinDir)\cudart*.dll" "$(OutDir)"</Command>
     <CudaCompile Include="kernel.cu" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="CSRFormat.h" />
     <ClInclude Include="Cuda.cuh" />
+    <ClInclude Include="CudaSolver.h" />
     <ClInclude Include="mmio.h" />
-    <ClInclude Include="ReadMatrix.h" />
+    <ClInclude Include="OpenMP.h" />
+    <ClInclude Include="ReadMatrixCSR.h" />
+    <ClInclude Include="ReadMatrixELL.h" />
+    <ClInclude Include="runSimulation.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="CSRFormat.cpp" />
     <ClCompile Include="deviceQueryDrv.h" />
     <ClCompile Include="mmio.cpp" />
+    <ClCompile Include="OpenMP.cpp" />
     <ClCompile Include="ReadMatrixCSR.cpp" />
+    <ClCompile Include="ReadMatrixELL.cpp" />
+    <ClCompile Include="runSimulation.cpp" />
+    <ClCompile Include="Source.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

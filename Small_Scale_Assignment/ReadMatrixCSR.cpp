@@ -1,4 +1,4 @@
-#include "ReadMatrix.h"
+#include "ReadMatrixCSR.h"
 
 
 
@@ -65,7 +65,7 @@ ReadMatrixCSR::ReadMatrixCSR(std::string matrixName)
 	/* now write out matrix */
 	/************************/
 	//mm_write_banner(stdout, matcode);
-	mm_write_mtx_crd_size(stdout, M, N, nz);
+	//mm_write_mtx_crd_size(stdout, M, N, nz);
 	/*
 		
 	for (i = 0; i<nz; i++)
@@ -74,7 +74,13 @@ ReadMatrixCSR::ReadMatrixCSR(std::string matrixName)
 
 
 
-	std::cout << "This is N " << N << " M " << M << " and NZ " << nz << std::endl;
+	(*this).IRP = new int[M + 1];
+	(*this).JA = new int[nz];
+	(*this).AS = new double[nz];
+	(*this).IRP[0] = 0;
+	(*this).IRP[M] = nz;
+
+	std::cout << "This matrix mas " << N << " rows " << M << " columns and  " << nz <<" non zero values " << std::endl;
 
 	rowsAndValues.resize(nz);
 	for (int i = 0; i < nz; ++i)
@@ -101,11 +107,7 @@ ReadMatrixCSR::ReadMatrixCSR(std::string matrixName)
 
 void ReadMatrixCSR::calculateCSRValues()
 {
-	(*this).IRP = new int [M + 1];
-	(*this).JA = new int[nz];
-	(*this).AS = new double[nz];
-	(*this).IRP[0] = 0;
-	(*this).IRP[M] = nz;
+	
 	int IRPValue = 0;
 	int IRPPos = 0;
 	
@@ -190,5 +192,7 @@ int ReadMatrixCSR::getN()
 
 ReadMatrixCSR::~ReadMatrixCSR()
 {
-
+	delete[] (JA);
+	delete[] (IRP);
+	delete[] (AS);
 }
