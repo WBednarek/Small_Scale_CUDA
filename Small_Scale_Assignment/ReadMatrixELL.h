@@ -38,6 +38,9 @@ class ReadMatrixELL
 		
 		void calculateELLValues();
 
+		template<typename TYPE>
+		void freeMemory(TYPE ** matrix);
+
 		//Calculates noon zeros in selected row
 		void calclateNonZeroValuesInRows();
 

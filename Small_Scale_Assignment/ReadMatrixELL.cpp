@@ -165,6 +165,8 @@ void ReadMatrixELL::displayELLMatrix(TYPE ** matrix)
 
 }
 
+
+
 //Preparing matrix fling it with zeros
 template<typename TYPE>
 void ReadMatrixELL::fillZeros(std::vector<TYPE> vec)
@@ -268,12 +270,18 @@ int ReadMatrixELL::getN()
 
 
 
-
+template<typename TYPE>
+void ReadMatrixELL::freeMemory(TYPE ** matrix)
+{
+	for (int i = 0; i<M; i++)
+		delete[] matrix[i];
+	delete[] matrix;
+}
 
 
 ReadMatrixELL::~ReadMatrixELL()
 {
-	/*delete[](JA);
-	delete[](IRP);
-	delete[](AS);*/
+	freeMemory<int>(JA);
+	freeMemory<double>(AS);
+	
 }
