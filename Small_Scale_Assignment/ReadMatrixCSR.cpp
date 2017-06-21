@@ -80,7 +80,7 @@ ReadMatrixCSR::ReadMatrixCSR(std::string matrixName)
 	(*this).IRP[0] = 0;
 	(*this).IRP[M] = nz;
 
-	std::cout << "This matrix mas " << N << " rows " << M << " columns and  " << nz <<" non zero values " << std::endl;
+	std::cout << "This matrix has " << N << " rows " << M << " columns and  " << nz <<" non zero values " << std::endl;
 
 	rowsAndValues.resize(nz);
 	for (int i = 0; i < nz; ++i)

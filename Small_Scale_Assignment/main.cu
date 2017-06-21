@@ -8,6 +8,7 @@
 #include <string>
 #include "ReadMatrixCSR.h"
 #include "runSimulation.h"
+#include "ReadMatrixELL.h"
 
 
 #include <stdlib.h>
@@ -137,8 +138,7 @@ int main(int argc, char *argv[])
 
 
 
-	//std::vector<int> JA1 = matrix.getJA();
-	//displayValues(matrix.getJA(), matrix.getIRP(), matrix.getAS());
+	
 
 
 
@@ -160,15 +160,22 @@ int main(int argc, char *argv[])
     }
 
 
-	// Read input matrix
-	ReadMatrixCSR matrix(currentMattix);
+	// Read input matrixCSR
+	ReadMatrixCSR matrixCSR(currentMattix);
 	runSimulation sim;
 	double timeToComplete = 0;
+
+	ReadMatrixELL matrixELL(currentMattix);
 	
+
+
+	std::vector<int> JA1 = matrixCSR.getJA();
+	displayValues(matrixCSR.getJA(), matrixCSR.getIRP(), matrixELL.getAS());
+
 	/*
 	//Strat Parallel computation
 	*/
-	sim.runCSRCUDA(matrix, numberOfThreads, sizeOfBlock, maxNumberOfBlocks, timeToComplete);
+	//sim.runCSRCUDA(matrixCSR, numberOfThreads, sizeOfBlock, maxNumberOfBlocks, timeToComplete);
 
 
 	

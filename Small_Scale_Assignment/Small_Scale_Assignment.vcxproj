@@ -174,11 +174,12 @@ copy "$(CudaToolkitBinDir)\cudart*.dll" "$(OutDir)"</Command>
   </ItemDefinitionGroup>
   <ItemGroup>
     <CudaCompile Include="CudaSolver.cu" />
-    <CudaCompile Include="kernel.cu" />
+    <CudaCompile Include="main.cu" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Cuda.cuh" />
     <ClInclude Include="CudaSolver.h" />
+    <ClInclude Include="deviceQueryDrv.h" />
     <ClInclude Include="mmio.h" />
     <ClInclude Include="OpenMP.h" />
     <ClInclude Include="ReadMatrixCSR.h" />
@@ -186,7 +187,6 @@ copy "$(CudaToolkitBinDir)\cudart*.dll" "$(OutDir)"</Command>
     <ClInclude Include="runSimulation.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="deviceQueryDrv.h" />
     <ClCompile Include="mmio.cpp" />
     <ClCompile Include="OpenMP.cpp" />
     <ClCompile Include="ReadMatrixCSR.cpp" />

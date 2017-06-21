@@ -61,33 +61,32 @@ ReadMatrixELL::ReadMatrixELL(std::string matrixName)
 
 
 
-	/************************/
-	/* now write out matrix */
-	/************************/
-	//mm_write_banner(stdout, matcode);
-	//mm_write_mtx_crd_size(stdout, M, N, nz);
-	/*
+	resizeMatrices();
+	//std::cout << "This matrix has " << M << " rows " << N << " columns and  " << nz << " non zero values " << std::endl;
+	getMatrixDataFromFileToTuple();
+	sortInputMatrixByRows();
+	calculateELLValues();
 
-	for (i = 0; i<nz; i++)
-	fprintf(stdout, "%d %d %20.19g\n", I[i] + 1, J[i] + 1, matrixValue[i]);
-	*/
+}
 
 
-
-	(*this).IRP = new int[M + 1];
-	(*this).JA = new int[nz];
-	(*this).AS = new double[nz];
-	(*this).IRP[0] = 0;
-	(*this).IRP[M] = nz;
-
-	std::cout << "This matrix mas " << N << " rows " << M << " columns and  " << nz << " non zero values " << std::endl;
+void ReadMatrixELL::resizeMatrices()
+{
+	//Resize JA and AS	//
+	(*this).JA = new int*[M];
+	(*this).AS = new double*[M];
+	for (int i = 0; i < N; ++i)
+	{
+		JA[i] = new int[N];
+		AS[i] = new double[N];
+	}
 
 	rowsAndValues.resize(nz);
-	for (int i = 0; i < nz; ++i)
-	{
-		rowsAndValues[i] = std::make_tuple(I[i], J[i], matrixValue[i]);
 
-	}
+}
+
+void ReadMatrixELL::sortInputMatrixByRows()
+{
 
 	//Lambda sorting
 	std::sort(rowsAndValues.begin(), rowsAndValues.end(), [](auto const &left, auto const &right) {
@@ -99,49 +98,130 @@ ReadMatrixELL::ReadMatrixELL(std::string matrixName)
 			return false;
 
 	});
-
-	calculateELLValues();
-
 }
 
+void ReadMatrixELL::getMatrixDataFromFileToTuple()
+{
+	for (int i = 0; i < nz; ++i)
+	{
+		rowsAndValues[i] = std::make_tuple(I[i], J[i], matrixValue[i]);
+
+	}
+
+}
 
 
 void ReadMatrixELL::calculateELLValues()
 {
+	
+	calclateNonZeroValuesInRows();
+	fillZeros<int>(nonZeroValuesInRows);
 
-	int IRPValue = 0;
-	int IRPPos = 0;
-
-	int columnNumber = J[0];
-
-	for (int i = 0; i < nz; ++i)
+	int nzValueCounter = 0;
+	for (int i = 0; i < nonZeroValuesInRows.size(); ++i)
 	{
-		//Create AS vector
-		AS[i] = std::get<2>(rowsAndValues[i]);
-
-		//Create JA vector
-		JA[i] = std::get<1>(rowsAndValues[i]);
-
-		//Create IRP vector
-		if (std::get<0>(rowsAndValues[i]) == IRPPos)
+		for (int j = 0; j < nonZeroValuesInRows[i]; ++j)
 		{
-			IRPValue++;
+			//Create JA matrix, get<2> is rmatrix valuer
+			AS[i][j] = std::get<2>(rowsAndValues[nzValueCounter]);
+			//Create JA matrix, get<1> is row number, +1 because values are displayed in matlab style
+			JA[i][j] = std::get<1>(rowsAndValues[nzValueCounter]) + 1;
+
+			nzValueCounter++;
 		}
-		else
+
+	}	
+
+	std::cout << "JA" << std::endl;
+	displayELLMatrix<int>(JA);
+
+	std::cout << "AS" << std::endl;
+	displayELLMatrix<double>(AS);
+		
+
+}
+
+
+//displaying 2D matrix
+template<typename TYPE>
+void ReadMatrixELL::displayELLMatrix(TYPE ** matrix)
+{
+
+	//display AS
+	for (int i = 0; i < nonZeroValuesInRows.size(); ++i)
+	{
+
+		for (int j = 0; j < numOfElementsInTheBiggestRow; ++j)
 		{
-			IRPPos++;
-			IRP[IRPPos] = IRPValue;
-			while (std::get<0>(rowsAndValues[i]) != IRPPos)
-			{
-				IRPPos++;
-				IRP[IRPPos] = IRPValue;
-			}
-			IRPValue++;
+			std::cout << matrix[i][j] << " ";
 		}
+		std::cout << std::endl;
+
+
 	}
+	std::cout << std::endl;
+	std::cout << std::endl;
 
 
 }
+
+//Preparing matrix fling it with zeros
+template<typename TYPE>
+void ReadMatrixELL::fillZeros(std::vector<TYPE> vec)
+{
+	numOfElementsInTheBiggestRow =  *std::max_element(vec.begin(), vec.end());
+	//int numOfElementsInTheBiggestRow = std::distance(vec.begin(), maxElementIterator);
+
+	for (int i = 0; i < M; ++i)
+	{
+		for (int j = 0; j <= numOfElementsInTheBiggestRow; ++j)
+		{
+			AS[i][j] = 0;
+			JA[i][j] = 0;
+		}
+	}
+
+	
+}
+
+
+void ReadMatrixELL::calclateNonZeroValuesInRows()
+{
+	int nonZeroValuesInThisRow = 0;
+	nonZeroValuesInRows.resize(N);
+
+	int k = 0;
+	int i = 0;
+	while (i < nz - 1)
+	{
+
+		//Checking if number of row hasn't changed, This won't get last row
+		if (std::get<0>(rowsAndValues[i]) == std::get<0>(rowsAndValues[i + 1]))
+		{
+
+			++nonZeroValuesInThisRow;
+			++i;
+
+		}
+		else
+		{
+			++nonZeroValuesInThisRow; //
+			nonZeroValuesInRows[k] = nonZeroValuesInThisRow;
+			nonZeroValuesInThisRow = 0;
+			++k;
+			++i;
+
+
+		}
+
+	}
+
+	//Add number of values to last row
+	nonZeroValuesInRows[k] = nonZeroValuesInThisRow + 1;
+
+}
+
+
 
 void ReadMatrixELL::displayPointerArray(int * arr)
 {
@@ -152,23 +232,23 @@ void ReadMatrixELL::displayPointerArray(int * arr)
 	std::cout << std::endl;
 }
 
-std::vector<int> ReadMatrixELL::getIRP()
-{
-	std::vector<int> irpVector(IRP, IRP + M + 1);
-	return irpVector;
-}
-
+//std::vector<int> ReadMatrixELL::getIRP()
+//{
+//	std::vector<int> irpVector(IRP, IRP + M + 1);
+//	return irpVector;
+//}
+//
 std::vector<double> ReadMatrixELL::getAS()
 {
-	std::vector<double> asVector(AS, AS + nz);
+	std::vector<double> asVector(*AS, *AS + nz);
 	return  asVector;
 }
 
-std::vector<int> ReadMatrixELL::getJA()
-{
-	std::vector<int> jaVector(JA, JA + nz);
-	return jaVector;
-}
+//std::vector<int> ReadMatrixELL::getJA()
+//{
+//	std::vector<int> jaVector(JA, JA + nz);
+//	return jaVector;
+//}
 
 int ReadMatrixELL::getM()
 {
@@ -193,7 +273,7 @@ int ReadMatrixELL::getN()
 
 ReadMatrixELL::~ReadMatrixELL()
 {
-	delete[](JA);
+	/*delete[](JA);
 	delete[](IRP);
-	delete[](AS);
+	delete[](AS);*/
 }
