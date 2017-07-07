@@ -17,6 +17,7 @@ class ReadMatrixELL
 		int ret_code;
 		MM_typecode matcode;
 		FILE *f;
+		// M - Rows, N - Collluns , Nz - non zero values
 		int M, N, nz;
 		int i, *I, *J;
 		double *matrixValue;

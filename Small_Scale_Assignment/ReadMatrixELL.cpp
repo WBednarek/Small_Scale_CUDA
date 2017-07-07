@@ -122,9 +122,9 @@ void ReadMatrixELL::calculateELLValues()
 	{
 		for (int j = 0; j < nonZeroValuesInRows[i]; ++j)
 		{
-			//Create JA matrix, get<2> is rmatrix valuer
+			//Create JA matrix, get<2> is matrix value
 			AS[i][j] = std::get<2>(rowsAndValues[nzValueCounter]);
-			//Create JA matrix, get<1> is row number, +1 because values are displayed in matlab style
+			//Create JA matrix, get<1> is row number, + 1 because values are displayed in the Matlab style
 			JA[i][j] = std::get<1>(rowsAndValues[nzValueCounter]) + 1;
 
 			nzValueCounter++;
