@@ -22,9 +22,12 @@ class ReadMatrixELL
 		int i, *I, *J;
 		double *matrixValue;
 		std::string matrixName;
-		int ** JA;
-		double ** AS;
-		int * IRP; // Pointer to IRP array
+		int *JAOneDimensional;
+		double *ASOneDimensional;
+	
+		int **JA;
+		double **AS;
+		int *IRP; // Pointer to IRP array
 		int maxRow, maxColumn;
 		int numOfElementsInTheBiggestRow;
 		std::vector<int> nonZeroValuesInRows;
@@ -45,14 +48,20 @@ class ReadMatrixELL
 		//Calculates noon zeros in selected row
 		void calclateNonZeroValuesInRows();
 
-		//Preparing matrix fling it with zeros
+	
 		//Preparing matrix fling it with zeros
 		template<typename TYPE>
 		void fillZeros(std::vector<TYPE> vec);
 
+		//Preparing one-dimensional matrix fling it with zeros
+		void fillZerosOneDimensional();
+
 		//displaying 2D matrix
 		template<typename TYPE>
 		void displayELLMatrix(TYPE ** matrix);
+
+		template<typename TYPE>
+		void saveOneDimensionalELLMatrix(TYPE * matrix, std::string name);
 
 		void displayPointerArray(int * arr);
 

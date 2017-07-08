@@ -65,6 +65,9 @@ ReadMatrixELL::ReadMatrixELL(std::string matrixName)
 	//std::cout << "This matrix has " << M << " rows " << N << " columns and  " << nz << " non zero values " << std::endl;
 	getMatrixDataFromFileToTuple();
 	sortInputMatrixByRows();
+	calclateNonZeroValuesInRows();
+	fillZeros<int>(nonZeroValuesInRows);
+	fillZerosOneDimensional();
 	calculateELLValues();
 
 }
@@ -72,7 +75,7 @@ ReadMatrixELL::ReadMatrixELL(std::string matrixName)
 
 void ReadMatrixELL::resizeMatrices()
 {
-	//Resize JA and AS	//
+	//Resize JA and AS	two dimiesional//
 	(*this).JA = new int*[M];
 	(*this).AS = new double*[M];
 	for (int i = 0; i < N; ++i)
@@ -82,6 +85,11 @@ void ReadMatrixELL::resizeMatrices()
 	}
 
 	rowsAndValues.resize(nz);
+
+	//Resize one dimensional
+	long long vectorSize = static_cast<long long>(M) * static_cast<long long>(nz);
+	(*this).JAOneDimensional = new int[vectorSize];
+	(*this).ASOneDimensional = new double[vectorSize];
 
 }
 
@@ -111,69 +119,13 @@ void ReadMatrixELL::getMatrixDataFromFileToTuple()
 }
 
 
-void ReadMatrixELL::calculateELLValues()
-{
-	
-	calclateNonZeroValuesInRows();
-	fillZeros<int>(nonZeroValuesInRows);
-
-	int nzValueCounter = 0;
-	for (int i = 0; i < nonZeroValuesInRows.size(); ++i)
-	{
-		for (int j = 0; j < nonZeroValuesInRows[i]; ++j)
-		{
-			//Create JA matrix, get<2> is matrix value
-			AS[i][j] = std::get<2>(rowsAndValues[nzValueCounter]);
-			//Create JA matrix, get<1> is row number, + 1 because values are displayed in the Matlab style
-			JA[i][j] = std::get<1>(rowsAndValues[nzValueCounter]) + 1;
-
-			nzValueCounter++;
-		}
-
-	}	
-
-	std::cout << "JA" << std::endl;
-	displayELLMatrix<int>(JA);
-
-	std::cout << "AS" << std::endl;
-	displayELLMatrix<double>(AS);
-		
-
-}
-
-
-//displaying 2D matrix
-template<typename TYPE>
-void ReadMatrixELL::displayELLMatrix(TYPE ** matrix)
-{
-
-	//display AS
-	for (int i = 0; i < nonZeroValuesInRows.size(); ++i)
-	{
-
-		for (int j = 0; j < numOfElementsInTheBiggestRow; ++j)
-		{
-			std::cout << matrix[i][j] << " ";
-		}
-		std::cout << std::endl;
-
-
-	}
-	std::cout << std::endl;
-	std::cout << std::endl;
-
-
-}
-
-
-
 //Preparing matrix fling it with zeros
 template<typename TYPE>
 void ReadMatrixELL::fillZeros(std::vector<TYPE> vec)
 {
 	numOfElementsInTheBiggestRow =  *std::max_element(vec.begin(), vec.end());
 	//int numOfElementsInTheBiggestRow = std::distance(vec.begin(), maxElementIterator);
-
+	
 	for (int i = 0; i < M; ++i)
 	{
 		for (int j = 0; j <= numOfElementsInTheBiggestRow; ++j)
@@ -182,8 +134,17 @@ void ReadMatrixELL::fillZeros(std::vector<TYPE> vec)
 			JA[i][j] = 0;
 		}
 	}
+}
 
-	
+
+void ReadMatrixELL::fillZerosOneDimensional()
+{
+	long long vectorSize = static_cast<long long>(M) * static_cast<long long>(nz);
+	for (long long i = 0; i < vectorSize; ++i)
+	{
+		ASOneDimensional[i] = 0;
+		JAOneDimensional[i] = 0;
+	}
 }
 
 
@@ -224,6 +185,86 @@ void ReadMatrixELL::calclateNonZeroValuesInRows()
 }
 
 
+void ReadMatrixELL::calculateELLValues()
+{
+	int nzValueCounter = 0;
+	long long idx = 0;
+	for (int i = 0; i < nonZeroValuesInRows.size(); ++i)
+	{
+		for (int j = 0; j < nonZeroValuesInRows[i]; ++j)
+		{
+			//Create JA matrix, get<2> is matrix value
+			AS[i][j] = std::get<2>(rowsAndValues[nzValueCounter]);
+			//Create JA matrix, get<1> is row number, + 1 because values are displayed in the Matlab style
+			JA[i][j] = std::get<1>(rowsAndValues[nzValueCounter]) + 1;
+
+			//One dimensional case
+			idx = i * static_cast<long long>(numOfElementsInTheBiggestRow) + j;
+			ASOneDimensional[idx] = std::get<2>(rowsAndValues[nzValueCounter]);
+			JAOneDimensional[idx] = std::get<1>(rowsAndValues[nzValueCounter]) + 1;
+
+			nzValueCounter++;
+		}
+
+	}
+
+
+	//Test displaying you can delete that
+	std::cout << "JA" << std::endl;
+	displayELLMatrix<int>(JA);
+
+	std::cout << "AS" << std::endl;
+	displayELLMatrix<double>(AS);
+
+	saveOneDimensionalELLMatrix<int>(JAOneDimensional, "JA");
+	saveOneDimensionalELLMatrix<double>(ASOneDimensional, "AS");
+
+
+}
+
+//displaying 2D matrix
+template<typename TYPE>
+void ReadMatrixELL::displayELLMatrix(TYPE ** matrix)
+{
+	//display AS or JA
+	for (int i = 0; i < nonZeroValuesInRows.size(); ++i)
+	{
+
+		for (int j = 0; j < numOfElementsInTheBiggestRow; ++j)
+		{
+			std::cout << matrix[i][j] << " ";
+		}
+		std::cout << std::endl;
+
+	}
+	std::cout << std::endl;
+	std::cout << std::endl;
+
+}
+
+
+//displaying 1D matrix
+template<typename TYPE>
+void ReadMatrixELL::saveOneDimensionalELLMatrix(TYPE * matrix, std::string name)
+{
+	std::ofstream data(name + " ELLONEDIMENSIONAL.txt");
+		data << name << std::endl;
+		long long idx = 0;
+	//save to file one-dimensional AS or JA
+	for (int i = 0; i < nonZeroValuesInRows.size(); ++i)
+	{
+		for (int j = 0; j < numOfElementsInTheBiggestRow; ++j)
+		{
+			idx = i * static_cast<long long>(numOfElementsInTheBiggestRow) + j;
+			data << matrix[idx]<< " ";
+		}
+		data << std::endl;
+
+	}
+	data << std::endl;
+	data << std::endl;
+
+}
 
 void ReadMatrixELL::displayPointerArray(int * arr)
 {
@@ -234,23 +275,18 @@ void ReadMatrixELL::displayPointerArray(int * arr)
 	std::cout << std::endl;
 }
 
-//std::vector<int> ReadMatrixELL::getIRP()
-//{
-//	std::vector<int> irpVector(IRP, IRP + M + 1);
-//	return irpVector;
-//}
-//
+
 std::vector<double> ReadMatrixELL::getAS()
 {
-	std::vector<double> asVector(*AS, *AS + nz);
+	std::vector<double> asVector(ASOneDimensional, ASOneDimensional + nz);
 	return  asVector;
 }
 
-//std::vector<int> ReadMatrixELL::getJA()
-//{
-//	std::vector<int> jaVector(JA, JA + nz);
-//	return jaVector;
-//}
+std::vector<int> ReadMatrixELL::getJA()
+{
+	std::vector<int> jaVector(JAOneDimensional, JAOneDimensional + nz);
+	return jaVector;
+}
 
 int ReadMatrixELL::getM()
 {
