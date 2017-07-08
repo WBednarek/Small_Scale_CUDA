@@ -70,6 +70,35 @@ void displayValues(std::vector<int> JA, std::vector<int> IRP, std::vector<double
 
 
 
+void displayOneDimensionalELLValues(std::vector<int> JA, std::vector<double> AS)
+{
+
+	//Output file in to the project folder
+	std::ofstream data("ELLOneDimesionalNEW.txt");
+	if (data.is_open())
+	{
+		data << "JA has folllowing values: ";
+		for (std::vector<int>::const_iterator i = JA.begin(); i != JA.end(); ++i)
+		{
+			data << *i << ' ';
+		}
+
+		data << std::endl;
+
+
+		data << "AS has folllowing values: ";
+		for (std::vector<double>::const_iterator i = AS.begin(); i != AS.end(); ++i)
+		{
+			data << *i << ' ';
+		}
+
+		data << std::endl;
+
+	}
+
+}
+
+
 
 
 
@@ -138,18 +167,13 @@ int main(int argc, char *argv[])
 
 
 
-	
-
-
-
     // Add vectors in parallel.
     cudaError_t cudaStatus = addWithCuda(c, a, b, arraySize);
     if (cudaStatus != cudaSuccess) {
         fprintf(stderr, "addWithCuda failed!");
         return 1;
     }
-
-    
+   
 
     // cudaDeviceReset must be called before exiting in order for profiling and
     // tracing tools such as Nsight and Visual Profiler to show complete traces.
@@ -170,7 +194,9 @@ int main(int argc, char *argv[])
 
 
 	std::vector<int> JA1 = matrixCSR.getJA();
-	displayValues(matrixCSR.getJA(), matrixCSR.getIRP(), matrixELL.getAS());
+	//displayValues(matrixCSR.getJA(), matrixCSR.getIRP(), matrixELL.getAS());
+
+	displayOneDimensionalELLValues(matrixELL.getJA(), matrixELL.getAS());
 
 	/*
 	//Strat Parallel computation

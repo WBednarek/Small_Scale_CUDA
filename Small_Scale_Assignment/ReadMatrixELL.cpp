@@ -201,6 +201,7 @@ void ReadMatrixELL::calculateELLValues()
 			//One dimensional case
 			idx = i * static_cast<long long>(numOfElementsInTheBiggestRow) + j;
 			ASOneDimensional[idx] = std::get<2>(rowsAndValues[nzValueCounter]);
+			//Store results in Matlab style
 			JAOneDimensional[idx] = std::get<1>(rowsAndValues[nzValueCounter]) + 1;
 
 			nzValueCounter++;
@@ -278,13 +279,13 @@ void ReadMatrixELL::displayPointerArray(int * arr)
 
 std::vector<double> ReadMatrixELL::getAS()
 {
-	std::vector<double> asVector(ASOneDimensional, ASOneDimensional + nz);
+	std::vector<double> asVector(ASOneDimensional, ASOneDimensional + nonZeroValuesInRows.size() * numOfElementsInTheBiggestRow);
 	return  asVector;
 }
 
 std::vector<int> ReadMatrixELL::getJA()
 {
-	std::vector<int> jaVector(JAOneDimensional, JAOneDimensional + nz);
+	std::vector<int> jaVector(JAOneDimensional, JAOneDimensional + nonZeroValuesInRows.size() * numOfElementsInTheBiggestRow);
 	return jaVector;
 }
 
