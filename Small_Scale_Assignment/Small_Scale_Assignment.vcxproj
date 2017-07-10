@@ -177,7 +177,6 @@ copy "$(CudaToolkitBinDir)\cudart*.dll" "$(OutDir)"</Command>
     <CudaCompile Include="main.cu" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Cuda.cuh" />
     <ClInclude Include="CudaSolver.h" />
     <ClInclude Include="deviceQueryDrv.h" />
     <ClInclude Include="mmio.h" />

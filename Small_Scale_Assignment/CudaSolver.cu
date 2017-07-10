@@ -100,8 +100,71 @@ __global__ void CSRCudaMatrixVectorProduct(const int &M, const int * JA, const i
 }
 
 
+__global__ void ELLPackCudaMatrixVectorProduct(const int &M, const int & NZ, const int * JA, const double * AS, double * IN, double * OUT, int & maxBlocks)
+{
+	//Based on local memory
+	extern __shared__ double data[];
 
-void CSRCUDASolver(ReadMatrixCSR &mat,  std::vector<int> &  X, int blockSize, int maxBlocks, double & timeToComplete)
+	unsigned int block = blockIdx.x;
+	unsigned int warpSize = 32;
+
+	while (block < NZ)
+	{
+		unsigned int threadIndex = threadIdx.x;
+		unsigned int threadCompIdx = blockIdx.x * NZ + threadIdx.x;
+		//All modern GPU have warp sizeOfInt 32
+		unsigned int warpIndex = threadCompIdx / warpSize;
+		unsigned int threadIndegOfWarp = threadCompIdx & (warpSize - 1);
+		//unsigned int gridSize = blockSize * gridDim.x * 2;
+
+		unsigned int limit = blockDim.x / 2;
+		data[threadIdx.x] = 0;
+
+		while (threadIndex < NZ)
+		{
+			data[threadIdx.x] += AS[threadCompIdx] + IN[JA[threadCompIdx]];
+
+			threadIndex += blockDim.x;
+			threadCompIdx += blockDim.x;
+		}
+		__syncthreads();
+
+		// data, OUT[block], limit
+		while (limit > 0)
+		{
+			if (threadIdx.x < limit)
+			{
+				data[threadIdx.x] = data[threadIdx.x] + data[threadIdx.x + limit];
+			}
+
+			__syncthreads();
+
+			limit = limit / 2;
+		}
+
+		if (threadIdx.x == 0)
+		{
+			OUT[block] = data[0];
+		}
+
+
+		block += maxBlocks;
+		
+	}
+	
+
+
+}
+
+
+
+
+
+
+
+
+
+void CUDASolver(ReadMatrixCSR &mat,  std::vector<int> &  X, int blockSize, int maxBlocks, double & timeToComplete)
 {
 
 	//Size variables
@@ -176,6 +239,13 @@ void CSRCUDASolver(ReadMatrixCSR &mat,  std::vector<int> &  X, int blockSize, in
 		//Run kernel (const int &M, const int * JA, const int * IRP, const int * AS, double * OUT, double * IN)
 		CSRCudaMatrixVectorProduct << <numberOfBlocks, thredsInBlock, blockSize * sizeDouble >> > (M, d_JA, d_IRP, d_AS, d_X, d_Y);
 
+		cudaStatus = cudaGetLastError();
+		if (cudaStatus != cudaSuccess)
+		{
+			throw std::exception("FAILED TO RUN KERNEL");
+			std::cout << "KERNEL RUN FAILED" << std::endl;
+		}
+
 		cudaEventRecord(end);
 
 		cudaStatus = cudaGetLastError();
@@ -204,6 +274,107 @@ void CSRCUDASolver(ReadMatrixCSR &mat,  std::vector<int> &  X, int blockSize, in
 	
 }
 
+
+
 	
 
+
+
+void CUDASolver(ReadMatrixELL & mat, std::vector<int> &  X, int blockSize, int maxBlocks, double & timeToComplete)
+{
+
+	//Size variables
+	int M = mat.getM();
+	int NZ = mat.getNZ();
+	int N = mat.getN();
+
+	//Host varables
+	auto hostJA = mat.getJA();
+	auto hostAS = mat.getAS();
+	//Varaibles for host arrary
+	int hostArrayM[3];
+	hostArrayM[0] = M;
+	std::vector<double>  Y;
+	Y.resize(NZ);
+
+	//device variables
+	int * d_runParam = 0;
+	int * d_JA = 0;
+	double * d_AS = 0;
+	double * d_X = 0;
+	double * d_Y = 0;
+
+
+	cudaError cudaStatus;
+	//One dimensional M number of blocks, one block one Row 
+	dim3 numberOfBlocks(M, 1, 1);
+	dim3 thredsInBlock(blockSize, 1, 1);
+
+
+	int sizeOfInt = sizeof(int);
+	int sizeDouble = sizeof(double);
+
+	//Time measurements variables
+	cudaEvent_t start;
+	cudaEvent_t end;
+	float totalTimeOfExtecution = 8.0;
+
+	cudaEventCreate(&start);
+	cudaEventCreate(&end);
+
+
+	try
+	{
+
+		cudaStatus = cudaSetDevice(0);
+
+
+
+		//Allocation of arrays to GPU , Host to GPU
+		cudaStatus = cudaMalloc((void**)&d_runParam, sizeOfInt * 3);
+		cudaStatus = cudaMalloc((void**)&d_JA, sizeOfInt * NZ);
+		cudaStatus = cudaMalloc((void**)&d_AS, sizeDouble* NZ);
+		cudaStatus = cudaMalloc((void**)&d_Y, sizeDouble * N);
+		cudaStatus = cudaMalloc((void**)&d_X, sizeDouble * N);
+
+
+
+		//Copy data from host to device memory
+		cudaStatus = cudaMemcpy(d_runParam, &hostArrayM[0], sizeOfInt * 3, cudaMemcpyHostToDevice);
+		cudaStatus = cudaMemcpy(d_JA, &hostJA, sizeOfInt * NZ, cudaMemcpyHostToDevice);
+		cudaStatus = cudaMemcpy(d_AS, &hostAS, sizeDouble* NZ, cudaMemcpyHostToDevice);
+		cudaStatus = cudaMemcpy(d_X, &X[0], sizeDouble * N, cudaMemcpyHostToDevice);
+
+
+		//Start time Measurement 
+		cudaEventRecord(start);
+		//Run kernel (const int &M, const int * JA, const int * IRP, const int * AS, double * OUT, double * IN)
+		ELLPackCudaMatrixVectorProduct<< <numberOfBlocks, thredsInBlock, blockSize * sizeDouble >> > (M, NZ, d_JA, d_AS, d_X, d_Y, maxBlocks);
+
+		cudaEventRecord(end);
+
+		cudaStatus = cudaGetLastError();
+		cudaStatus = cudaDeviceSynchronize();
+
+		//copy resulst to host
+		cudaStatus = cudaMemcpy(&Y[0], d_Y, N * sizeDouble, cudaMemcpyDeviceToHost);
+
+
+		cudaEventSynchronize(end);
+		cudaEventElapsedTime(&totalTimeOfExtecution, start, end);
+
+
+	}
+
+
+	catch (const std::exception & ex)
+	{
+		cudaFree(d_runParam);
+		cudaFree(d_JA);
+		cudaFree(d_AS);
+		cudaFree(d_X);
+		cudaFree(d_Y);
+	}
+
+}
 

@@ -210,7 +210,8 @@ void ReadMatrixELL::calculateELLValues()
 	}
 
 
-	//Test displaying you can delete that
+	/**
+		//Test displaying you can delete that
 	std::cout << "JA" << std::endl;
 	displayELLMatrix<int>(JA);
 
@@ -220,6 +221,8 @@ void ReadMatrixELL::calculateELLValues()
 	saveOneDimensionalELLMatrix<int>(JAOneDimensional, "JA");
 	saveOneDimensionalELLMatrix<double>(ASOneDimensional, "AS");
 
+
+	**/
 
 }
 
@@ -320,5 +323,7 @@ ReadMatrixELL::~ReadMatrixELL()
 {
 	freeMemory<int>(JA);
 	freeMemory<double>(AS);
+	delete[] ASOneDimensional;
+	delete[] JAOneDimensional;
 	
 }

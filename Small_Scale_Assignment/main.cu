@@ -8,6 +8,7 @@
 #include <string>
 #include "ReadMatrixCSR.h"
 #include "runSimulation.h"
+#include "runSimulation.cpp"
 #include "ReadMatrixELL.h"
 
 
@@ -184,12 +185,15 @@ int main(int argc, char *argv[])
     }
 
 
-	// Read input matrixCSR
+	// Read input martrices
 	ReadMatrixCSR matrixCSR(currentMattix);
-	runSimulation sim;
+	ReadMatrixELL matrixELL(currentMattix);
+	runSimulation<ReadMatrixCSR> simCSR;
+	runSimulation<ReadMatrixELL> simELLPack;
+
 	double timeToComplete = 0;
 
-	ReadMatrixELL matrixELL(currentMattix);
+	
 	
 
 
@@ -198,12 +202,13 @@ int main(int argc, char *argv[])
 
 	displayOneDimensionalELLValues(matrixELL.getJA(), matrixELL.getAS());
 
-	/*
+	/**
 	//Strat Parallel computation
 	*/
-	//sim.runCSRCUDA(matrixCSR, numberOfThreads, sizeOfBlock, maxNumberOfBlocks, timeToComplete);
-
-
+	
+	simELLPack.runCUDA(matrixELL, numberOfThreads, sizeOfBlock, maxNumberOfBlocks, timeToComplete);
+	simCSR.runCUDA(matrixCSR, numberOfThreads, sizeOfBlock, maxNumberOfBlocks, timeToComplete);
+	//sim.template runCUDA<ReadMatrixCSR>(matrixCSR, numberOfThreads, sizeOfBlock, maxNumberOfBlocks, timeToComplete);
 	
 	system("pause");
     return 0;
