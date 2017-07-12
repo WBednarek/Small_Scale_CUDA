@@ -75,7 +75,7 @@ ReadMatrixELL::ReadMatrixELL(std::string matrixName)
 
 void ReadMatrixELL::resizeMatrices()
 {
-	//Resize JA and AS	two dimiesional//
+	//Resize JA and AS	two dimensional//
 	(*this).JA = new int*[M];
 	(*this).AS = new double*[M];
 	for (int i = 0; i < N; ++i)
@@ -305,6 +305,11 @@ int ReadMatrixELL::getNZ()
 int ReadMatrixELL::getN()
 {
 	return N;
+}
+
+int ReadMatrixELL::getNumberOfElementsInTheBiggestRow()
+{
+	return numOfElementsInTheBiggestRow;
 }
 
 

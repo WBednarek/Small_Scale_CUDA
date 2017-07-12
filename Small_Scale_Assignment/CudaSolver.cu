@@ -122,7 +122,7 @@ __global__ void ELLPackCudaMatrixVectorProduct(const int &M, const int & NZ, con
 
 		while (threadIndex < NZ)
 		{
-			data[threadIdx.x] += AS[threadCompIdx] + IN[JA[threadCompIdx]];
+			data[threadIdx.x] += AS[threadCompIdx] * IN[JA[threadCompIdx]];
 
 			threadIndex += blockDim.x;
 			threadCompIdx += blockDim.x;
@@ -160,11 +160,7 @@ __global__ void ELLPackCudaMatrixVectorProduct(const int &M, const int & NZ, con
 
 
 
-
-
-
-
-void CUDASolver(ReadMatrixCSR &mat,  std::vector<int> &  X, int blockSize, int maxBlocks, double & timeToComplete)
+void CUDASolver(ReadMatrixCSR &mat, std::vector<double> &  X, std::vector<double>& Y, int blockSize, int maxBlocks, double & timeToComplete)
 {
 
 	//Size variables
@@ -172,15 +168,15 @@ void CUDASolver(ReadMatrixCSR &mat,  std::vector<int> &  X, int blockSize, int m
 	int NZ = mat.getNZ();
 	int N = mat.getN();
 
-	//Host varables
+	//Host variables
 	auto hostJA = mat.getJA();
 	auto hostIRP = mat.getIRP();
 	auto hostAS = mat.getAS();
-	//Varaibles for host arrary
+	//Variables for host array
 	int hostArrayM[5];
 	hostArrayM[0] = M;
-	std::vector<double>  Y;
 	Y.resize(NZ);
+	std::fill(Y.begin(), Y.end(), 0);
 
 	//device variables
 	int * d_runParam = 0;
@@ -280,7 +276,7 @@ void CUDASolver(ReadMatrixCSR &mat,  std::vector<int> &  X, int blockSize, int m
 
 
 
-void CUDASolver(ReadMatrixELL & mat, std::vector<int> &  X, int blockSize, int maxBlocks, double & timeToComplete)
+void CUDASolver(ReadMatrixELL & mat, std::vector<double>& X, std::vector<double>& Y, int blockSize, int maxBlocks, double & timeToComplete)
 {
 
 	//Size variables
@@ -294,8 +290,8 @@ void CUDASolver(ReadMatrixELL & mat, std::vector<int> &  X, int blockSize, int m
 	//Varaibles for host arrary
 	int hostArrayM[3];
 	hostArrayM[0] = M;
-	std::vector<double>  Y;
 	Y.resize(NZ);
+	std::fill(Y.begin(), Y.end(), 0);
 
 	//device variables
 	int * d_runParam = 0;

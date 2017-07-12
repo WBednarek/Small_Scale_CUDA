@@ -22,6 +22,11 @@
 #include  "deviceQueryDrv.h"
 
 
+/**
+Zmienc nazwu
+
+*/
+
 
 cudaError_t addWithCuda(int *c, const int *a, const int *b, unsigned int size);
 
@@ -185,7 +190,7 @@ int main(int argc, char *argv[])
     }
 
 
-	// Read input martrices
+	// Read input matrices
 	ReadMatrixCSR matrixCSR(currentMattix);
 	ReadMatrixELL matrixELL(currentMattix);
 	runSimulation<ReadMatrixCSR> simCSR;
@@ -197,19 +202,23 @@ int main(int argc, char *argv[])
 	
 
 
-	std::vector<int> JA1 = matrixCSR.getJA();
+	//std::vector<int> JA1 = matrixCSR.getJA();
 	//displayValues(matrixCSR.getJA(), matrixCSR.getIRP(), matrixELL.getAS());
 
 	displayOneDimensionalELLValues(matrixELL.getJA(), matrixELL.getAS());
 
 	/**
-	//Strat Parallel computation
+	//Start Parallel computation
 	*/
-	
-	simELLPack.runCUDA(matrixELL, numberOfThreads, sizeOfBlock, maxNumberOfBlocks, timeToComplete);
-	simCSR.runCUDA(matrixCSR, numberOfThreads, sizeOfBlock, maxNumberOfBlocks, timeToComplete);
+
+	//CUDA Run
+	//simELLPack.runCUDA(matrixELL, numberOfThreads, sizeOfBlock, maxNumberOfBlocks, timeToComplete);
+	//simCSR.runCUDA(matrixCSR, numberOfThreads, sizeOfBlock, maxNumberOfBlocks, timeToComplete);
 	//sim.template runCUDA<ReadMatrixCSR>(matrixCSR, numberOfThreads, sizeOfBlock, maxNumberOfBlocks, timeToComplete);
-	
+
+	//OpenMP Run
+	simCSR.runOpenMP(matrixCSR, numberOfThreads, timeToComplete);
+	simELLPack.runOpenMP(matrixELL, numberOfThreads,  timeToComplete);
 	system("pause");
     return 0;
 }

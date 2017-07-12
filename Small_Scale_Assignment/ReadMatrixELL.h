@@ -71,12 +71,13 @@ class ReadMatrixELL
 
 		ReadMatrixELL(std::string matrixName);
 		~ReadMatrixELL();
-		std::vector<int> getIRP();
 		std::vector<double> getAS();
 		std::vector<int> getJA();
 		int getM();
 		int getNZ();
 		int getN();
+		int getNumberOfElementsInTheBiggestRow();
+
 
 
 

@@ -9,5 +9,5 @@
 
 
 
-void CUDASolver(ReadMatrixCSR &mat, std::vector<int> & X, int blockSize, int maxBlocks, double & timeToComplete);
-void CUDASolver(ReadMatrixELL &mat, std::vector<int> & X, int blockSize, int maxBlocks, double & timeToComplete);
+void CUDASolver(ReadMatrixCSR &mat, std::vector<double>& X, std::vector<double>& Y, int blockSize, int maxBlocks, double & timeToComplete);
+void CUDASolver(ReadMatrixELL &mat, std::vector<double>& X, std::vector<double>& Y, int blockSize, int maxBlocks, double & timeToComplete);

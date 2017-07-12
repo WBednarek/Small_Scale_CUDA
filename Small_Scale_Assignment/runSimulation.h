@@ -3,7 +3,9 @@
 #define _RUNSIMULATION_H_
 
 #include "ReadMatrixCSR.h"
+#include "ReadMatrixELL.h"
 #include "CudaSolver.h"
+#include "OpenMP.h"
 #include <vector>
 #include <chrono>
 #include <random>
@@ -12,7 +14,7 @@
 template<class classType>
 class runSimulation
 {
-	std::vector<int> X;
+	std::vector<double> X;
 
 public:
 	runSimulation();
@@ -24,10 +26,13 @@ public:
 	*/
 	void runCUDA(classType &mat, int numberOfThreads, int sizeOfBlock, int maximumBlocksdouble, double & timeToComplete);
 
-	void makeVector(int sizeOfVector);
+	void runOpenMP(classType &mat, int numberOfThreads, double & timeToComplete);
+
 	/**
-	Creates an empty object to resolve template linker problem
+	Make an vector for parallel matrix-vector multipilication
 	*/
+	void makeVector(int sizeOfVector);
+	
 	
 
 
