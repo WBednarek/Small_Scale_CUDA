@@ -17,8 +17,9 @@ class ReadMatrixELL
 		int ret_code;
 		MM_typecode matcode;
 		FILE *f;
-		// M - Rows, N - Collluns , Nz - non zero values
+		// M - Rows, N - Columns , Nz - non zero values
 		int M, N, nz;
+		int checkM; // something happens
 		int i, *I, *J;
 		double *matrixValue;
 		std::string matrixName;
@@ -27,10 +28,10 @@ class ReadMatrixELL
 	
 		int **JA;
 		double **AS;
-		int *IRP; // Pointer to IRP array
+		//int *IRP; // Pointer to IRP array
 		int maxRow, maxColumn;
 		int numOfElementsInTheBiggestRow;
-		std::vector<int> nonZeroValuesInRows;
+		std::vector<int> nonZeroValuesInTheRows;
 		std::vector<std::tuple<int, int, double> > rowsAndValues;
 
 		void resizeMatrices();
@@ -50,8 +51,8 @@ class ReadMatrixELL
 
 	
 		//Preparing matrix fling it with zeros
-		template<typename TYPE>
-		void fillZeros(std::vector<TYPE> vec);
+		//template<typename TYPE>
+		//void fillZeros(std::vector<TYPE> vec);
 
 		//Preparing one-dimensional matrix fling it with zeros
 		void fillZerosOneDimensional();
@@ -77,7 +78,8 @@ class ReadMatrixELL
 		int getNZ();
 		int getN();
 		int getNumberOfElementsInTheBiggestRow();
-
+		double getSelectedElementAS(int elemIndex) const;
+		int getSelectedElementJA(int elemIndex) const;
 
 
 

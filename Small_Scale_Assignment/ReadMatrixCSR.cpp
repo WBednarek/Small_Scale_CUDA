@@ -60,20 +60,6 @@ ReadMatrixCSR::ReadMatrixCSR(std::string matrixName)
 	if (f != stdin) fclose(f);
 
 
-
-	/************************/
-	/* now write out matrix */
-	/************************/
-	//mm_write_banner(stdout, matcode);
-	//mm_write_mtx_crd_size(stdout, M, N, nz);
-	/*
-		
-	for (i = 0; i<nz; i++)
-		fprintf(stdout, "%d %d %20.19g\n", I[i] + 1, J[i] + 1, matrixValue[i]);
-	*/
-
-
-
 	(*this).IRP = new int[M + 1];
 	(*this).JA = new int[nz];
 	(*this).AS = new double[nz];

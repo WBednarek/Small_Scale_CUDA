@@ -29,9 +29,9 @@ public:
 	void runOpenMP(classType &mat, int numberOfThreads, double & timeToComplete);
 
 	/**
-	Make an vector for parallel matrix-vector multipilication
+	Make an vector for parallel matrix-vector multiplication
 	*/
-	void makeVector(int sizeOfVector);
+	void makeVector_X(int sizeOfMaxtixRow, int numberOfMatrixXColumns);
 	
 	
 
