@@ -49,16 +49,17 @@ void runSimulation<classType>::runCUDA(classType & mat, int numberOfThreads, int
 		std::cout << "Standard exception: " << e.what() << std::endl;
 	}
 
-	/*if (std::is_same<classType, ReadMatrixCSR>::value)
+	/*
+	
+	//Test code, seems to doesn't work
+	
+	if (std::is_same<classType, ReadMatrixCSR>::value)
 	{
 		std::cout << "CUDA performance is: " << calcuatePerformance<ReadMatrixCSR>(mat, complete) << " GFLOPS" << std::endl;
 
 	}
 	
-	if (std::is_same<classType, ReadMatrixELL>::value)
-	{
-		std::cout << "CUDA performance is: " << calcuatePerformance<ReadMatrixELL>(mat, complete) << " GFLOPS" << std::endl;
-	}
+	
 	
 	*/
 	
