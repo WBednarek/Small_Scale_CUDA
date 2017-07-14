@@ -1,0 +1,597 @@
+%Copyright 2014 Jean-Philippe Eisenbarth
+%This program is free software: you can 
+%redistribute it and/or modify it under the terms of the GNU General Public 
+%License as published by the Free Software Foundation, either version 3 of the 
+%License, or (at your option) any later version.
+%This program is distributed in the hope that it will be useful,but WITHOUT ANY 
+%WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A 
+%PARTICULAR PURPOSE. See the GNU General Public License for more details.
+%You should have received a copy of the GNU General Public License along with 
+%this program.  If not, see <http://www.gnu.org/licenses/>.
+
+%Based on the code of Yiannis Lazarides
+%http://tex.stackexchange.com/questions/42602/software-requirements-specification-with-latex
+%http://tex.stackexchange.com/users/963/yiannis-lazarides
+%Also based on the template of Karl E. Wiegers
+%http://www.se.rit.edu/~emad/teaching/slides/srs_template_sep14.pdf
+%http://karlwiegers.com
+\documentclass{scrreprt}
+
+\usepackage{listings}
+\usepackage{underscore}
+\usepackage[bookmarks=true]{hyperref}
+\usepackage[utf8]{inputenc}
+\usepackage[english]{babel}
+\usepackage{booktabs}
+\usepackage[table,xcdraw]{xcolor}
+\usepackage{graphicx}
+\usepackage{placeins}
+\usepackage{listings}% http://ctan.org/pkg/listings
+\graphicspath{ {images/} }
+\hypersetup{
+    bookmarks=false,    % show bookmarks bar?
+    pdftitle={Software Requirement Specification},    % title
+    pdfauthor={Jean-Philippe Eisenbarth},                     % author
+    pdfsubject={TeX and LaTeX},                        % subject of the document
+    pdfkeywords={TeX, LaTeX, graphics, images}, % list of keywords
+    colorlinks=true,       % false: boxed links; true: colored links
+    linkcolor=blue,       % color of internal links
+    citecolor=black,       % color of links to bibliography
+    filecolor=black,        % color of file links
+    urlcolor=purple,        % color of external links
+    linktoc=page            % only page is linked
+}%
+\def\myversion{1.0 }
+\date{}
+%\title{%
+
+%}
+\usepackage{hyperref}
+\begin{document}
+
+\begin{flushright}
+    \rule{16cm}{5pt}\vskip1cm
+    \begin{bfseries}
+        \Huge{Small Scale Parellel Programming\\ Assignment}\\
+       
+        \vspace{1.9cm}
+        \LARGE{Version \myversion approved}\\
+        \vspace{1.9cm}
+        Prepared by Wiktor Bednarek\\
+        \vspace{1.9cm}
+        Supervisor Dr Salvatore Filippone \\
+        \vspace{1.9cm}
+        Cranfield University\\
+        \vspace{1.9cm}
+        \today\\
+    \end{bfseries}
+\end{flushright}
+
+\tableofcontents
+
+
+\chapter*{Revision History}
+
+\begin{center}
+    \begin{tabular}{|c|c|c|c|}
+        \hline
+	    Name & Date & Reason For Changes & Version\\
+        \hline
+	    Wiktor Bedanrek & 06.09.2017 & First version & 1\\
+        \hline
+	    Wiktor Bedanrek & 13.07.2017 & New version adjustments - tests & 1.1\\
+        \hline
+    \end{tabular}
+\end{center}
+
+\chapter{Introduction}
+Modern computation demands still more and more resources. Users, industry or companies process enormous amount of data every day. When it comes to computation thanks to technological development we can solve complex problems efficiently and fast. But since last decade programmers have to get acquired with a new type of problems solving which is parallelism. That concept is widely used these days especially in GPUs. We will show huge benefits of solving mathematical problems in parallel. 
+\section{Purpose}
+Purpose of this paper is to show solution and results of martix by "tall" dense matrix multiplication. It will be implemented using parallel programming interfaces Open Multi-Processing (OpenMP) and Nvidia CUDA.  
+
+Kernel will be capable to compute
+\begin{equation} \label{eu_eqn}
+X \leftarrow AX
+\end{equation}
+
+A is a sprase matrix. We will store matrix in a following formats:
+\begin{enumerate}
+\item CSR - Compressed Sparse Row
+\item ELL - ELLPACK
+
+\end{enumerate}
+
+
+
+
+\section{Document Conventions}
+All requirements information are given in this paper. Chapters are divided into sections containing tables and results as a images.
+
+The most crucial is to provide reader following informations:
+\begin{itemize}
+	\item Solution description
+	\item Comparison between solutions
+	\item Results of the tests
+	\item Performance results
+\end{itemize}  
+
+
+The next important convection is features priority. The following table will explain priority scale and importance .
+
+\begin{table}[h!]
+\centering
+\caption{Priority table}
+\label{my-label}
+\begin{tabular}{|l|l|}
+\hline
+\textbf{Priority}                                                & \textbf{Description}                                                                                                                                                                                                                                                                                                            \\ \hline
+\begin{tabular}[c]{@{}l@{}} 1 \end{tabular} & \begin{tabular}[c]{@{}l@{}} Very low priority software feature. \\ It has no affect for the proper program run.  The program is going to work  \\ without this feature implementation. Example: minor code comments.  \end{tabular}                                                                                                        \\ \hline
+2                                                        & \begin{tabular}[c]{@{}l@{}} Low priority software feature.  \\ The software is going to work properly without its implementation. \\ Example: vectors or arrays displaying fuctions created to check results. \\ They will be deleted in the final code or replaced by the tests.\end{tabular}                                                                                                                                                                   \\ \hline
+3                                                    & \begin{tabular}[c]{@{}l@{}} Low priority software feature. \\ The feature has insignificant affect to overall software. This feature has no \\ impact on results but it could help in maintaining the code like: refactorization\\ \end{tabular}                                                                                                                     \\ \hline
+4                                                  & \begin{tabular}[c]{@{}l@{}} Lower-Medium priority software feature.\\ The feature might give some improvement like better results displaying or saving \\ them to the file.\end{tabular} \\ \hline
+5                                                        & \begin{tabular}[c]{@{}l@{}} Medium priority software feature.\\ That functionality should be implemented; without it, software might have minor \\ issues like slightly lower program performance. The program is \\  going to  run  properly without its implementation.\end{tabular}                                                                                                                                                                   \\ \hline
+6                                                        & \begin{tabular}[c]{@{}l@{}} Upper-Medium priority software feature.  \\ This implementation is important in order to have consisted software.   \end{tabular}                                                                                                                                                                   \\ \hline
+7                                                        & \begin{tabular}[c]{@{}l@{}} High priority software feature.  \\ This functionality significantly helps to maintain software and it contains \\ features like performance tests.  \end{tabular}                                                                                                                                                                   \\ \hline
+8                                                        & \begin{tabular}[c]{@{}l@{}} Very High priority software feature.   \\ The Feature has to be implemented. It significantly affects for program results.\end{tabular}                                                                                                                                                                   \\ \hline
+9                                                        & \begin{tabular}[c]{@{}l@{}} Very High priority software feature.  \\ Without this feature the program mostly probably is going to have serious issues \\ like poor  performance or invalid results.\end{tabular}                                                                                                                                                                   \\ \hline
+10                                                        & \begin{tabular}[c]{@{}l@{}} The highest priority software feature.   \\ The most crucial program features - core functions. \\ The program is not going to run without them. Example: CUDA and  OpenMP \\ computation of  martix by "tall" dense matrix multiplication.\end{tabular}                                                                                                                                                                   \\ \hline
+\end{tabular}
+\end{table}
+\FloatBarrier
+
+
+    
+
+\section{Intended Audience and Reading Suggestions}
+
+
+
+
+
+Document is easy to read and has detailed information about solution. For high coefficient of transparency all important data are presented tables.
+This software is intended to use by research staff in scientific facilitates or students which would like to deepen their parallel programming  knowledge.
+\\
+
+\begin{table}[h!]
+\centering
+\caption{Informations for the specified audience in the following paper}
+\label{my-label}
+\begin{tabular}{|l|l|}
+\hline
+\textbf{Student}                                                & \textbf{Informations to find}                                                                                                                                                                                                                                                                                                            \\ \hline
+\begin{tabular}[c]{@{}l@{}}Researcher\end{tabular} & \begin{tabular}[c]{@{}l@{}} Results of sparse matrix-vector product kernel  \\ Idea how powerful presented solution is and how to use it \\ in a different potential problem \end{tabular}                                                                                                        \\ \hline
+Student                                                        & \begin{tabular}[c]{@{}l@{}} Student can find information of algorithm implementation  \\ This knowledge might be helpful for his potential parallel programming \\ approach purposes.\end{tabular}                                                                                                                                                                   \\ \hline
+Industry                                                     & \begin{tabular}[c]{@{}l@{}}Similar like in a students case  Additionally information \\ about special features available only for Researchers like: \\ accelerated nodes for GPU computation.\end{tabular}                                                                                                                     \\ \hline
+Other IT                                                    & \begin{tabular}[c]{@{}l@{}}Details about Special IT support functions e.g. Efficient algorithms   \\ usage  in computer graphics, image processing or other \\  multi thread computations\end{tabular} \\ \hline
+\end{tabular}
+\end{table}
+\FloatBarrier
+
+\section{Used hardware}
+All tests were performed at following configuration:
+
+\begin{table}[h!]
+\centering
+\caption{Computer hardware used in the project}
+\label{my-label}
+\begin{tabular}{|l|l|}
+\hline
+\textbf{Type of hardware}      & \textbf{Description} \\ \hline                                                                                                                                                                                  
+Processor        & \begin{tabular}[c]{@{}l@{}}AMD Phenom II X4 955 QuadCore 3.2GHz\end{tabular} \\ \hline                                                                                                   
+RAM              & \begin{tabular}[c]{@{}l@{}}4096 MB DDR3\end{tabular} \\ \hline
+GPU     & \begin{tabular}[c]{@{}l@{}}Nvida GeForce GT 730 1GB\end{tabular} \\ \hline
+Hard drive     & \begin{tabular}[c]{@{}l@{}}SSD 256 GB\end{tabular} \\ \hline
+\end{tabular}
+\end{table}
+\FloatBarrier
+
+
+\section{Operating Environment}
+
+
+
+System was developed for following working environment:
+\\
+\\
+Software:
+\begin{itemize}
+\item  Windows 7
+\item  Visual Studio 2015 with Nsight extension
+
+\end{itemize}
+ 
+
+
+
+
+
+\section{Project Scope}
+
+This project provides computation of matrix by "tall" dense matrix multiplication. All computations are done in parallel using two technologies OpenMP and Nvida CUDA. In this paper we are going to use matrices from external internet resource available at the website //www.cise.ufl.edu/research/sparse especially at \\ https://www.cise.ufl.edu/research/sparse/matrices/list_by_id.html. \\ Because up to date 14.07.2017 not all of matrices are available at the last website, the most of the matrices were collected from \\ \textbf{http://yifanhu.net/GALLERY/GRAPHS/search.html}. \\ 
+Matrices are downloaded in Matrix Market format (MM) and in the program transformed into CSR o ELLPack format. Having that stored matrices we perform  matrix by "tall" dense matrix multiplication using OpenMP or Cuda technology. Performance is checked by a proper tests.
+
+\begin{table}[h!]
+\centering
+\caption{Basic scope of project}
+\label{my-label}
+\begin{tabular}{|l|l|}
+\hline
+\textbf{Name}      & \textbf{Description}                                                                                                                                                                                  \\ \hline
+Researcher        & \begin{tabular}[c]{@{}l@{}}Displaying results for selected matrix\\ Calculates sparse matrix-vector product \\ and shows its performance \end{tabular}                                                                                                   \\ \hline
+Student             & \begin{tabular}[c]{@{}l@{}}  View performance results for different\\  problems both in OpenMP and CUDA\\ \end{tabular} \\ \hline
+
+\end{tabular}
+\end{table}
+\FloatBarrier
+
+
+\section{References}
+
+\begin{itemize}
+\item http://docs.nvidia.com/cuda/cuda-c-best-practices-guide/index.html. Retrieved June 2017.
+\item https://developer.download.nvidia.com/CUDA/training/NVIDIA_GPU_Computing_Webinars_Further_CUDA_Optimization.pdf. Retrieved May 2017.
+\item http://www.openmp.org/resources/tutorials-articles/. Retrieved June 2017.
+\item http://www.hpctoday.com/hpc-labs/explicit-vector-programming-with-openmp-4-0-simd-extensions/. Retrieved June 2017.
+\end{itemize}
+
+
+
+\chapter{Matrices}
+
+The following matrices are no longer available to download
+\begin{itemize}
+\item Cube_Coup_dt0
+\item ML_Laplace
+\item http://www.openmp.org/resources/tutorials-articles/. Retrieved June 2017.
+\item http://www.hpctoday.com/hpc-labs/explicit-vector-programming-with-openmp-4-0-simd-extensions/. Retrieved June 2017.
+\end{itemize}
+
+
+\chapter{Nvidia CUDA}
+
+CUDA is created by Nvidia parallel programming interface API model [1]. Programmer can use CUDA for computation purpose using its CUDA-enabled graphics processing unit. Thanks to Nvidia CUDA software developer can have acces to virtual instructions set of GPU needen for parallel computation.
+
+\section{Used software for CUDA}
+Project was designed using Visual Studio 2015 IDE with Nvidia Nsight Integrated Development Environments which allows developer to create special CUDA projects, build them and compile directly from Visual Studio.
+\\
+CUDA files that has to be included in the project to make parallel computations have to have special extension .cu.
+
+
+
+
+\section{CUDA features}
+CUDA programming approach needs to clarify some definitions. In GPU programming we have to distinct following parts:
+\\
+
+\begin{itemize}
+	\item Grid
+	\item Block
+	\item Thread
+\end{itemize}  
+
+Following image will show how specific elements are divided.
+
+\begin{figure}[h!]
+\centering
+\includegraphics{CUDABlocksAndThreads.png}
+\caption{Grid contend. Blocks and threads.}
+Source: Own image
+\end{figure}
+\FloatBarrier
+
+Firstly we have the biggest element which is Grid. 
+That element is just entire GPU chip. Nevertheless it is mistake to consider Grid as a single graphics card.
+There are Graphics card on the market with a multiple GPUs.
+\\
+Grid has certain number of blocks. It can be 4096 like in Figure 2.1. 
+Blocks are controlled by multiprocessors - MP. One MP can control one block or more, one block in never controlled by multiple processors.
+Multiprocessors are divided into stream processors - SP. Stream processor simillar to MP contorll one or more threads in a block.
+
+\section{Detailed GPU data}
+Thanks to deviceQueryDrv software provided by Nvidia we can estimate our GPU specification like Total amount of constant memory, max dimension size of a thread block (x,y,z) or maximum number of threads per block etc.\\
+
+
+
+\begin{figure}[h!]
+\centering
+\includegraphics{CUDAParam.PNG}
+\caption{Grid contend. Blocks and threads.}
+Source: Own image
+\end{figure}
+\FloatBarrier
+
+
+Crucial parameter of GPU is warp size. Warp size says about amount of threads which concurrently run on an MP. Threads are running pipelined and parallel. One MP is usually 8 SPs, and one SP can have 4 instruction in pipline. So we have 32 concurrent executed instructions.
+
+\section{Used algorithm}
+
+FOR CSR we have following algorithm:
+
+\begin{lstlisting}[language=TeX]
+__global__ void CSRCudaMatrixVectorProduct(const int &M, const int * JA, 
+const int * IRP, const double * AS, double * IN, double * OUT)
+{
+
+	//Based on local memory
+	extern __shared__ double data[];
+
+	//Wrap size nowadays is the same for all GPU but it //may change in the future
+	unsigned int warpSize = 32;
+
+	//Each thread loads single element to shared memory from global
+	unsigned int threadIndex = threadIdx.x;
+	unsigned int threadCompInx = blockIdx.x * blockDim.x+ threadIdx.x;
+	//All modern GPU have warp sizeOfInt 32
+	int warpIndex = threadCompInx / warpSize;
+
+	int threadIndegOfWarp = threadCompInx & (warpSize - 1);
+	//unsigned int gridSize = blockSize * gridDim.x * 2;
+
+	data[0] = 0;
+	int index = warpIndex;
+
+	if (index < M)
+	{
+
+		data[threadIdx.x] = 0;
+		for (unsigned j = IRP[index] + threadIdx.x; 
+		index < IRP[index + 1]; j+= warpSize)
+		{
+			data[threadIdx.x] += AS[j] * IN[JA[j]];
+		
+		}
+		//__syncthreads();
+		
+		/*
+		Experimental solution
+
+		//Block sizeOfInt up to 512
+		if (blockSize >= 512)
+		{
+			if (threadIndex < 256)
+			{
+				data[threadIndex] += 
+				data[threadIndex + 256];
+			}
+			__syncthreads();
+		}
+
+		//Block sizeOfInt up to 256
+		if (blockSize >= 256)
+		{
+			if (threadIndex < 128)
+			{
+				data[threadIndex] += 
+				data[threadIndex + 128];
+			}
+			__syncthreads();
+		}
+		//Block sizeOfInt up to 128
+		if (blockSize >= 128)
+		{
+			if (threadIndex < 64)
+			{
+				data[threadIndex] += 
+				data[threadIndex + 64];
+			}
+			__syncthreads();
+		}
+		*/
+		
+		//Unrolling, without that every wrap execute all iteration for for loop and statement if
+		if (threadIndex < warpSize)
+		{
+			
+			if (threadIndegOfWarp < 16) 
+			{data[threadIndex] += data[threadIndex + 16];}
+			if (threadIndegOfWarp < 8) 
+			{data[threadIndex] += data[threadIndex + 8];}
+			if (threadIndegOfWarp < 4) 
+			{data[threadIndex] += data[threadIndex + 4];}
+			if (threadIndegOfWarp < 2) 
+			{data[threadIndex] += data[threadIndex + 2];}
+			
+			if (threadIndegOfWarp < 1) 
+			{data[threadIndex] += data[threadIndex + 1];}
+		}
+
+		//First thread stores output
+		if (threadIndex == 0)
+		{
+			OUT[index] = data[threadIdx.x];
+		}
+	}		
+}
+\end{lstlisting}
+
+
+
+
+That solution involves much more threads into work. For instance simpler solution with one thread per matrix row 
+like below:\\\\
+\\
+For EELPACK storage system there is following CUDA solution:\\
+
+\begin{lstlisting}
+
+	index = blockIdx.x * blockDim.x+ threadIdx.x;
+	data = 0;
+
+
+	if (index < M)
+	{
+
+		data[threadIdx.x] = 0;
+		for (unsigned j = IRP[index]; 
+		index < IRP[index + 1]; ++j)
+		{
+			data+= AS[j] * IN[JA[j]];
+		
+		}
+		OUT[index] = data;
+\end{lstlisting}
+
+Causes problem of idling many threads. This is the reason why we are not using most of our computation resources.
+
+
+\begin{lstlisting}
+
+	index = blockIdx.x * blockDim.x+ threadIdx.x;
+	data = 0;
+
+
+	if (index < M)
+	{
+
+		data[threadIdx.x] = 0;
+		for (unsigned j = 0; 
+		j < NZ; ++j)
+		{
+			data+= AS[index * NZ + j] * IN[JA[index * NZ + j]];
+		
+		}
+		OUT[index] = data;
+\end{lstlisting}
+
+
+
+\chapter{OpenMP}
+
+FOR CRS OpenMP alghoritm is similiar to CUDA one:\\
+
+\begin{lstlisting}
+void OpenMPCSR(int numberOfThreads,  int M, double *AsCSR, 
+	int *IrpCSR, int *JaCSR, double *X, double *Y, int cnk )
+{ 
+	
+	double data = 0;
+#pragma omp parallel numberOfThreads(numberOfThreads) private(index, j, data) 
+{ 
+#pragma omp for schedule(dynamic, cnk) 
+
+	for ( int index = 0; index < M; ++index){ 
+		data = 0; 
+		for ( int j = IrpCSR[index]; j <= IrpCSR[index + 1] - 1; ++j)
+		{ data += AsCSR[j] * X[JaCSR[j]]; 
+		} 
+		Y[index] = data; 
+}
+} 
+}
+\end{lstlisting}
+
+
+
+\chapter{Performance measurements}
+
+
+\section{Matrix cage4.mtx}
+\begin{table}[h!]
+\centering
+\caption{Matrix cage4.mtx description}
+\label{my-label}
+\begin{tabular}{|l|l|}
+\hline
+\textbf{Test matrix 1}      & \textbf{Info}                                                                                                                                                                                  \\ \hline
+Author        & \begin{tabular}[c]{@{}l@{}}A. van Heukelum, T. Davis\end{tabular}                                                                                                   \\ \hline
+Rows           & \begin{tabular}[c]{@{}l@{}}  9 \end{tabular} \\ \hline
+Columns          & \begin{tabular}[c]{@{}l@{}}  9 \end{tabular} \\ \hline
+Non-zeros          & \begin{tabular}[c]{@{}l@{}}  49 \end{tabular} \\ \hline
+\end{tabular}
+\end{table}
+\FloatBarrier
+
+Results CUDA:
+
+\begin{itemize}
+\item  Execution Time: 6.00222 ms
+\item  Performance: 0.0163273 GFLOPS
+
+\end{itemize}
+
+
+
+\section{Matrix mhda416.mtx}
+\begin{table}[h!]
+\centering
+\caption{Matrix mhda416.mtx description}
+\label{my-label}
+\begin{tabular}{|l|l|}
+\hline
+\textbf{Test matrix 1}      & \textbf{Info}                                                                                                                                                                                  \\ \hline
+Author        & \begin{tabular}[c]{@{}l@{}}Tim Davis\end{tabular}                                                                                                   \\ \hline
+Rows           & \begin{tabular}[c]{@{}l@{}}  416 \end{tabular} \\ \hline
+Columns          & \begin{tabular}[c]{@{}l@{}}  416 \end{tabular} \\ \hline
+Non-zeros          & \begin{tabular}[c]{@{}l@{}}  8562 \end{tabular} \\ \hline
+\end{tabular}
+\end{table}
+\FloatBarrier
+
+Results CUDA:
+
+\begin{itemize}
+\item  Execution Time: 7.63228 ms
+\item  Performance:  2.24365 GFLOPS
+
+\end{itemize}
+
+
+\chapter{Other Nonfunctional Requirements}
+
+\section{Performance Requirements}
+
+
+\begin{table}[h!]
+\centering
+\caption{Performance Requirements}
+\label{my-label}
+\begin{tabular}{|l|l|}
+\hline
+\multicolumn{2}{|l|}{\textbf{Performance Requirements}}                                                                                                       \\ \hline
+Requirement \#: 10     & \begin{tabular}[c]{@{}l@{}}Event/use case \#:-\end{tabular}      \\ \hline
+
+Description:          & \begin{tabular}[c]{@{}l@{}}As efficient solution as possible.\end{tabular}                                                                                                             
+
+\\ \hline
+Rationale:            & \begin{tabular}[c]{@{}l@{}} Use as much available computation      \\  resources as possible.\end{tabular}                                                                                                                                                                              \\ \hline
+Originator:           & Developer \\ \hline
+Fit Criterion:        & \begin{tabular}[c]{@{}l@{}}Windows 7, Nvidia Graphics card, \\ 
+Visual Studio 2015 with NSight extension \end{tabular} \\ \hline
+Priority:             & 9 \\ \hline
+Conflicts             & -                                                                                                                \\ \hline
+Supporting Materials: & -                                                                                                                \\ \hline
+History:              & Created June, 2017 \\ \hline
+\end{tabular}
+\end{table}
+\FloatBarrier
+
+\begin{table}[h!]
+\centering
+\caption{Performance Requirements 2}
+\label{my-label}
+\begin{tabular}{|l|l|}
+\hline
+\multicolumn{2}{|l|}{\textbf{Performance Requirements 2}}                                                                                                       \\ \hline
+Requirement \#: 10     & \begin{tabular}[c]{@{}l@{}}Event/use case \#:-\end{tabular}      \\ \hline
+
+Description:          & \begin{tabular}[c]{@{}l@{}} Good memory managament\end{tabular}                                                                                                             
+
+\\ \hline
+Rationale:            & \begin{tabular}[c]{@{}l@{}}To speed up solution and increase\\ the Bandwidth \\ in the future.\end{tabular}                                                                                                                                                                              \\ \hline
+Originator:           & Developer \\ \hline
+Fit Criterion:        & \begin{tabular}[c]{@{}l@{}} Optimize code using shared memory not \\ only global \end{tabular} \\ \hline
+Priority:             & 7 \\ \hline
+Conflicts             & -                                                                                                                \\ \hline
+Supporting Materials: & -                                                                                                                \\ \hline
+History:              & Created June, 2017 \\ \hline
+\end{tabular}
+\end{table}
+\FloatBarrier
+
+\chapter{Conclusions}
+
+Using parallel approach in programming can bring really big performance increase. We have to struggle with many constraints in each parallel solution of specific problem. Optimizing parallel code for each different problem is much more challenging comparing to single thread solutions. Developer have to predict many cases and uses many seemingly unusual optimization methods when we think about single thread like loop unrolling. Also it is necessary to have as less idle threads as possible - we want to force in the best case all resources to work.
+
+
+
+\end{document}

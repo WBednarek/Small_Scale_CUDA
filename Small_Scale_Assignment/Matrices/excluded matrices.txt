@@ -1,0 +1,12 @@
+Excluded (potentially) to big for the GitHub repository:
+af_1_k101.mtx
+PR02R.mtx
+nlpkkt80.mtx
+thermal2.mtx
+webbase-1M.mtx
+cant.mtx
+
+The following matrices are no longer available to download:
+Cube_Coup_dt0
+ML_Laplace
+
