@@ -26,6 +26,7 @@
 \usepackage[table,xcdraw]{xcolor}
 \usepackage{graphicx}
 \usepackage{placeins}
+\usepackage{ltxtable} 
 \usepackage{listings}% http://ctan.org/pkg/listings
 \graphicspath{ {images/} }
 \hypersetup{
@@ -243,7 +244,6 @@ To perform our simulation test martrices had to be provided. In the following ma
 and \\
 \textbf{http://yifanhu.net/GALLERY/GRAPHS/search.html}
 
-
 In this parer we used the following matrices:
 
 
@@ -257,22 +257,45 @@ In this parer we used the following matrices:
  
 \arrayrulecolor[HTML]{DB5800}
  
-\begin{tabular}{ |s|p{1cm}|p{0.5cm}|p{0.5cm}|p{0.5cm}|p{2cm}|  }
+\begin{longtable}[h!]{ |s|p{2cm}|p{0.4cm}|p{0.4cm}|p{0.5cm}|p{2cm}|p{0.6cm}|  }
 \hline
-\rowcolor{lightgray} \multicolumn{6}{|c|}{Country List} \\
+\rowcolor{lightgray} \multicolumn{7}{|c|}{Matrices List} \\
 \hline
-Matrix name & Author & Rows & Cols & Non zeros & Description \\
+Matrix name & Author &Rows &Cols &Non zeros & Description & Avail-ability \\
 \hline
-Afghanistan & AF &AFG & AF &AFG & AF   \\
-\rowcolor{gray}
-Afghanistan & AF &AFG & AF &AFG & AF   \\
-Afghanistan & AF &AFG & AF &AFG & AF   \\
-Afghanistan & AF &AFG & AF &AFG & AF   \\
-Afghanistan & AF &AFG & AF &AFG & AF   \\
-Afghanistan & AF &AFG & AF &\cellcolor[HTML]{AA0044} AND  & AF     \\
-Afghanistan & AF &AFG & AF &AFG & AF   \\
+cage4 & A. van Heukelum, T. Davis &9 & 9 &49 & directed weighted graph & \cellcolor[HTML]{28A828} Yes   \\
+
+mhda416 & A. Booten, M. Kooper, H. van der Vorst, S. Poedts, J. Goedbloed &416 & 416 &8,562 & electromagnetics problem & \cellcolor[HTML]{28A828} Yes   \\
+mcfe & 	M. Carlsson &765 & 765 &24382 & 2D/3D problem & \cellcolor[HTML]{28A828} Yes   \\
+olm1000 & 	K. Meerbergen &1000 & 1000 &3996 & computational fluid dynamics problem & \cellcolor[HTML]{28A828} Yes   \\
+adder_dcop_32 & 	R. Hoekstra &1813 & 1813 &11246 & subsequent circuit simulation problem & \cellcolor[HTML]{28A828} Yes   \\
+west2021 & A. Westerberg &2021 & 2021 &7310 & chemical process simulation problem & \cellcolor[HTML]{28A828} Yes   \\
+rdist2 & 	S. Zitney &3198 & 3,198 &56,834& chemical process simulation problem & \cellcolor[HTML]{28A828} Yes   \\
+cant & unknown &62451& 62451 &4,007 383 & 2D/3D problem & \cellcolor[HTML]{FF0A0A} No   \\
+olafu & 	H. Simon &16,146 & 16,146 &1,015,156 & 	structural problem & \cellcolor[HTML]{28A828} Yes   \\
+Cube_Coup_dt0 & C. Janna, M. Ferronato &2,164,760 & 2,164,760 &124,406,070 & structural problem &\cellcolor[HTML]{FF0A0A} No   \\
+ML_Laplace & C. Janna, M. Ferronato, G. Pini &377,002 & 377,002 &27,582,698 & structural problem & \cellcolor[HTML]{FF0A0A} No   \\
+bcsstk17 & M. Will &10,974 & 10,974 &428,650 & structural problem & \cellcolor[HTML]{28A828} Yes   \\
+mac_econ_fwd500 & 	unknown &206,500& 206,500 &1,273,389 & 	economic problem &\cellcolor[HTML]{28A828} Yes   \\
+mhd4800a & 	A. Booten, M. Kooper, H. van der Vorst, S. Poedts, J. Goedbloed &4,800 & 4,800 &102,252 & electromagnetics problem & \cellcolor[HTML]{28A828} Yes   \\
+cop20k_A & unknown &121,192 & 121,192 &2,624,331& 	2D/3D problem & \cellcolor[HTML]{28A828} Yes   \\
+af23560 & 	A. Mahajan &23,560 & 23,560 &460,598 & computational fluid dynamics problem & \cellcolor[HTML]{28A828} Yes   \\
+lung2 & S. Norris &109,46 &109,46 &492,564 & omputational fluid dynamics problem & \cellcolor[HTML]{28A828} Yes   \\
+PR02R & F. Pacull &161,070& 161,070 &8,185,136 & computational fluid dynamics problem & \cellcolor[HTML]{FF0A0A} No   \\
+FEM_3D_thermal1 & 	I. Botonakis &17,880 & 17,880 &430,74 & thermal problem& \cellcolor[HTML]{28A828} Yes   \\
+thermal1 & D. Schmid &82,654 & 82,654 &574,458 & thermal problem & \cellcolor[HTML]{28A828} Yes   \\
+thermal2 & 	D. Schmid &1,228,045 & 1,228,045 &8,580,313& thermal problem & \cellcolor[HTML]{FF0A0A} No   \\
+thermomech_TK & I. Botonakis &102,158& 102,158 &711,558& thermal problem & \cellcolor[HTML]{28A828} Yes   \\
+nlpkkt80 & O. Schenk, A. Waechter, M. Weiser &1,062,400 & 1,062,400 &28,192,672 & optimization problem & \cellcolor[HTML]{FF0A0A} No   \\
+webbase-1M & 	unknown &1,000,005 & 1,000,005 &3,105,536 & weighted directed graph & \cellcolor[HTML]{FF0A0A} No   \\
+dc1 & T. Lehner &116,835 & 116,835 &766,396 & circuit simulation problem sequence&\cellcolor[HTML]{28A828} Yes   \\
+amazon0302 & 	J. Leskovec, L. Adamic and B. Adamic &262,111 & 262,111 &1,234,877 & directed graph & \cellcolor[HTML]{28A828} Yes   \\
+af_1_k101 & AutoForm Eng. &503,625 & 503,625 &17,550,675 & structural problem & \cellcolor[HTML]{FF0A0A} No   \\
+roadNet-PA & 	J. Leskovec, K. Lang, A. Dasgupta, M. Mahoney &1,090,920 & 1,090,920 &3,083,796 & 	undirected graph & \cellcolor[HTML]{28A828} Yes   \\
+
 \hline
-\end{tabular}
+\end{longtable}
+\FloatBarrier
 
 
 
