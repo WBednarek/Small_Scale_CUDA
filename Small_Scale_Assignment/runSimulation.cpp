@@ -67,7 +67,7 @@ void runSimulation<classType>::runCUDA(classType & mat, int numberOfThreads, int
 
 
 template<class classType>
-void runSimulation<classType>::runOpenMP(classType & mat, int numberOfThreads, double & timeToComplete)
+void runSimulation<classType>::runOpenMP(classType & mat, int numberOfThreads, double & timeToComplete, int numberOfMatrixXColumns)
 {
 
 	
@@ -78,8 +78,8 @@ void runSimulation<classType>::runOpenMP(classType & mat, int numberOfThreads, d
 	double complete;
 
 	double avarageTime;
-	makeVector_X(mat.getN(), 2);
-	std::vector<double> Y(mat.getN());
+	makeVector_X(mat.getN(), numberOfMatrixXColumns);
+	std::vector<double> Y(mat.getN() *  numberOfMatrixXColumns);
 
 
 	for (int i = 0; i < 1; ++i)
@@ -91,7 +91,7 @@ void runSimulation<classType>::runOpenMP(classType & mat, int numberOfThreads, d
 			start = std::chrono::high_resolution_clock::now();
 			//Compute OpenMP matrix-matrix, product
 			//CUDASolver(mat, X, Y, sizeOfBlock, maximumBlocks, timeToComplete);
-			omp.OpenMPSolver(mat, X, Y, numberOfThreads, timeToComplete);
+			omp.OpenMPSolver(mat, X, Y, numberOfThreads, timeToComplete, numberOfMatrixXColumns);
 
 			end = std::chrono::high_resolution_clock::now();
 			complete = std::chrono::duration_cast<std::chrono::nanoseconds>(end - start).count() / 1000000.0;

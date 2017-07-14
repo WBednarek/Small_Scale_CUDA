@@ -207,7 +207,7 @@ Software:
 
 \section{Project Scope}
 
-This project provides computation of matrix by "tall" dense matrix multiplication. All computations are done in parallel using two technologies OpenMP and Nvida CUDA. In this paper we are going to use matrices from external internet resource available at the website //www.cise.ufl.edu/research/sparse especially at \\ https://www.cise.ufl.edu/research/sparse/matrices/list_by_id.html. \\ Because up to date 14.07.2017 not all of matrices are available at the last website, the most of the matrices were collected from \\ \textbf{http://yifanhu.net/GALLERY/GRAPHS/search.html}. \\ 
+This project provides computation of matrix by "tall" dense matrix multiplication. All computations are done in parallel using two technologies OpenMP and Nvida CUDA. In this paper we are going to use matrices from external internet resource available at the website //www.cise.ufl.edu/research/sparse especially at \\ \textbf{https://www.cise.ufl.edu/research/sparse/matrices/list_by_name.html}. \\ Because up to date 14.07.2017 not all of matrices are available at the last website, the most of the matrices were collected from \\ \textbf{http://yifanhu.net/GALLERY/GRAPHS/search.html}. \\ 
 Matrices are downloaded in Matrix Market format (MM) and in the program transformed into CSR o ELLPack format. Having that stored matrices we perform  matrix by "tall" dense matrix multiplication using OpenMP or Cuda technology. Performance is checked by a proper tests.
 
 \begin{table}[h!]
@@ -236,7 +236,46 @@ Student             & \begin{tabular}[c]{@{}l@{}}  View performance results for 
 
 
 
-\chapter{Matrices}
+\chapter{Test Matrices}
+
+To perform our simulation test martrices had to be provided. In the following matrix by "tall" dense matrix multiplication problem we used matrices from the websites: \\
+\textbf{https://www.cise.ufl.edu/research/sparse/matrices/list_by_name.html} \\
+and \\
+\textbf{http://yifanhu.net/GALLERY/GRAPHS/search.html}
+
+
+In this parer we used the following matrices:
+
+
+
+
+\setlength{\arrayrulewidth}{1mm}
+\setlength{\tabcolsep}{13pt}
+\renewcommand{\arraystretch}{2.5}
+ 
+\newcolumntype{s}{>{\columncolor[HTML]{AAACED}} p{3cm}}
+ 
+\arrayrulecolor[HTML]{DB5800}
+ 
+\begin{tabular}{ |s|p{1cm}|p{0.5cm}|p{0.5cm}|p{0.5cm}|p{2cm}|  }
+\hline
+\rowcolor{lightgray} \multicolumn{6}{|c|}{Country List} \\
+\hline
+Matrix name & Author & Rows & Cols & Non zeros & Description \\
+\hline
+Afghanistan & AF &AFG & AF &AFG & AF   \\
+\rowcolor{gray}
+Afghanistan & AF &AFG & AF &AFG & AF   \\
+Afghanistan & AF &AFG & AF &AFG & AF   \\
+Afghanistan & AF &AFG & AF &AFG & AF   \\
+Afghanistan & AF &AFG & AF &AFG & AF   \\
+Afghanistan & AF &AFG & AF &\cellcolor[HTML]{AA0044} AND  & AF     \\
+Afghanistan & AF &AFG & AF &AFG & AF   \\
+\hline
+\end{tabular}
+
+
+
 
 The following matrices are no longer available to download
 \begin{itemize}

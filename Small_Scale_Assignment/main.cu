@@ -182,7 +182,7 @@ int main(int argc, char *argv[])
 
 	//OpenMP Run
 	//simCSR.runOpenMP(matrixCSR, numberOfThreads, timeToComplete);
-	simELLPack.runOpenMP(matrixELL, numberOfThreads,  timeToComplete);
+	simELLPack.runOpenMP(matrixELL, numberOfThreads,  timeToComplete, 4);
 	system("pause");
     return 0;
 }
