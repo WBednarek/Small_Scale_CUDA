@@ -7,15 +7,17 @@
 \BOOKMARK [1][-]{section.1.6}{Project Scope}{chapter.1}% 7
 \BOOKMARK [1][-]{section.1.7}{References}{chapter.1}% 8
 \BOOKMARK [0][-]{chapter.2}{Test Matrices}{}% 9
-\BOOKMARK [0][-]{chapter.3}{Nvidia CUDA}{}% 10
-\BOOKMARK [1][-]{section.3.1}{Used software for CUDA}{chapter.3}% 11
-\BOOKMARK [1][-]{section.3.2}{CUDA features}{chapter.3}% 12
-\BOOKMARK [1][-]{section.3.3}{Detailed GPU data}{chapter.3}% 13
-\BOOKMARK [1][-]{section.3.4}{Used algorithm}{chapter.3}% 14
-\BOOKMARK [0][-]{chapter.4}{OpenMP}{}% 15
-\BOOKMARK [0][-]{chapter.5}{Performance measurements}{}% 16
-\BOOKMARK [1][-]{section.5.1}{Matrix cage4.mtx}{chapter.5}% 17
-\BOOKMARK [1][-]{section.5.2}{Matrix mhda416.mtx}{chapter.5}% 18
-\BOOKMARK [0][-]{chapter.6}{Other Nonfunctional Requirements}{}% 19
-\BOOKMARK [1][-]{section.6.1}{Performance Requirements}{chapter.6}% 20
-\BOOKMARK [0][-]{chapter.7}{Conclusions}{}% 21
+\BOOKMARK [0][-]{chapter.3}{Storing matrices in CSR and ELLPack formats}{}% 10
+\BOOKMARK [1][-]{section.3.1}{Creating CRS matrix approach}{chapter.3}% 11
+\BOOKMARK [0][-]{chapter.4}{Nvidia CUDA}{}% 12
+\BOOKMARK [1][-]{section.4.1}{Used software for CUDA}{chapter.4}% 13
+\BOOKMARK [1][-]{section.4.2}{CUDA features}{chapter.4}% 14
+\BOOKMARK [1][-]{section.4.3}{Detailed GPU data}{chapter.4}% 15
+\BOOKMARK [1][-]{section.4.4}{Used algorithm}{chapter.4}% 16
+\BOOKMARK [0][-]{chapter.5}{OpenMP}{}% 17
+\BOOKMARK [0][-]{chapter.6}{Performance measurements}{}% 18
+\BOOKMARK [1][-]{section.6.1}{Matrix cage4.mtx}{chapter.6}% 19
+\BOOKMARK [1][-]{section.6.2}{Matrix mhda416.mtx}{chapter.6}% 20
+\BOOKMARK [0][-]{chapter.7}{Other Nonfunctional Requirements}{}% 21
+\BOOKMARK [1][-]{section.7.1}{Performance Requirements}{chapter.7}% 22
+\BOOKMARK [0][-]{chapter.8}{Conclusions}{}% 23
