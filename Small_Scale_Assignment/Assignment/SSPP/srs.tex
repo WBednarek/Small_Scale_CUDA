@@ -29,7 +29,11 @@
 \usepackage{ltxtable} 
 \usepackage{listings}% http://ctan.org/pkg/listings
 \usepackage{amsmath}
+
 \usepackage{algorithm}
+\usepackage{algorithmicx}
+\usepackage{algcompatible}
+
 \usepackage[noend]{algpseudocode}
 \usepackage{fixltx2e}
 \usepackage{hyperref}
@@ -401,20 +405,20 @@ We need to download two files:
 Those contains various functions that are necessary to read our MM format matrix. It is also recommended to look at example files available on the same website.
 
 
-\section{Creating CSR matrix}
+\section{Creating CSR format matrix}
 
 \subsection{Understanding CSR}
 
 Compressed Row Storage (CSR) is one of matrix storage formats. We are going to consider he following matrix: 
 
-\begin{equation} \label{eu_eqn}
+\begin{equation} \label{cage4}
 a_{M,N} = 
  \begin{pmatrix}
   a_{1,1} & a_{1,2} & \cdots & a_{1,N} \\
   a_{2,1} & a_{2,2} & \cdots & a_{2,N} \\
   \vdots  & \vdots  & \ddots & \vdots  \\
   a_{M,1} & a_{M,2} & \cdots & a_{M,N} 
- \end{pmatrix}
+ \end{pmatrix} 
 \end{equation}
 
 
@@ -446,25 +450,19 @@ JA : 0 1 3 4 7 0 1 2 4 5 1 2 3 5 6 0 2 3 6 7 0 1 4 5 6 8 1 2 4 5 7 8 2 3 4 6 7 8
 \textbf{AS} - Array/vector of the following non-zero values. 
 \\
 When 1 x 1 matrix element is the one in the left-top matrix corner, the following AS values are the next non-zero matrix values to the right from the (1 x 1) NZ matrix value. Later going down with the rows, analogically all non-zero values from the left to the right from each row are put into AS vector.
-\\ 
 \\
+Listed AS values in CSR format from cage4.mtx look as follow:
+\begin{lstlisting}[language=TeX]
+AS has folllowing values: 0.75 0.137458 0.112542 0.137458 0.112542 
+0.0750277 0.687569 0.112542 0.0750277 0.112542 0.091639 0.666667 
+0.0750277 0.091639 0.0750277 0.091639 0.137458 0.729097 0.137458
+0.091639 0.0375138 0.0375138 0.537514 0.137458 0.112542 0.25
+0.0458195 0.0458195 0.0750277 0.445875 0.0750277 0.150055 
+0.0375138 0.0375138 0.091639 0.470792 0.091639 0.183278 0.0458195 
+0.0458195 0.137458 0.112542 0.545819 0.25 0.0833333 0.0750277
+0.091639 0.0833333 0.166667 
+\end{lstlisting}
 
-After all zeros reduction AS cage4.mtx will look as follows, zero left are only for graphical representation purposes, in the real CSR vector they don;t exist.
-
-
-\begin{equation} \label{eu_eqn}
-\begin{pmatrix}
-0.75      & 0.137458  & 0.112542  & 0.137458  & 0.112542  & 0        \\
-0.0750277 & 0.687569  & 0.112542  & 0.0750277 & 0.112542  & 0        \\
-0.091639  & 0.666667  & 0.0750277 & 0.091639  & 0.0750277 & 0        \\
-0.091639  & 0.137458  & 0.729097  & 0.137458  & 0.091639  & 0        \\
-0.0375138 & 0.0375138 & 0.537514  & 0.137458  & 0.112542  & 0.25     \\
-0.0458195 & 0.0458195 & 0.0750277 & 0.445875  & 0.0750277 & 0.150055 \\
-0.0375138 & 0.0375138 & 0.091639  & 0.470792  & 0.091639  & 0.183278 \\
-0.0458195 & 0.0458195 & 0.137458  & 0.112542  & 0.545819  & 0.25     \\
-0.0833333 & 0.0750277 & 0.091639  & 0.0833333 & 0.166667  & 0       
-\end{pmatrix}
-\end{equation}
 
 
 \subsection{CSR implementation approach}
@@ -487,14 +485,16 @@ In order to implement and transform few steps had to be done. Below pseudo code 
 
 \\
 \State //Resize JA, IRP and AS pointer arrrys
-\State $Msize \gets NZ$.
+\State $JAsize \gets NZ$.
 \State $IRPsize \gets M+1$.
 \State $ASsize \gets NZ$.
-\State //Create tuple type value
+\State //Create C++ std::tuple type value
  \For{\texttt{i = 0; i < NZ; ++i}}
         \State $tuple[i] \gets maketuple(I[i], J[i], NZ[i])$
       \EndFor
+\State
 \State Sort tuple values by the rows
+\State
 \State $IRPValue \gets 0$.
 \State $IRPPos \gets 0$.
 \State $columnNumber \gets J[0]$.
@@ -522,8 +522,165 @@ In order to implement and transform few steps had to be done. Below pseudo code 
 \EndProcedure
 \end{algorithmic}
 \end{algorithm}
+\FloatBarrier
 
 
+\section{Creating ELLPack format matrix}
+
+ELLPack is fomat which describes M x N matrix with NZ entries.
+
+
+  As an example we still use cage4.mtx matrix. In this situation the CSR M x N matrix with NZ non-zero entries this format has the following parameters:
+\\
+\\
+\textbf{ M} - number of rows
+ \\
+ \\
+\textbf{ N} - number of columns
+ \\
+ \\
+ \textbf{MAXNZ} - max non-zero value per row
+\\
+\\
+\textbf{JA(1:M,1:MAXNZ)} - 2D Array/vector of indices of columns in which non-zero values are stored.
+\\
+Exmaple ELLPack format cage4.mtx JA output (C++ style):
+
+\begin{lstlisting}[language=TeX]
+JA
+1 2 4 5 8 0 
+1 2 3 5 6 0 
+2 3 4 6 7 0 
+1 3 4 7 8 0 
+1 2 5 6 7 9 
+2 3 5 6 8 9 
+3 4 5 7 8 9 
+1 4 6 7 8 9 
+5 6 7 8 9 0 
+
+\end{lstlisting}
+Zeros in the last column are listed only for graphical representation purposes, in the real ELLPack JA vector they don't exist.
+\\
+\\
+\textbf{AS} - 2D Array/vector of the following non-zero values. 
+\\
+In the same way as in the CSR format when 1 x 1 matrix element is the one in the left-top matrix corner, the following AS values are the next non-zero matrix values to the right from the (1 x 1) NZ matrix value. Later going down with the rows, analogically all non-zero values from the left to the right from each row are put into AS vector.
+\\ 
+\\
+\begin{equation} \label{eu_eqn}
+\begin{pmatrix}
+0.75      & 0.137458  & 0.112542  & 0.137458  & 0.112542  & 0        \\
+0.0750277 & 0.687569  & 0.112542  & 0.0750277 & 0.112542  & 0        \\
+0.091639  & 0.666667  & 0.0750277 & 0.091639  & 0.0750277 & 0        \\
+0.091639  & 0.137458  & 0.729097  & 0.137458  & 0.091639  & 0        \\
+0.0375138 & 0.0375138 & 0.537514  & 0.137458  & 0.112542  & 0.25     \\
+0.0458195 & 0.0458195 & 0.0750277 & 0.445875  & 0.0750277 & 0.150055 \\
+0.0375138 & 0.0375138 & 0.091639  & 0.470792  & 0.091639  & 0.183278 \\
+0.0458195 & 0.0458195 & 0.137458  & 0.112542  & 0.545819  & 0.25     \\
+0.0833333 & 0.0750277 & 0.091639  & 0.0833333 & 0.166667  & 0       
+\end{pmatrix}
+\end{equation}
+Zeros in the last column which can be seen above left are listed only for graphical representation purposes, in the real ELLPack AS vector they don't exist.
+
+
+\subsection{ELLPack implementation approach}
+
+In order to implement and transform few steps had to be done. Below pseudo code will explain our ELLPack creation approach. 
+\\
+Despite JA and AS are two dimensional arrays in ELLPack concept, in our real code they are expresses still as one dimensional arrays, but they have size of M x N where all subsequent rows of JA and AS are put one after another.
+
+
+
+  
+\begin{algorithm}
+\caption{Matrix Market to ELLPack format transformation approach}\label{euclid}
+\begin{algorithmic}[1]
+\Procedure{MM to ELLPack}{}
+\State Read MM matrix using "mmio" external software
+\State Load to memory M Rows form "mmio" external software
+\State Load to memory N Columns form "mmio" external software
+\State Load to memory NZ non-zero number of values form "mmio" external software
+ \For{\texttt{i = 0; i < NZ; ++i}}
+        \State Load to memory NZ[i] non-zero values form "mmio" external software
+		\State Load to memory I[i] matrix values positions form "mmio" external software
+		\State Load to memory J[i] matrix values positions  form "mmio" external software
+      \EndFor
+
+\\
+\State //Resize JA, and AS pointer arrays
+\State $vectorSize \gets M \times N$.
+\State $JAsize \gets vectorSize$.
+\State $ASsize \gets vectorSize$.
+\State //Create C++ std::tuple type value
+ \For{\texttt{i = 0; i < NZ; ++i}}
+        \State $tuple[i] \gets maketuple(I[i], J[i], NZ[i])$
+      \EndFor
+\State
+\State Sort tuple values by the rows
+\State
+\State //Calculate non zero values in the rows
+\State $ nonZeroValuesInThisRow\gets 0$.
+\State $nonZeroValuesInTheRowssize \gets N$.
+\State $k \gets 0$.
+\State $i \gets 0$.
+\While {$i < nz - 1$}
+		\State //Checking if number of row hasn't changed, this won't get last row
+		 \If {$getRowFromTuple(I[i])) = getRowFromTuple(I[i+1])$}
+		\State $ nonZeroValuesInThisRow \gets nonZeroValuesInThisRow + 1$.
+		\State $i \gets i+1$
+		 \Else
+		 \State $ nonZeroValuesInThisRow \gets nonZeroValuesInThisRow + 1$.
+		 \State $ nonZeroValuesInThisRows[k] \gets nonZeroValuesInThisRow$.
+		 \State $ nonZeroValuesInThisRow \gets 0$.
+		 \State $k \gets k+1$.
+		 \State $i \gets i+1$.
+		\EndIf
+		 \EndWhile
+\State //Add number of values to last row
+ \State $ nonZeroValuesInThisRows[k] \gets nonZeroValuesInThisRow+ 1$.
+ \State $ numOfElementsInTheBiggestRow \gets maxElement(nonZeroValuesInTheRows);$.
+ \State 
+ \State //Fill AS and JA vectors with zeros
+ \State $size \gets M \times N$.
+ \For{\texttt{i = 0; i < size; ++i}}
+        \State $AS[i] \gets 0$
+         \State $JA[i] \gets 0$
+      \EndFor
+      
+      
+      \EndProcedure
+\algstore{myalg}
+\end{algorithmic}
+\end{algorithm}
+
+
+
+
+\begin{algorithm}
+\begin{algorithmic}[1]
+\algrestore{myalg}
+\Procedure{MM to ELLPack}{}
+
+\State //Evalueate ELLPack values
+\State $nzValueCounter  \gets 0$.
+\State $idx  \gets 0$.
+ \For{\texttt{i = 0; i < nonZeroValuesInTheRows.size; ++i}}
+ \For{\texttt{j = 0; j < nonZeroValuesInTheRows[i]; ++j}}
+        \State $idx \gets i \times numOfElementsInTheBiggestRow + j$
+        \State //Create JA vector
+          \State $AS[i] \gets getMatrixValueFromTuple(NZ[nzValueCounter])$
+        \State //Create JA vector
+         \State $JA[i] \gets getColumnFromTuple(J[nzValueCounter]))$
+         \State $nzValueCounter \gets nzValueCounter+1$.
+         \State
+
+       \EndFor
+      \EndFor
+
+     \EndProcedure
+\end{algorithmic}
+\end{algorithm}
+\FloatBarrier
 
 \chapter{Nvidia CUDA}
 

@@ -9,18 +9,20 @@
 \BOOKMARK [0][-]{chapter.2}{Test Matrices}{}% 9
 \BOOKMARK [0][-]{chapter.3}{Storing matrices in Compressed Row Storage \(CSR\) and ELLPACK formats}{}% 10
 \BOOKMARK [1][-]{section.3.1}{Prerequisites}{chapter.3}% 11
-\BOOKMARK [1][-]{section.3.2}{Creating CSR matrix}{chapter.3}% 12
+\BOOKMARK [1][-]{section.3.2}{Creating CSR format matrix}{chapter.3}% 12
 \BOOKMARK [2][-]{subsection.3.2.1}{Understanding CSR}{section.3.2}% 13
 \BOOKMARK [2][-]{subsection.3.2.2}{CSR implementation approach}{section.3.2}% 14
-\BOOKMARK [0][-]{chapter.4}{Nvidia CUDA}{}% 15
-\BOOKMARK [1][-]{section.4.1}{Used software for CUDA}{chapter.4}% 16
-\BOOKMARK [1][-]{section.4.2}{CUDA features}{chapter.4}% 17
-\BOOKMARK [1][-]{section.4.3}{Detailed GPU data}{chapter.4}% 18
-\BOOKMARK [1][-]{section.4.4}{Used algorithm}{chapter.4}% 19
-\BOOKMARK [0][-]{chapter.5}{OpenMP}{}% 20
-\BOOKMARK [0][-]{chapter.6}{Performance measurements}{}% 21
-\BOOKMARK [1][-]{section.6.1}{Matrix cage4.mtx}{chapter.6}% 22
-\BOOKMARK [1][-]{section.6.2}{Matrix mhda416.mtx}{chapter.6}% 23
-\BOOKMARK [0][-]{chapter.7}{Other Nonfunctional Requirements}{}% 24
-\BOOKMARK [1][-]{section.7.1}{Performance Requirements}{chapter.7}% 25
-\BOOKMARK [0][-]{chapter.8}{Conclusions}{}% 26
+\BOOKMARK [1][-]{section.3.3}{Creating ELLPack format matrix}{chapter.3}% 15
+\BOOKMARK [2][-]{subsection.3.3.1}{ELLPack implementation approach}{section.3.3}% 16
+\BOOKMARK [0][-]{chapter.4}{Nvidia CUDA}{}% 17
+\BOOKMARK [1][-]{section.4.1}{Used software for CUDA}{chapter.4}% 18
+\BOOKMARK [1][-]{section.4.2}{CUDA features}{chapter.4}% 19
+\BOOKMARK [1][-]{section.4.3}{Detailed GPU data}{chapter.4}% 20
+\BOOKMARK [1][-]{section.4.4}{Used algorithm}{chapter.4}% 21
+\BOOKMARK [0][-]{chapter.5}{OpenMP}{}% 22
+\BOOKMARK [0][-]{chapter.6}{Performance measurements}{}% 23
+\BOOKMARK [1][-]{section.6.1}{Matrix cage4.mtx}{chapter.6}% 24
+\BOOKMARK [1][-]{section.6.2}{Matrix mhda416.mtx}{chapter.6}% 25
+\BOOKMARK [0][-]{chapter.7}{Other Nonfunctional Requirements}{}% 26
+\BOOKMARK [1][-]{section.7.1}{Performance Requirements}{chapter.7}% 27
+\BOOKMARK [0][-]{chapter.8}{Conclusions}{}% 28

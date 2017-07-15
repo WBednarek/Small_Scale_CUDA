@@ -36,7 +36,7 @@ class ReadMatrixELL
 
 		void resizeMatrices();
 
-		void sortInputMatrixByRows();
+		void sortInputMatrixByTheRows();
 
 		void getMatrixDataFromFileToTuple();
 
@@ -47,7 +47,7 @@ class ReadMatrixELL
 		void freeMemory(TYPE ** matrix);
 
 		//Calculates noon zeros in selected row
-		void calclateNonZeroValuesInRows();
+		void calclateNonZeroValuesInTheRows();
 
 	
 		//Preparing matrix fling it with zeros

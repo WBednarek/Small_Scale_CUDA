@@ -64,8 +64,8 @@ ReadMatrixELL::ReadMatrixELL(std::string matrixName)
 	resizeMatrices();
 	//std::cout << "This matrix has " << M << " rows " << N << " columns and  " << nz << " non zero values " << std::endl;
 	getMatrixDataFromFileToTuple();
-	sortInputMatrixByRows();
-	calclateNonZeroValuesInRows();
+	sortInputMatrixByTheRows();
+	calclateNonZeroValuesInTheRows();
 	//fillZeros<int>(nonZeroValuesInTheRows);
 	fillZerosOneDimensional();
 	calculateELLValues();
@@ -94,7 +94,7 @@ void ReadMatrixELL::resizeMatrices()
 
 }
 
-void ReadMatrixELL::sortInputMatrixByRows()
+void ReadMatrixELL::sortInputMatrixByTheRows()
 {
 
 	//Lambda sorting
@@ -162,13 +162,13 @@ void ReadMatrixELL::fillZerosOneDimensional()
 }
 
 
-void ReadMatrixELL::calclateNonZeroValuesInRows()
+void ReadMatrixELL::calclateNonZeroValuesInTheRows()
 {
 	int nonZeroValuesInThisRow = 0;
 	nonZeroValuesInTheRows.resize(N);
-
 	int k = 0;
 	int i = 0;
+
 	while (i < nz - 1)
 	{
 
