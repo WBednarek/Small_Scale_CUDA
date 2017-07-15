@@ -59,9 +59,8 @@ ReadMatrixCSR::ReadMatrixCSR(std::string matrixName)
 
 	if (f != stdin) fclose(f);
 
-
-	(*this).IRP = new int[M + 1];
 	(*this).JA = new int[nz];
+	(*this).IRP = new int[M + 1];
 	(*this).AS = new double[nz];
 	(*this).IRP[0] = 0;
 	(*this).IRP[M] = nz;

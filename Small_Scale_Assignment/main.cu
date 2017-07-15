@@ -29,7 +29,7 @@ Zmienc nazwu
 
 
 
-void displayValues(std::vector<int> JA, std::vector<int> IRP, std::vector<double> matrixValue )
+void displayValues(std::vector<int> JA, std::vector<int> IRP, std::vector<double> AS )
 {
 
 	//Output file in to the project folder
@@ -55,7 +55,7 @@ void displayValues(std::vector<int> JA, std::vector<int> IRP, std::vector<double
 		data << std::endl;
 
 		data << "AS has folllowing values: ";
-		for (std::vector<double>::const_iterator i = matrixValue.begin(); i != matrixValue.end(); ++i)
+		for (std::vector<double>::const_iterator i = AS.begin(); i != AS.end(); ++i)
 		{
 			data << *i << ' ';
 		}
@@ -170,6 +170,7 @@ int main(int argc, char *argv[])
 	//displayValues(matrixCSR.getJA(), matrixCSR.getIRP(), matrixELL.getAS());
 
 	displayOneDimensionalELLValues(matrixELL.getJA(), matrixELL.getAS());
+	displayValues(matrixCSR.getJA(), matrixCSR.getIRP() , matrixCSR.getAS());
 
 	/**
 	//Start Parallel computation

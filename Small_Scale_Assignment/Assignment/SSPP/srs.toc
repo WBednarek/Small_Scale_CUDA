@@ -13,15 +13,15 @@
 \contentsline {section}{\numberline {3.2}Creating CSR matrix}{15}{section.3.2}
 \contentsline {subsection}{\numberline {3.2.1}Understanding CSR}{15}{subsection.3.2.1}
 \contentsline {subsection}{\numberline {3.2.2}CSR implementation approach}{16}{subsection.3.2.2}
-\contentsline {chapter}{\numberline {4}Nvidia CUDA}{17}{chapter.4}
-\contentsline {section}{\numberline {4.1}Used software for CUDA}{17}{section.4.1}
-\contentsline {section}{\numberline {4.2}CUDA features}{17}{section.4.2}
-\contentsline {section}{\numberline {4.3}Detailed GPU data}{18}{section.4.3}
-\contentsline {section}{\numberline {4.4}Used algorithm}{20}{section.4.4}
-\contentsline {chapter}{\numberline {5}OpenMP}{24}{chapter.5}
-\contentsline {chapter}{\numberline {6}Performance measurements}{25}{chapter.6}
-\contentsline {section}{\numberline {6.1}Matrix cage4.mtx}{25}{section.6.1}
-\contentsline {section}{\numberline {6.2}Matrix mhda416.mtx}{25}{section.6.2}
-\contentsline {chapter}{\numberline {7}Other Nonfunctional Requirements}{27}{chapter.7}
-\contentsline {section}{\numberline {7.1}Performance Requirements}{27}{section.7.1}
-\contentsline {chapter}{\numberline {8}Conclusions}{30}{chapter.8}
+\contentsline {chapter}{\numberline {4}Nvidia CUDA}{18}{chapter.4}
+\contentsline {section}{\numberline {4.1}Used software for CUDA}{18}{section.4.1}
+\contentsline {section}{\numberline {4.2}CUDA features}{18}{section.4.2}
+\contentsline {section}{\numberline {4.3}Detailed GPU data}{19}{section.4.3}
+\contentsline {section}{\numberline {4.4}Used algorithm}{21}{section.4.4}
+\contentsline {chapter}{\numberline {5}OpenMP}{25}{chapter.5}
+\contentsline {chapter}{\numberline {6}Performance measurements}{26}{chapter.6}
+\contentsline {section}{\numberline {6.1}Matrix cage4.mtx}{26}{section.6.1}
+\contentsline {section}{\numberline {6.2}Matrix mhda416.mtx}{26}{section.6.2}
+\contentsline {chapter}{\numberline {7}Other Nonfunctional Requirements}{28}{chapter.7}
+\contentsline {section}{\numberline {7.1}Performance Requirements}{28}{section.7.1}
+\contentsline {chapter}{\numberline {8}Conclusions}{31}{chapter.8}

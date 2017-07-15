@@ -29,6 +29,8 @@
 \usepackage{ltxtable} 
 \usepackage{listings}% http://ctan.org/pkg/listings
 \usepackage{amsmath}
+\usepackage{algorithm}
+\usepackage[noend]{algpseudocode}
 \usepackage{fixltx2e}
 \usepackage{hyperref}
 \graphicspath{ {images/} }
@@ -51,6 +53,10 @@
 
 %}
 \usepackage{hyperref}
+
+\makeatletter
+\def\BState{\State\hskip-\ALG@thistlm}
+\makeatother
 \begin{document}
 
 \begin{flushright}
@@ -392,7 +398,7 @@ We need to download two files:
 
 \end{itemize}
 
-Those contains various functions that are necessary to read our MM format matrix. It is also recommended to look at example files available on the same websites.
+Those contains various functions that are necessary to read our MM format matrix. It is also recommended to look at example files available on the same website.
 
 
 \section{Creating CSR matrix}
@@ -412,35 +418,111 @@ a_{M,N} =
 \end{equation}
 
 
- In this situation the CSR M x N matrix with NZ non-zero entries this format has the following parameters:
+ As en example we will consider cage4.mtx matrix. In this situation the CSR M x N matrix with NZ non-zero entries this format has the following parameters:
 \\
 \\
-\textbf{ M} - numer of rows
+\textbf{ M} - number of rows
  \\
  \\
 \textbf{ N} - number of columns
  \\
  \\
- \textbf{IRP(1:M+1)} - Array/vector of pointers that shows how many more non-zero values are in the selected row than in the previous one. The first element of that array is 0 for C++ or 1 in the Matlab style.
+ \textbf{IRP(1:M+1)} - Array/vector of pointers that shows how many more non-zero values are in the selected row than in the previous one. The first element of that array is 0 for C++ or 1 in the Matlab style. \\
+In the cage4 matrix example IRP vector has folllowing values:
+\\
+0 5 10 15 20 26 32 38 44 49 
 \\
 \\
 \textbf{JA(1:NZ)} - Array/vector of indices of columns in which non-zero values are stored. 
 \\
-How many non-zero values are in the selected column, that many times this column index will be placed the JA array. Considering that a\textsubscript{1,1} matrix element is the value in the left-top matrix corner, we are searching for non-zero values going down with rows a\textsubscript{1,1:M} after finding all NZ values in a selected column, we are searching in that order all NZ values in the columns a\textsubscript{1,1:N}.
+How many non-zero values are in the selected column, that many times this column index will be placed the JA array. Considering that a\textsubscript{1,1} matrix element is the value in the left-top matrix corner, we are searching for non-zero values going down with rows a\textsubscript{1,1}...a\textsubscript{M,1}. after finding all NZ values in a selected column, we are searching in that order all NZ values in the columns a\textsubscript{1,1}...a\textsubscript{1,N}. \\
+
+
+In cage4 matrix example we have:
+\\
+JA : 0 1 3 4 7 0 1 2 4 5 1 2 3 5 6 0 2 3 6 7 0 1 4 5 6 8 1 2 4 5 7 8 2 3 4 6 7 8 0 3 5 6 7 8 4 5 6 7 8 
 \\
 \\
 \textbf{AS} - Array/vector of the following non-zero values. 
 \\
-When 1 x 1 matrix element is the one in the left-top matrix corner, the following AS values are the next non-zero matrix values to the right from the 
-
-
- (1 x 1) NZ matrix value. Later going down with the rows, analogically all non-zero values from the left to the right from each row are put into AS vector.
+When 1 x 1 matrix element is the one in the left-top matrix corner, the following AS values are the next non-zero matrix values to the right from the (1 x 1) NZ matrix value. Later going down with the rows, analogically all non-zero values from the left to the right from each row are put into AS vector.
 \\ 
 \\
-To understand how it works we will present an example.
+
+After all zeros reduction AS cage4.mtx will look as follows, zero left are only for graphical representation purposes, in the real CSR vector they don;t exist.
+
+
+\begin{equation} \label{eu_eqn}
+\begin{pmatrix}
+0.75      & 0.137458  & 0.112542  & 0.137458  & 0.112542  & 0        \\
+0.0750277 & 0.687569  & 0.112542  & 0.0750277 & 0.112542  & 0        \\
+0.091639  & 0.666667  & 0.0750277 & 0.091639  & 0.0750277 & 0        \\
+0.091639  & 0.137458  & 0.729097  & 0.137458  & 0.091639  & 0        \\
+0.0375138 & 0.0375138 & 0.537514  & 0.137458  & 0.112542  & 0.25     \\
+0.0458195 & 0.0458195 & 0.0750277 & 0.445875  & 0.0750277 & 0.150055 \\
+0.0375138 & 0.0375138 & 0.091639  & 0.470792  & 0.091639  & 0.183278 \\
+0.0458195 & 0.0458195 & 0.137458  & 0.112542  & 0.545819  & 0.25     \\
+0.0833333 & 0.0750277 & 0.091639  & 0.0833333 & 0.166667  & 0       
+\end{pmatrix}
+\end{equation}
 
 
 \subsection{CSR implementation approach}
+
+In order to implement and transform few steps had to be done. Below pseudo code will explain our apporach.
+
+\begin{algorithm}
+\caption{Matrix Market to CSR transformation approach}\label{euclid}
+\begin{algorithmic}[1]
+\Procedure{MM to CSR}{}
+\State Read MM matrix using "mmio" external software
+\State Load to memory M Rows form "mmio" external software
+\State Load to memory N Columns form "mmio" external software
+\State Load to memory NZ non-zero number of values form "mmio" external software
+ \For{\texttt{i = 0; i < NZ; ++i}}
+        \State Load to memory NZ[i] non-zero values form "mmio" external software
+		\State Load to memory I[i] matrix values positions form "mmio" external software
+		\State Load to memory J[i] matrix values positions  form "mmio" external software
+      \EndFor
+
+\\
+\State //Resize JA, IRP and AS pointer arrrys
+\State $Msize \gets NZ$.
+\State $IRPsize \gets M+1$.
+\State $ASsize \gets NZ$.
+\State //Create tuple type value
+ \For{\texttt{i = 0; i < NZ; ++i}}
+        \State $tuple[i] \gets maketuple(I[i], J[i], NZ[i])$
+      \EndFor
+\State Sort tuple values by the rows
+\State $IRPValue \gets 0$.
+\State $IRPPos \gets 0$.
+\State $columnNumber \gets J[0]$.
+ \For{\texttt{i = 0; i < NZ; ++i}}
+		\State //Create AS vector
+        \State $AS[i] \gets getMatrixValueFromTuple(NZ[i])$
+        \State //Create JA vector
+         \State $JA[i] \gets getColumnFromTuple(J[i]))$
+         \State //Create IRP vector
+         \If {$getRowFromTuple(I[i])) = IRPPos$}
+		\State $IRPValue \gets IRPValue+1$.
+		 \Else
+		 \State $IRPPos \gets IRPPos+1$.
+		 \State $IRP[IRPPos] \gets IRPValue$.
+		\While {$getRowFromTuple(I[i])) != IRPPos$}
+		\State $IRPPos \gets IRPPos+1$.
+		 \State $IRP[IRPPos] \gets IRPValue$.
+		 \EndWhile
+		 \State $IRPValue \gets IRPValue+1$.
+
+		\EndIf
+      
+      \EndFor
+
+\EndProcedure
+\end{algorithmic}
+\end{algorithm}
+
 
 
 \chapter{Nvidia CUDA}

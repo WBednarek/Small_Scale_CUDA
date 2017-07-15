@@ -38,14 +38,12 @@ start = std::chrono::high_resolution_clock::now();
 
 unsigned int numberOfRows = mat.getM();
 unsigned int numOfElemsInTheBiggestRow = mat.getNumberOfElementsInTheBiggestRow();
-unsigned int outputIndex = 0;
-unsigned int inputIndex = 0;
 	#pragma omp parallel for num_threads(threadsNumber)	
 	for (int outputIndex = 0; outputIndex < numberOfRows; ++outputIndex)
 	{
 		for (int k = 0; k < numOfElemsInTheBiggestRow; ++k)
 		{
-			inputIndex = outputIndex * numOfElemsInTheBiggestRow + k;
+			unsigned int inputIndex = outputIndex * numOfElemsInTheBiggestRow + k;
 			Y[outputIndex] += mat.getSelectedElementAS(inputIndex) * X[mat.getSelectedElementJA(inputIndex)];
 		}
 
@@ -60,10 +58,9 @@ inputIndex = 0;
 */
 	
 	
-	
-	end = std::chrono::high_resolution_clock::now();
-	fullTime = timeToComplete = std::chrono::duration_cast<std::chrono::nanoseconds>(end - start).count() / 1000000.0;
-	std::cout << " TIME OF EELPACK OPENMP SOLUTION: " << fullTime << std::endl;
+end = std::chrono::high_resolution_clock::now();
+fullTime = std::chrono::duration_cast<std::chrono::nanoseconds>(end - start).count() / 1000000.0;
+std::cout << " TIME OF EELPACK OPENMPfewwefwefwef SOLUTION: " << fullTime << std::endl;
 }
 
 
