@@ -28,6 +28,9 @@
 \usepackage{placeins}
 \usepackage{ltxtable} 
 \usepackage{listings}% http://ctan.org/pkg/listings
+\usepackage{amsmath}
+\usepackage{fixltx2e}
+\usepackage{hyperref}
 \graphicspath{ {images/} }
 \hypersetup{
     bookmarks=false,    % show bookmarks bar?
@@ -256,11 +259,15 @@ In this parer we used the following matrices:
 \newcolumntype{s}{>{\columncolor[HTML]{AAACED}} p{2cm}}
  
 \arrayrulecolor[HTML]{DB5800}
- 
-\begin{longtable}[h!]{ |s|p{2cm}|p{1.3cm}|p{1.3cm}|p{1.5cm}|p{2cm}|p{0.4cm}|  }
+
+\begin{longtable}[h!]{ |s|p{2cm}|p{1.3cm}|p{1.3cm}|p{1.5cm}|p{2cm}|p{0.5cm}|  }
+\caption{Matrices used in the project and the tests} \\
 \hline
+
+
 \rowcolor{lightgray} \multicolumn{7}{|c|}{Matrices List} \\
 \hline
+
 Matrix name & Author &Rows &Cols &Nonzeros & Description & Avai-labi-lity \\
 \hline
 cage4 & A. van Heukelum, T. Davis &9 & 9 &49 & directed weighted graph & \cellcolor[HTML]{28A828} Yes   \\
@@ -369,13 +376,15 @@ The first line contains: \\
 which stand for as follows two first numbers shows where the first-line value is placed in the matrix i.e. 1 1 means that value 9.670098233764655e-8 is placed at the first row and the first column in that matrix.
 
 
-\chapter{Storing matrices in CSR and ELLPack formats}
+\chapter{Storing matrices in Compressed Row Storage (CSR) and ELLPACK formats}
 In our software on of the requirement is to store downloaded from the Internet matrices into the CSR and ELLPac formats. In order to do that we need to transform data from the Matrix Market matrices to CSR and ELLPack formats.
 In the following section we will explain our approach of performing matrix transformation to the required formats.
 
 \section{Prerequisites}
 First of all we need to use external reading matrices software. It should be able to read a matrix from the Matrix Market format file and store it into computer's memory. That kind of tool for C/C++ languages is available at: \\
-\textbf{http://math.nist.gov/MatrixMarket/mmio-c.html} \\
+\textbf{http://math.nist.gov/MatrixMarket/mmio-c.html} 
+\\
+\\
 We need to download two files:
 \begin{itemize}
 \item  mmio.h
@@ -386,12 +395,52 @@ We need to download two files:
 Those contains various functions that are necessary to read our MM format matrix. It is also recommended to look at example files available on the same websites.
 
 
-\section{Creating CRS matrix approach}
+\section{Creating CSR matrix}
+
+\subsection{Understanding CSR}
+
+Compressed Row Storage (CSR) is one of matrix storage formats. We are going to consider he following matrix: 
+
+\begin{equation} \label{eu_eqn}
+a_{M,N} = 
+ \begin{pmatrix}
+  a_{1,1} & a_{1,2} & \cdots & a_{1,N} \\
+  a_{2,1} & a_{2,2} & \cdots & a_{2,N} \\
+  \vdots  & \vdots  & \ddots & \vdots  \\
+  a_{M,1} & a_{M,2} & \cdots & a_{M,N} 
+ \end{pmatrix}
+\end{equation}
 
 
+ In this situation the CSR M x N matrix with NZ non-zero entries this format has the following parameters:
+\\
+\\
+\textbf{ M} - numer of rows
+ \\
+ \\
+\textbf{ N} - number of columns
+ \\
+ \\
+ \textbf{IRP(1:M+1)} - Array/vector of pointers that shows how many more non-zero values are in the selected row than in the previous one. The first element of that array is 0 for C++ or 1 in the Matlab style.
+\\
+\\
+\textbf{JA(1:NZ)} - Array/vector of indices of columns in which non-zero values are stored. 
+\\
+How many non-zero values are in the selected column, that many times this column index will be placed the JA array. Considering that a\textsubscript{1,1} matrix element is the value in the left-top matrix corner, we are searching for non-zero values going down with rows a\textsubscript{1,1:M} after finding all NZ values in a selected column, we are searching in that order all NZ values in the columns a\textsubscript{1,1:N}.
+\\
+\\
+\textbf{AS} - Array/vector of the following non-zero values. 
+\\
+When 1 x 1 matrix element is the one in the left-top matrix corner, the following AS values are the next non-zero matrix values to the right from the 
 
 
+ (1 x 1) NZ matrix value. Later going down with the rows, analogically all non-zero values from the left to the right from each row are put into AS vector.
+\\ 
+\\
+To understand how it works we will present an example.
 
+
+\subsection{CSR implementation approach}
 
 
 \chapter{Nvidia CUDA}

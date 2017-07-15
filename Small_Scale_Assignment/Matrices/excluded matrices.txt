@@ -1,11 +1,9 @@
 Excluded (potentially) to big for the GitHub repository:
 cant.mtx
 PR02R.mtx
-
 thermal2.mtx
 nlpkkt80.mtx
 webbase-1M.mtx
-
 af_1_k101.mtx
 
 The following matrices are no longer available to download:
