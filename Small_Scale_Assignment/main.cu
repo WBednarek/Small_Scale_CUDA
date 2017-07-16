@@ -7,10 +7,9 @@
 #include <vector>
 #include <string>
 #include "ReadMatrixCSR.h"
-
-#include "runSimulation.cpp"
 #include "ReadMatrixELL.h"
-
+#include "SimulationAndTheTests.h"
+#include "SimulationAndTheTests.cpp"
 
 #include <stdlib.h>
 #include <stdio.h>
@@ -168,7 +167,8 @@ int main(int argc, char *argv[])
 	//ReadMatrixCSR matrixCSR(currentMattix);
 	ReadMatrixELL matrixELL(currentMattix);
 	//runSimulation<ReadMatrixCSR> simCSR;
-	runSimulation<ReadMatrixELL> simELLPack;
+	SimulationAndTheTests<ReadMatrixELL> simELLPack;
+
 
 	std::cout<<"ELL SIZE: "<<sizeof(matrixELL)<<std::endl;
 
@@ -189,7 +189,7 @@ int main(int argc, char *argv[])
 	//OpenMP Run
 	//simCSR.runOpenMP(matrixCSR, numberOfThreads, timeToComplete);
 
-	int simulationRuns = 10;
+	int simulationRuns = 100;
 
 	simELLPack.runOpenMP(matrixELL, numberOfThreads, 4, simulationRuns);
 	

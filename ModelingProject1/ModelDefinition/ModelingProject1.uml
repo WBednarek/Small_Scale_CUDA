@@ -1,0 +1,262 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<modelStoreModel xmlns:dm0="http://schemas.microsoft.com/VisualStudio/2008/DslTools/Core" xmlns:dm1="http://schemas.microsoft.com/dsltools/Kernel" xmlns:dm2="http://schemas.microsoft.com/dsltools/Component" xmlns:dm3="http://schemas.microsoft.com/dsltools/Activity" xmlns:dm4="http://schemas.microsoft.com/dsltools/UseCase" xmlns:dm5="http://schemas.microsoft.com/dsltools/Interaction" xmlns:dm6="http://schemas.microsoft.com/dsltools/UmlModelLibrary" xmlns:dm7="http://schemas.microsoft.com/dsltools/UmlDiagrams" xmlns:dm8="http://schemas.microsoft.com/dsltools/LogicalClassDesigner" xmlns:dm9="http://schemas.microsoft.com/dsltools/SimpleShapesModel" xmlns:dm10="http://schemas.microsoft.com/dsltools/UseCaseModel"
+  dslVersion="1.0.0.0"
+  Id="6adb0ad7-f69f-4e7c-a048-5cb366165cc9"
+  name="ModelingProject1" xmlns="http://schemas.microsoft.com/dsltools/ModelStore">
+  <profileInstances>
+    <packageHasProfileInstances
+      Id="0caec977-1f8c-4ba3-a7db-8cc9ad9cc73b">
+      <profileInstance
+        Id="e34d544e-0fea-4ed6-ac5e-1b74119ac791"
+        name="StandardProfileL2" />
+    </packageHasProfileInstances>
+    <packageHasProfileInstances
+      Id="29349502-908c-4fda-9054-c48619c59ed0">
+      <profileInstance
+        Id="532ea607-fb19-44b8-8502-3351b05452be"
+        name="StandardProfileL3" />
+    </packageHasProfileInstances>
+  </profileInstances>
+  <packagedElements>
+    <packageHasNamedElement>
+      <packageMoniker
+        Id="cd7f2d52-05b0-4b4a-894f-a800353a90c3"
+        LastKnownName="SmallScale"
+        LastKnownLocation="Package_2324.uml" />
+    </packageHasNamedElement>
+    <packageHasNamedElement>
+      <actor
+        Id="72309c90-f0b1-495b-ad1b-1336870e0180"
+        name="Researcher"
+        isAbstract="false"
+        isLeaf="false">
+        <targetEnds>
+          <association
+            Id="34552f23-4645-46d9-8140-c4104c50a205"
+            isDerived="false"
+            sourceEndRoleName="Resaercher"
+            targetEndRoleName="Read matrix from MM"
+            isLeaf="false"
+            isAbstract="false">
+            <useCaseMoniker
+              Id="247e9548-3762-465d-94b3-c97d608746d1"
+              LastKnownName="Read matrix from MM"
+              LastKnownLocation="ModelingProject1.uml" />
+            <relationshipOwnedElementsInternal>
+              <associationHasOwnedEnds>
+                <memberEnd
+                  Id="cadf3e13-aa8b-40ed-81ba-5e63f4c98891"
+                  name="Resaercher"
+                  isLeaf="false"
+                  isStatic="false"
+                  isReadOnly="false"
+                  isDerived="false"
+                  isDerivedUnion="false"
+                  aggregation="None"
+                  isComposite="false"
+                  isNavigableOwned="false" />
+              </associationHasOwnedEnds>
+              <associationHasOwnedEnds>
+                <memberEnd
+                  Id="faef921c-1f36-47a5-972e-f779a0782cb6"
+                  name="Read matrix from MM"
+                  isLeaf="false"
+                  isStatic="false"
+                  isReadOnly="false"
+                  isDerived="false"
+                  isDerivedUnion="false"
+                  aggregation="None"
+                  isComposite="false" />
+              </associationHasOwnedEnds>
+            </relationshipOwnedElementsInternal>
+          </association>
+          <association
+            Id="ff82d909-da8a-45cc-b8df-88b9e550ab7d"
+            isDerived="false"
+            sourceEndRoleName="Resaercher"
+            targetEndRoleName="Compute parallel matrix by &quot;tall&quot; dense matrix multiplication"
+            isLeaf="false"
+            isAbstract="false">
+            <useCaseMoniker
+              Id="32099db5-481e-4568-b2ee-de1f718d59f0"
+              LastKnownName="Compute parallel matrix by &quot;tall&quot; dense matrix multiplication"
+              LastKnownLocation="ModelingProject1.uml" />
+            <relationshipOwnedElementsInternal>
+              <associationHasOwnedEnds>
+                <memberEnd
+                  Id="f4044af0-9c4d-42a4-892e-7e89fb53a6aa"
+                  name="Resaercher"
+                  isLeaf="false"
+                  isStatic="false"
+                  isReadOnly="false"
+                  isDerived="false"
+                  isDerivedUnion="false"
+                  aggregation="None"
+                  isComposite="false"
+                  isNavigableOwned="false" />
+              </associationHasOwnedEnds>
+              <associationHasOwnedEnds>
+                <memberEnd
+                  Id="b1c1f59b-2405-443d-8e58-37e64316f794"
+                  name="Compute parallel matrix by &quot;tall&quot; dense matrix multiplication"
+                  isLeaf="false"
+                  isStatic="false"
+                  isReadOnly="false"
+                  isDerived="false"
+                  isDerivedUnion="false"
+                  aggregation="None"
+                  isComposite="false" />
+              </associationHasOwnedEnds>
+            </relationshipOwnedElementsInternal>
+          </association>
+        </targetEnds>
+      </actor>
+    </packageHasNamedElement>
+    <packageHasNamedElement>
+      <useCase
+        Id="247e9548-3762-465d-94b3-c97d608746d1"
+        name="Read matrix from MM"
+        isAbstract="false"
+        isLeaf="false">
+        <generalsInternal>
+          <generalization
+            Id="0ed9f236-61a2-4ab8-9579-dbeac666f45b"
+            isSubstitutable="false">
+            <useCaseMoniker
+              Id="057630d2-8688-4487-9145-1c62367bd074"
+              LastKnownName="Transform martix"
+              LastKnownLocation="ModelingProject1.uml" />
+          </generalization>
+        </generalsInternal>
+      </useCase>
+    </packageHasNamedElement>
+    <packageHasNamedElement>
+      <useCase
+        Id="057630d2-8688-4487-9145-1c62367bd074"
+        name="Transform martix"
+        isAbstract="false"
+        isLeaf="false" />
+    </packageHasNamedElement>
+    <packageHasNamedElement>
+      <useCase
+        Id="a2caebc6-ca27-49b2-9df5-dba33c6124ef"
+        name="ELLPack format"
+        isAbstract="false"
+        isLeaf="false">
+        <suppliersInternal>
+          <dependency
+            Id="d3e12c2c-eade-4538-85ec-195fd600ca0d">
+            <useCaseMoniker
+              Id="057630d2-8688-4487-9145-1c62367bd074"
+              LastKnownName="Transform martix"
+              LastKnownLocation="ModelingProject1.uml" />
+          </dependency>
+        </suppliersInternal>
+      </useCase>
+    </packageHasNamedElement>
+    <packageHasNamedElement>
+      <useCase
+        Id="4e8d3ef0-01f0-4f6d-a561-b8efd9a65cee"
+        name="CSR format"
+        isAbstract="false"
+        isLeaf="false">
+        <suppliersInternal>
+          <dependency
+            Id="a8a1519b-f0bb-4f1e-b8d2-c1877089e895">
+            <useCaseMoniker
+              Id="057630d2-8688-4487-9145-1c62367bd074"
+              LastKnownName="Transform martix"
+              LastKnownLocation="ModelingProject1.uml" />
+          </dependency>
+        </suppliersInternal>
+      </useCase>
+    </packageHasNamedElement>
+    <packageHasNamedElement>
+      <useCase
+        Id="32099db5-481e-4568-b2ee-de1f718d59f0"
+        name="Compute parallel matrix by &quot;tall&quot; dense matrix multiplication"
+        isAbstract="false"
+        isLeaf="false" />
+    </packageHasNamedElement>
+    <packageHasNamedElement>
+      <useCase
+        Id="f141a27f-6d87-422b-87f6-4edb51fea192"
+        name="OpenMP"
+        isAbstract="false"
+        isLeaf="false">
+        <suppliersInternal>
+          <dependency
+            Id="f00d8729-04b1-4ef7-8bbc-01362acb69ef">
+            <useCaseMoniker
+              Id="32099db5-481e-4568-b2ee-de1f718d59f0"
+              LastKnownName="Compute parallel matrix by &quot;tall&quot; dense matrix multiplication"
+              LastKnownLocation="ModelingProject1.uml" />
+          </dependency>
+        </suppliersInternal>
+      </useCase>
+    </packageHasNamedElement>
+    <packageHasNamedElement>
+      <useCase
+        Id="63cb5fb4-429d-4bce-b54c-50e4388774cd"
+        name="CUDA"
+        isAbstract="false"
+        isLeaf="false">
+        <suppliersInternal>
+          <dependency
+            Id="a2a3be8a-2c05-4e1a-9e24-5fd597473e70">
+            <useCaseMoniker
+              Id="32099db5-481e-4568-b2ee-de1f718d59f0"
+              LastKnownName="Compute parallel matrix by &quot;tall&quot; dense matrix multiplication"
+              LastKnownLocation="ModelingProject1.uml" />
+          </dependency>
+        </suppliersInternal>
+      </useCase>
+    </packageHasNamedElement>
+    <packageHasNamedElement>
+      <useCase
+        Id="8f1f5851-70b3-4594-a6f6-bb6ad038746f"
+        name="Perform tests, time measurement"
+        isAbstract="false"
+        isLeaf="false">
+        <generalsInternal>
+          <generalization
+            Id="0f1f20de-e241-4332-9f4d-a7cba179be31"
+            isSubstitutable="false">
+            <useCaseMoniker
+              Id="8f1f5851-70b3-4594-a6f6-bb6ad038746f"
+              LastKnownName="Perform tests, time measurement"
+              LastKnownLocation="ModelingProject1.uml" />
+          </generalization>
+          <generalization
+            Id="21632706-1b63-4a31-983d-d786d1879109"
+            isSubstitutable="false">
+            <useCaseMoniker
+              Id="32099db5-481e-4568-b2ee-de1f718d59f0"
+              LastKnownName="Compute parallel matrix by &quot;tall&quot; dense matrix multiplication"
+              LastKnownLocation="ModelingProject1.uml" />
+          </generalization>
+        </generalsInternal>
+      </useCase>
+    </packageHasNamedElement>
+  </packagedElements>
+  <primitiveType
+    Id="220a3521-e091-4221-bae9-3ef9018e845c"
+    name="Integer"
+    isAbstract="false"
+    isLeaf="false" />
+  <primitiveType
+    Id="8943dc84-709e-4f62-b15a-a3273aa6f165"
+    name="Boolean"
+    isAbstract="false"
+    isLeaf="false" />
+  <primitiveType
+    Id="59259974-6d55-42c6-b7bd-763d77ac8ef9"
+    name="String"
+    isAbstract="false"
+    isLeaf="false" />
+  <primitiveType
+    Id="3ab42e7d-4969-445a-b209-471f5cb8209c"
+    name="UnlimitedNatural"
+    isAbstract="false"
+    isLeaf="false" />
+</modelStoreModel>

@@ -281,6 +281,81 @@ Appropriate conclusions will be given at the end of the paper.
 \section{Stockholders and indented audience}
 
 
+
+\section{Solution details}
+
+\subsection{Code map}
+
+Code map helps to understand all connections  within solution scope. It shows what impact and how connected are classes of functionalities in our solution. Most of the functionalities are dependent on others, below diagram will explain how our software is designed.
+
+
+\begin{figure}[h!]
+\label{CodeMap}
+\centering
+\includegraphics{CodeMap.PNG}
+\caption{Code map of our solution}
+Source: Own image
+\end{figure}
+\FloatBarrier
+
+
+On above figure \ref{CodeMap} we can observe various connections. For instance We have to main classes responsible for transforming Matrix Market (MM) format into CSR and ELLPack. Those classes are: 
+\\
+\begin{itemize}
+\item ReadMatrixCSR - for MM to ELL format transform
+\item ReadMatrixELLPack - for MM to CSR format transform
+\end{itemize}
+
+They are connected with the functions from external \textit{mmio} library and what is the most important those classes are used further by the main solution functionality i.e. OpenMP (in the light blue frame) parallel class that has implemented functionalities for the matrix by "tall" dense matrix multiplication. That class requires in the first order the ReadMartixCSR or ReadmatrixELL object for demanded computation. 
+\\
+Those two MM matrix transformation classes are also used by CUDASolver functions, highlighted in green, which are like OpenMP responsible for the matrix by "tall" dense matrix multiplication. Those two overloaded functions require ReadMartixCSR or ReadmatrixELL object for further computation  respectively.
+
+\subsection{Class diagram}
+
+In the project concept the view called class diagram should be created. Below class diagram presents all class in the project and its functions. 
+
+\begin{figure}[h!]
+\label{ClassDiagram}
+\centering
+\includegraphics{ClassDiagram.PNG}
+\caption{Class diagram of our solution}
+Source: Own image
+\end{figure}
+\FloatBarrier
+
+The solution contains the main classes:
+\begin{itemize}
+\item ReadMatrixCSR - for MM to ELL format transform
+\item ReadMatrixELLPack - for MM to CSR format transform
+\item OpenMP class - responsible for OpenMP parallel matrix by "tall" dense matrix multiplication
+\item SimilationAndTheTests class - responsible for running creating X matrix and envoking CUDA and OpenMP computations
+\item deviceQueryDrv class - external class responsible for reading CUDA device parameters like CUDA Device Total Memory, Tolat amount of global memory, GPU Max Clock rate, Memory Clock rate, Number of CUDA cores, Warp size etc.
+\end{itemize}
+
+
+\textbf{Apart form object oriented code our solution also contains:}
+
+\begin{itemize}
+\item main function - determines OpenMP numner of thrads to run and for CUDA size and number of blocks that will be used. Also it read Warp size of used CUDA device. In main fucntion we run whole simulation.
+
+\item mmio - external software from \textit{http://math.nist.gov/MatrixMarket/} for reading matrices from file into memory
+
+\item CUDASolver.cu - set of functions to run CUDA parallel martix by "tall" dense matrix multiplication.
+
+\end{itemize}
+
+
+\subsection{Use Case diagram}
+
+\begin{figure}[h!]
+\label{UseCaseDiagram}
+\centering
+\includegraphics{UseCaseDiagramResearcher.PNG}
+\caption{Use Case diagram of our solution}
+Source: Own image
+\end{figure}
+\FloatBarrier
+
 \chapter{Test Matrices}
 
 To perform our simulation test martrices had to be provided. In the following matrix by "tall" dense matrix multiplication problem we used matrices from the websites: \\

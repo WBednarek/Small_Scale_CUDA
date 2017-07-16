@@ -8,7 +8,7 @@ OpenMP::~OpenMP()
 {
 }
 
-/*
+
 
 void OpenMP::OpenMPSolver(ReadMatrixCSR & mat, std::vector<double>& X, std::vector<double>& Y, unsigned int threadsNumber, double & timeToComplete)
 {
@@ -28,7 +28,7 @@ Y[index] += mat.getAS().at(k) * X[mat.getJA().at(k)];
 }
 
 }
-*/
+
 
 
 
@@ -59,15 +59,14 @@ int numOfElemsInTheBiggestRow = mat.getNumberOfElementsInTheBiggestRow();
 
 
 
-#pragma omp parallel for num_threads(4)
+#pragma omp parallel for num_threads(2)
 for (int outputIndex = 0; outputIndex < numberOfRows; ++outputIndex)
 {
 	for (int k = 0; k < numOfElemsInTheBiggestRow; ++k)
 	{
 		auto inputIndex = outputIndex * numOfElemsInTheBiggestRow + k;
-		
 		Y[outputIndex] += mat.getSelectedElementAS(inputIndex) * X[mat.getSelectedElementJA(inputIndex)];
-		//Y[outputIndex] = 223124;
+
 	}
 
 }

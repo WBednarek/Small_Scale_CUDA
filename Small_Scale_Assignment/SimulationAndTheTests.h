@@ -12,13 +12,13 @@
 #include <type_traits>
 
 template<class classType>
-class runSimulation
+class SimulationAndTheTests
 {
 	
 
 public:
-	runSimulation();
-	~runSimulation();
+	SimulationAndTheTests();
+	~SimulationAndTheTests();
 	
 	auto calcuatePerformance(classType & matrix, double completionTime);
 	/**
@@ -41,3 +41,5 @@ public:
 
 
 #endif
+
+

@@ -1,27 +1,27 @@
-#include "runSimulation.h"
+#include "SimulationAndTheTests.h"
 
 
 template<class classType>
-runSimulation<classType>::runSimulation()
+SimulationAndTheTests<classType>::SimulationAndTheTests()
+{
+}
+
+template<class classType>
+SimulationAndTheTests<classType>::~SimulationAndTheTests()
 {
 }
 
 
-template<class classType>
-runSimulation<classType>::~runSimulation()
-{
-}
-
 
 template<class classType>
-auto runSimulation<classType>::calcuatePerformance(classType & matrix, double completionTime)
+auto SimulationAndTheTests<classType>::calcuatePerformance(classType & matrix, double completionTime)
 {
 	return 2.0 * matrix.getNZ() / completionTime / 1000000.0;
 }
 
 
 template<class classType>
-void runSimulation<classType>::runCUDA(classType & mat, int numberOfThreads, int sizeOfBlock, int maximumBlocks, double & timeToComplete)
+void SimulationAndTheTests<classType>::runCUDA(classType & mat, int numberOfThreads, int sizeOfBlock, int maximumBlocksdouble, double & timeToComplete)
 {
 	std::vector<double> X(mat.getN());
 	std::vector<double> result(mat.getN());
@@ -66,8 +66,10 @@ void runSimulation<classType>::runCUDA(classType & mat, int numberOfThreads, int
 }
 
 
+
+
 template<class classType>
-void runSimulation<classType>::runOpenMP(classType & mat, int numberOfThreads, int numberOfMatrixXColumns, int numberOfSimulationRuns)
+void SimulationAndTheTests<classType>::runOpenMP(classType & mat, int numberOfThreads, int numberOfMatrixXColumns, int numberOfSimulationRuns)
 {
 
 	ReadMatrixELL matrixELL1("cage4.mtx");
@@ -119,7 +121,7 @@ void runSimulation<classType>::runOpenMP(classType & mat, int numberOfThreads, i
 }
 
 template<class classType>
-void runSimulation<classType>::makeVector_X(std::vector<double> & X, int sizeOfMaxtixRow, int numberOfMatrixXColumns)
+void SimulationAndTheTests<classType>::makeVector_X(std::vector<double>& X, int sizeOfMaxtixRow, int numberOfMatrixXColumns)
 {
 	//X.resize(sizeOfMaxtixRow * numberOfMatrixXColumns);
 	unsigned seed;
