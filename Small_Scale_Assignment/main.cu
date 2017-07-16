@@ -7,7 +7,7 @@
 #include <vector>
 #include <string>
 #include "ReadMatrixCSR.h"
-#include "runSimulation.h"
+
 #include "runSimulation.cpp"
 #include "ReadMatrixELL.h"
 
@@ -192,6 +192,7 @@ int main(int argc, char *argv[])
 	int simulationRuns = 10;
 
 	simELLPack.runOpenMP(matrixELL, numberOfThreads, 4, simulationRuns);
+	
 	system("pause");
     return 0;
 }

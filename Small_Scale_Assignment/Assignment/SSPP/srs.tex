@@ -158,12 +158,8 @@ The next important convection is features priority. The following table will exp
 
 \section{Intended Audience and Reading Suggestions}
 
-
-
-
-
-Document is easy to read and has detailed information about solution. For high coefficient of transparency all important data are presented tables.
-This software is intended to use by research staff in scientific facilitates or students which would like to deepen their parallel programming  knowledge.
+Document has detailed information about solution and it is designed to be clear to understand . For high coefficient of transparency all important data are presented tables.
+This software is intended to use by research staff in scientific facilitates or students which would like to deepen their parallel programming knowledge.
 \\
 
 \begin{table}[h!]
@@ -248,6 +244,41 @@ Student             & \begin{tabular}[c]{@{}l@{}}  View performance results for 
 \item http://www.hpctoday.com/hpc-labs/explicit-vector-programming-with-openmp-4-0-simd-extensions/. Retrieved June 2017.
 \end{itemize}
 
+
+\chapter{Summary design specification}
+
+\section{Purpose of the project}
+The main feature of our solution is implement the kernel that is capable of computing martix by "tall" dense matrix multiplication. We are using two main parallel technlgies in our solution Open Multi-Processing (OpenMP) and Nvidia CUDA.  
+
+Kernel will be capable to compute:
+\begin{equation} \label{eu_eqn}
+X \leftarrow AX
+\end{equation}
+\\
+Where:
+\\
+A is a sprase matrix stored in the following formats:
+\begin{enumerate}
+
+\item CSR - Compressed Sparse Row
+\item ELL - ELLPACK
+\end{enumerate}
+
+X and Y are "tall" dense matrices what stands for matrices with limited number of columns. Having a given size M of the matrix A we consider X and Y of size as follows: \\
+M x 2, M x 4, M x 3 and M x 8.
+\\
+Considering product of sparse matrix A by an M x K, there will be 2 x NZ x k number of floating point operations.
+
+Our solutions will be tested with the relevant tests. We will check influence of the performance evaluated in the Millions of Floating point Operations Per Second (MFLOPS) depended on number of columns. 
+
+\section{Scope}
+Creating the testing simulation that is capable of compute matrix by "tall" dense matrix multiplication, perform all relevant tests and provide the results at the output. We are also going to show results in the following paper. 
+\\
+At the beginning simulation software will be capable of read and transform Matrix Market format into CSR and ELLPack formats. basing on that formats we will consider kernel matrix by "tall" dense matrix multiplication implemented in Nvdia Cuda. Also another parallel implementation going to be performed in OpenMP. Results will be compared with single thread or single running solution.
+\\
+Appropriate conclusions will be given at the end of the paper.
+
+\section{Stockholders and indented audience}
 
 
 \chapter{Test Matrices}

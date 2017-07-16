@@ -13,56 +13,52 @@ class ReadMatrixELL
 {
 
 
-	private:
-		int ret_code;
-		MM_typecode matcode;
-		FILE *f;
+	private:	
 		// M - Rows, N - Columns , Nz - non zero values
 		int M, N, nz;
-		int checkM; // something happens
-		int i, *I, *J;
-		double *matrixValue;
+		int numOfElementsInTheBiggestRow;
 		std::string matrixName;
 		int *JAOneDimensional;
 		double *ASOneDimensional;
-	
-		int **JA;
-		double **AS;
-		//int *IRP; // Pointer to IRP array
-		int maxRow, maxColumn;
-		int numOfElementsInTheBiggestRow;
-		std::vector<int> nonZeroValuesInTheRows;
-		std::vector<std::tuple<int, int, double> > rowsAndValues;
+		//std::vector<int> nonZeroValuesInTheRows;
+		int nonZeroValuesInTheAllRows;
 
-		void resizeMatrices();
+		void resizeMatrices(std::vector<std::tuple<int, int, double> > & rowsAndValues);
 
-		void sortInputMatrixByTheRows();
+		void sortInputMatrixByTheRows(std::vector<std::tuple<int, int, double> > & rowsAndValues);
 
-		void getMatrixDataFromFileToTuple();
 
 		
-		void calculateELLValues();
+		void calculateELLValues(std::vector<std::tuple<int, int, double> > & rowsAndValues, std::vector<int> & nonZeroValuesInTheRows);
 
-		template<typename TYPE>
-		void freeMemory(TYPE ** matrix);
 
 		//Calculates noon zeros in selected row
-		void calclateNonZeroValuesInTheRows();
+		void calclateNonZeroValuesInTheRows(std::vector<std::tuple<int, int, double> > & rowsAndValues, std::vector<int> & nonZeroValuesInTheRows);
 
 	
-		//Preparing matrix fling it with zeros
-		//template<typename TYPE>
-		//void fillZeros(std::vector<TYPE> vec);
 
 		//Preparing one-dimensional matrix fling it with zeros
 		void fillZerosOneDimensional();
 
+
+
+
+		/*
+
+		int maxRow, maxColumn;
+
+		int **JA;
+		double **AS;
+		//int *IRP; // Pointer to IRP array
+		
 		//displaying 2D matrix
 		template<typename TYPE>
 		void displayELLMatrix(TYPE ** matrix);
+		*/
+
 
 		template<typename TYPE>
-		void saveOneDimensionalELLMatrix(TYPE * matrix, std::string name);
+		void saveOneDimensionalELLMatrix(TYPE * matrix, std::string name, std::vector<int> & nonZeroValuesInTheRows);
 
 		void displayPointerArray(int * arr);
 

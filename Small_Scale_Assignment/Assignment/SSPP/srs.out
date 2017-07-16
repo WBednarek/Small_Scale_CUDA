@@ -6,23 +6,27 @@
 \BOOKMARK [1][-]{section.1.5}{Operating Environment}{chapter.1}% 6
 \BOOKMARK [1][-]{section.1.6}{Project Scope}{chapter.1}% 7
 \BOOKMARK [1][-]{section.1.7}{References}{chapter.1}% 8
-\BOOKMARK [0][-]{chapter.2}{Test Matrices}{}% 9
-\BOOKMARK [0][-]{chapter.3}{Storing matrices in Compressed Row Storage \(CSR\) and ELLPACK formats}{}% 10
-\BOOKMARK [1][-]{section.3.1}{Prerequisites}{chapter.3}% 11
-\BOOKMARK [1][-]{section.3.2}{Creating CSR format matrix}{chapter.3}% 12
-\BOOKMARK [2][-]{subsection.3.2.1}{Understanding CSR}{section.3.2}% 13
-\BOOKMARK [2][-]{subsection.3.2.2}{CSR implementation approach}{section.3.2}% 14
-\BOOKMARK [1][-]{section.3.3}{Creating ELLPack format matrix}{chapter.3}% 15
-\BOOKMARK [2][-]{subsection.3.3.1}{ELLPack implementation approach}{section.3.3}% 16
-\BOOKMARK [0][-]{chapter.4}{Nvidia CUDA}{}% 17
-\BOOKMARK [1][-]{section.4.1}{Used software for CUDA}{chapter.4}% 18
-\BOOKMARK [1][-]{section.4.2}{CUDA features}{chapter.4}% 19
-\BOOKMARK [1][-]{section.4.3}{Detailed GPU data}{chapter.4}% 20
-\BOOKMARK [1][-]{section.4.4}{Used algorithm}{chapter.4}% 21
-\BOOKMARK [0][-]{chapter.5}{OpenMP}{}% 22
-\BOOKMARK [0][-]{chapter.6}{Performance measurements}{}% 23
-\BOOKMARK [1][-]{section.6.1}{Matrix cage4.mtx}{chapter.6}% 24
-\BOOKMARK [1][-]{section.6.2}{Matrix mhda416.mtx}{chapter.6}% 25
-\BOOKMARK [0][-]{chapter.7}{Other Nonfunctional Requirements}{}% 26
-\BOOKMARK [1][-]{section.7.1}{Performance Requirements}{chapter.7}% 27
-\BOOKMARK [0][-]{chapter.8}{Conclusions}{}% 28
+\BOOKMARK [0][-]{chapter.2}{Summary design specification}{}% 9
+\BOOKMARK [1][-]{section.2.1}{Purpose of the project}{chapter.2}% 10
+\BOOKMARK [1][-]{section.2.2}{Scope}{chapter.2}% 11
+\BOOKMARK [1][-]{section.2.3}{Stockholders and indented audience}{chapter.2}% 12
+\BOOKMARK [0][-]{chapter.3}{Test Matrices}{}% 13
+\BOOKMARK [0][-]{chapter.4}{Storing matrices in Compressed Row Storage \(CSR\) and ELLPACK formats}{}% 14
+\BOOKMARK [1][-]{section.4.1}{Prerequisites}{chapter.4}% 15
+\BOOKMARK [1][-]{section.4.2}{Creating CSR format matrix}{chapter.4}% 16
+\BOOKMARK [2][-]{subsection.4.2.1}{Understanding CSR}{section.4.2}% 17
+\BOOKMARK [2][-]{subsection.4.2.2}{CSR implementation approach}{section.4.2}% 18
+\BOOKMARK [1][-]{section.4.3}{Creating ELLPack format matrix}{chapter.4}% 19
+\BOOKMARK [2][-]{subsection.4.3.1}{ELLPack implementation approach}{section.4.3}% 20
+\BOOKMARK [0][-]{chapter.5}{Nvidia CUDA}{}% 21
+\BOOKMARK [1][-]{section.5.1}{Used software for CUDA}{chapter.5}% 22
+\BOOKMARK [1][-]{section.5.2}{CUDA features}{chapter.5}% 23
+\BOOKMARK [1][-]{section.5.3}{Detailed GPU data}{chapter.5}% 24
+\BOOKMARK [1][-]{section.5.4}{Used algorithm}{chapter.5}% 25
+\BOOKMARK [0][-]{chapter.6}{OpenMP}{}% 26
+\BOOKMARK [0][-]{chapter.7}{Performance measurements}{}% 27
+\BOOKMARK [1][-]{section.7.1}{Matrix cage4.mtx}{chapter.7}% 28
+\BOOKMARK [1][-]{section.7.2}{Matrix mhda416.mtx}{chapter.7}% 29
+\BOOKMARK [0][-]{chapter.8}{Other Nonfunctional Requirements}{}% 30
+\BOOKMARK [1][-]{section.8.1}{Performance Requirements}{chapter.8}% 31
+\BOOKMARK [0][-]{chapter.9}{Conclusions}{}% 32

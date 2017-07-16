@@ -14,7 +14,7 @@
 template<class classType>
 class runSimulation
 {
-	std::vector<double> X;
+	
 
 public:
 	runSimulation();
@@ -31,7 +31,7 @@ public:
 	/**
 	Make an vector for parallel matrix-vector multiplication
 	*/
-	void makeVector_X(int sizeOfMaxtixRow, int numberOfMatrixXColumns);
+	void makeVector_X(std::vector<double> & X, int sizeOfMaxtixRow, int numberOfMatrixXColumns);
 	
 	
 

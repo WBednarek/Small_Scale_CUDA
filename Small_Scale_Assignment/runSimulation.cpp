@@ -23,14 +23,14 @@ auto runSimulation<classType>::calcuatePerformance(classType & matrix, double co
 template<class classType>
 void runSimulation<classType>::runCUDA(classType & mat, int numberOfThreads, int sizeOfBlock, int maximumBlocks, double & timeToComplete)
 {
-
+	std::vector<double> X(mat.getN());
 	std::vector<double> result(mat.getN());
 	std::chrono::high_resolution_clock::time_point start;
 	std::chrono::high_resolution_clock::time_point  end;
 	double complete;
 	try
 	{
-		makeVector_X(mat.getNZ(), 2);
+		makeVector_X(X, mat.getNZ(), 2);
 		start = std::chrono::high_resolution_clock::now();
 		//Compute CUDA matrix-matrix, product
 		CUDASolver(mat, X, result, sizeOfBlock, maximumBlocks, timeToComplete);
@@ -77,26 +77,31 @@ void runSimulation<classType>::runOpenMP(classType & mat, int numberOfThreads, i
 	std::chrono::high_resolution_clock::time_point  end;
 	double complete;
 	double timeToComplete = 0;
-	makeVector_X(mat.getN(), numberOfMatrixXColumns);
-	std::vector<double> Y(mat.getN() *  numberOfMatrixXColumns);
+	std::vector<double> X(mat.getN());
+	std::vector<double> Y(mat.getN());
+	makeVector_X(X, mat.getN(), numberOfMatrixXColumns);
+	//makeVector_X(mat.getN(), numberOfMatrixXColumns);
+	//std::vector<double> Y(mat.getN() *  numberOfMatrixXColumns);
 	double avarageTime = 0;
 
 	for (int i = 0; i < numberOfSimulationRuns; ++i)
 	{
 
+		start = std::chrono::high_resolution_clock::now();
+		//Compute OpenMP matrix-matrix, product
+		omp.OpenMPSolver(matrixELL1, X, Y, numberOfThreads, timeToComplete, numberOfMatrixXColumns);
+
+
+		end = std::chrono::high_resolution_clock::now();
+		complete = std::chrono::duration_cast<std::chrono::nanoseconds>(end - start).count() / 1000000.0;
+		//std::chrono::duration<double> diff = end - start;
+		//std::cout << "Current Matrix Type: " << typeid(classType).name() << std::endl;
+		avarageTime += timeToComplete;
+
 		try
 		{
 			
-			start = std::chrono::high_resolution_clock::now();
-			//Compute OpenMP matrix-matrix, product
-			omp.OpenMPSolver(matrixELL1, X, Y, numberOfThreads, timeToComplete, numberOfMatrixXColumns);
 			
-
-			end = std::chrono::high_resolution_clock::now();
-			complete = std::chrono::duration_cast<std::chrono::nanoseconds>(end - start).count() / 1000000.0;
-			//std::chrono::duration<double> diff = end - start;
-			//std::cout << "Current Matrix Type: " << typeid(classType).name() << std::endl;
-			avarageTime += timeToComplete;
 
 		}
 		catch (std::exception & e)
@@ -105,7 +110,7 @@ void runSimulation<classType>::runOpenMP(classType & mat, int numberOfThreads, i
 		}
 	}
 	avarageTime /= numberOfSimulationRuns;
-	std::cout << "Avarage time in milliseconds: " << avarageTime << " ms\n";
+	std::cout << "Average time in milliseconds: " << avarageTime << " ms\n";
 	std::cout << "OpenMP performance is: " << calcuatePerformance(mat, avarageTime) << " GFLOPS" << std::endl;
 	std::cout << std::endl;
 	
@@ -114,18 +119,19 @@ void runSimulation<classType>::runOpenMP(classType & mat, int numberOfThreads, i
 }
 
 template<class classType>
-void runSimulation<classType>::makeVector_X(int sizeOfMaxtixRow, int numberOfMatrixXColumns)
+void runSimulation<classType>::makeVector_X(std::vector<double> & X, int sizeOfMaxtixRow, int numberOfMatrixXColumns)
 {
-	X.resize(sizeOfMaxtixRow * numberOfMatrixXColumns);
+	//X.resize(sizeOfMaxtixRow * numberOfMatrixXColumns);
 	unsigned seed;
 	int randNumber;
-	for (int i = 0; i < sizeOfMaxtixRow * numberOfMatrixXColumns; ++i)
+	//for (int i = 0; i < sizeOfMaxtixRow * numberOfMatrixXColumns; ++i)
+	for (int i = 0; i < sizeOfMaxtixRow; ++i)
 	{
 		seed = std::chrono::system_clock::now().time_since_epoch().count();
 		std::default_random_engine dre(seed);
 		std::uniform_real_distribution<double> gen(0, 5);
 		randNumber = gen(dre);
-		X[i] = randNumber;
+		X[i] = 1.0;
 	}
 
 	
