@@ -96,29 +96,11 @@ void displayOneDimensionalELLValues(std::vector<int> JA, std::vector<double> AS)
 
 }
 
-
-
-int main(int argc, char *argv[])
+void readCudaParameters()
 {
-    
-	std::vector<std::string> matriresList;
 	CUdevice dev;
-	int major = 0, minor = 0;
 	int deviceCount = 0;
-	char deviceName[256];
-	unsigned int numberOfThreads = 4;
-	unsigned int sizeOfBlock = 64;
-	unsigned int maxNumberOfBlocks = 4096;
 
-	std::cout << "Running CUDA simulation" << std::endl;
-
-	std::cout << "List of matrices running on:" << std::endl;
-
-	std::string currentMattix = argv[1];
-	std::cout << "Argument 1 is: " << currentMattix << std::endl;
-
-
-	
 	// note your project will need to link with cuda.lib files on windows
 	printf("CUDA Device Query (Driver API) statically linked version \n");
 
@@ -149,28 +131,51 @@ int main(int argc, char *argv[])
 	{
 		printf("Detected %d CUDA Capable device(s)\n", deviceCount);
 	}
-	
+
 
 	for (dev = 0; dev < deviceCount; ++dev)
 	{
 		int warpSize;
 		getCudaAttribute<int>(&warpSize, CU_DEVICE_ATTRIBUTE_WARP_SIZE, dev);
-	    std::cout << "Warp size is: " << warpSize << std::endl;
+		std::cout << "Warp size is: " << warpSize << std::endl;
 	}
 
+}
+
+
+
+int main(int argc, char *argv[])
+{
+    
+	std::vector<std::string> matriresList;
+	
+	
+	//char deviceName[256];
+	unsigned int numberOfThreads = 4;
+	unsigned int sizeOfBlock = 64;
+	unsigned int maxNumberOfBlocks = 4096;
+
+	std::cout << "Running CUDA simulation" << std::endl;
+
+	std::cout << "List of matrices running on:" << std::endl;
+
+	std::string currentMattix = argv[1];
+	std::cout << "Argument 1 is: " << currentMattix << std::endl;
+
+	readCudaParameters();
 
 	// Read input matrices
-	ReadMatrixCSR matrixCSR(currentMattix);
+	//ReadMatrixCSR matrixCSR(currentMattix);
 	ReadMatrixELL matrixELL(currentMattix);
-	runSimulation<ReadMatrixCSR> simCSR;
+	//runSimulation<ReadMatrixCSR> simCSR;
 	runSimulation<ReadMatrixELL> simELLPack;
 
-	double timeToComplete = 0;
+	std::cout<<"ELL SIZE: "<<sizeof(matrixELL)<<std::endl;
 
 	//displayValues(matrixCSR.getJA(), matrixCSR.getIRP(), matrixELL.getAS());
 
-	displayOneDimensionalELLValues(matrixELL.getJA(), matrixELL.getAS());
-	displayValues(matrixCSR.getJA(), matrixCSR.getIRP() , matrixCSR.getAS());
+	//displayOneDimensionalELLValues(matrixELL.getJA(), matrixELL.getAS());
+	//displayValues(matrixCSR.getJA(), matrixCSR.getIRP() , matrixCSR.getAS());
 
 	/**
 	//Start Parallel computation
@@ -183,7 +188,10 @@ int main(int argc, char *argv[])
 
 	//OpenMP Run
 	//simCSR.runOpenMP(matrixCSR, numberOfThreads, timeToComplete);
-	simELLPack.runOpenMP(matrixELL, numberOfThreads,  timeToComplete, 4);
+
+	int simulationRuns = 10;
+
+	simELLPack.runOpenMP(matrixELL, numberOfThreads, 4, simulationRuns);
 	system("pause");
     return 0;
 }

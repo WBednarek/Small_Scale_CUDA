@@ -27,7 +27,7 @@ void OpenMP::OpenMPSolver(ReadMatrixCSR & mat, std::vector<double>& X, std::vect
 }
 
 
-void OpenMP::OpenMPSolver(ReadMatrixELL & mat, std::vector<double>& X, std::vector<double>& Y, unsigned int threadsNumber, double & timeToComplete, unsigned int numberOfMatrixXColumn)
+void OpenMP::OpenMPSolver(ReadMatrixELL & mat, std::vector<double>& X, std::vector<double>& Y, int threadsNumber, double & timeToComplete, unsigned int numberOfMatrixXColumn)
 {	
 std::fill(Y.begin(), Y.end(), 0);
 std::chrono::high_resolution_clock::time_point start;
@@ -36,15 +36,23 @@ double fullTime = 0.0;
 start = std::chrono::high_resolution_clock::now();
 
 
+
+
+std::vector<double> run(mat.getN());
+
+
 unsigned int numberOfRows = mat.getM();
 unsigned int numOfElemsInTheBiggestRow = mat.getNumberOfElementsInTheBiggestRow();
-	#pragma omp parallel for num_threads(threadsNumber)	
+	#pragma omp parallel for num_threads(2)	
 	for (int outputIndex = 0; outputIndex < numberOfRows; ++outputIndex)
 	{
 		for (int k = 0; k < numOfElemsInTheBiggestRow; ++k)
 		{
-			unsigned int inputIndex = outputIndex * numOfElemsInTheBiggestRow + k;
-			Y[outputIndex] += mat.getSelectedElementAS(inputIndex) * X[mat.getSelectedElementJA(inputIndex)];
+			auto inputIndex = outputIndex * numOfElemsInTheBiggestRow + k;
+			//Y[outputIndex] += 1;
+
+			run[outputIndex] += mat.getSelectedElementAS(inputIndex)* X[mat.getSelectedElementJA(inputIndex)];
+			//Y[outputIndex] += mat.getSelectedElementAS(inputIndex) * X[mat.getSelectedElementJA(inputIndex)];
 		}
 
 }
@@ -60,6 +68,7 @@ inputIndex = 0;
 	
 end = std::chrono::high_resolution_clock::now();
 fullTime = std::chrono::duration_cast<std::chrono::nanoseconds>(end - start).count() / 1000000.0;
+timeToComplete = fullTime;
 std::cout << " TIME OF EELPACK OPENMPfewwefwefwef SOLUTION: " << fullTime << std::endl;
 }
 

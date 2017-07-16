@@ -26,7 +26,7 @@ public:
 	*/
 	void runCUDA(classType &mat, int numberOfThreads, int sizeOfBlock, int maximumBlocksdouble, double & timeToComplete);
 
-	void runOpenMP(classType &mat, int numberOfThreads, double & timeToComplete, int numberOfMatrixXColumns);
+	void runOpenMP(classType &mat, int numberOfThreads, int numberOfMatrixXColumns, int numberOfSimulationRuns);
 
 	/**
 	Make an vector for parallel matrix-vector multiplication

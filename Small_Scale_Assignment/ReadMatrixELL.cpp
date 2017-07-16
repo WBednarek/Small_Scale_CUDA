@@ -316,8 +316,8 @@ std::vector<int> ReadMatrixELL::getJA()
 
 int ReadMatrixELL::getM()
 {
-	checkM = M;
-	return checkM;
+
+	return M;
 }
 
 int ReadMatrixELL::getNZ()
@@ -337,11 +337,21 @@ int ReadMatrixELL::getNumberOfElementsInTheBiggestRow()
 
 double ReadMatrixELL::getSelectedElementAS(int elemIndex) const
 {
+	if ((elemIndex > numOfElementsInTheBiggestRow * M) || (elemIndex < 0))
+	{
+		std::cout << "Out of scope" << std::endl;
+		throw std::exception("Out of scope");
+	}
 	return ASOneDimensional[elemIndex];
 }
 
 int ReadMatrixELL::getSelectedElementJA(int elemIndex) const
 {
+	if ( (elemIndex > numOfElementsInTheBiggestRow * M) || (elemIndex < 0) )
+	{
+		std::cout << "Out of scope" << std::endl;
+		throw std::exception("Out of scope");
+	}
 	return JAOneDimensional[elemIndex];
 }
 

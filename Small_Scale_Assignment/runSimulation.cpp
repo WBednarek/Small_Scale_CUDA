@@ -67,22 +67,21 @@ void runSimulation<classType>::runCUDA(classType & mat, int numberOfThreads, int
 
 
 template<class classType>
-void runSimulation<classType>::runOpenMP(classType & mat, int numberOfThreads, double & timeToComplete, int numberOfMatrixXColumns)
+void runSimulation<classType>::runOpenMP(classType & mat, int numberOfThreads, int numberOfMatrixXColumns, int numberOfSimulationRuns)
 {
 
-	
+	ReadMatrixELL matrixELL1("cage4.mtx");
 	OpenMP omp;
 
 	std::chrono::high_resolution_clock::time_point start;
 	std::chrono::high_resolution_clock::time_point  end;
 	double complete;
-
-	double avarageTime;
+	double timeToComplete = 0;
 	makeVector_X(mat.getN(), numberOfMatrixXColumns);
 	std::vector<double> Y(mat.getN() *  numberOfMatrixXColumns);
+	double avarageTime = 0;
 
-
-	for (int i = 0; i < 1; ++i)
+	for (int i = 0; i < numberOfSimulationRuns; ++i)
 	{
 
 		try
@@ -90,16 +89,14 @@ void runSimulation<classType>::runOpenMP(classType & mat, int numberOfThreads, d
 			
 			start = std::chrono::high_resolution_clock::now();
 			//Compute OpenMP matrix-matrix, product
-			//CUDASolver(mat, X, Y, sizeOfBlock, maximumBlocks, timeToComplete);
-			omp.OpenMPSolver(mat, X, Y, numberOfThreads, timeToComplete, numberOfMatrixXColumns);
+			omp.OpenMPSolver(matrixELL1, X, Y, numberOfThreads, timeToComplete, numberOfMatrixXColumns);
+			
 
 			end = std::chrono::high_resolution_clock::now();
 			complete = std::chrono::duration_cast<std::chrono::nanoseconds>(end - start).count() / 1000000.0;
 			//std::chrono::duration<double> diff = end - start;
 			//std::cout << "Current Matrix Type: " << typeid(classType).name() << std::endl;
-			std::cout << "Time in milliseconds: " << timeToComplete << " ms\n";
-			std::cout << "OpenMP performance is: " << calcuatePerformance(mat, complete) << " GFLOPS" << std::endl;
-			std::cout << std::endl;
+			avarageTime += timeToComplete;
 
 		}
 		catch (std::exception & e)
@@ -107,6 +104,10 @@ void runSimulation<classType>::runOpenMP(classType & mat, int numberOfThreads, d
 			std::cout << "Standard exception: " << e.what() << std::endl;
 		}
 	}
+	avarageTime /= numberOfSimulationRuns;
+	std::cout << "Avarage time in milliseconds: " << avarageTime << " ms\n";
+	std::cout << "OpenMP performance is: " << calcuatePerformance(mat, avarageTime) << " GFLOPS" << std::endl;
+	std::cout << std::endl;
 	
 
 
