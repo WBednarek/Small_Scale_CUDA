@@ -13,6 +13,8 @@ ReadMatrixCSR::ReadMatrixCSR(std::string matrixName)
 	double *matrixValue;
 
 
+	std::vector<std::tuple<int, int, double> > rowsAndValues;
+
 	if ((f = fopen(matrixName.c_str(), "r")) == NULL)
 	{
 		std::cout << "There is no matrix to read" << std::endl;
@@ -66,9 +68,9 @@ ReadMatrixCSR::ReadMatrixCSR(std::string matrixName)
 
 	if (f != stdin) fclose(f);
 
-	(*this).JA = new int[nz];
-	(*this).IRP = new int[M + 1];
-	(*this).AS = new double[nz];
+	(*this).JA = std::make_unique<int[]>(nz);
+	(*this).IRP = std::make_unique<int[]>(M + 1);
+	(*this).AS = std::make_unique<double[]>(nz);
 	(*this).IRP[0] = 0;
 	(*this).IRP[M] = nz;
 
@@ -92,12 +94,60 @@ ReadMatrixCSR::ReadMatrixCSR(std::string matrixName)
 						
 	});
 
-	calculateCSRValues(J);
+	calculateCSRValues(rowsAndValues, J);
+
+	for (int i = 0; i < nz; ++i)
+	{
+		jaVector.push_back(JA.get()[i]);
+	}
+
+	for (int i = 0; i < nz; ++i)
+	{
+		asVector.push_back(AS.get()[i]);
+	}
+
+	for (int i = 0; i < M + 1; ++i)
+	{
+		irpVector.push_back(IRP.get()[i]);
+	}
+
+}
+
+ReadMatrixCSR::ReadMatrixCSR(const ReadMatrixCSR & copy)
+{
+
+	M = copy.M;
+	N = copy.N;
+	nz = copy.nz;
+	matrixName = copy.matrixName;
+
+
+	(*this).JA = std::make_unique<int[]>(nz);
+	(*this).AS= std::make_unique<double[]>(nz);
+	(*this).IRP = std::make_unique<int[]>(M + 1);
+	irpVector = copy.irpVector;
+	asVector = copy.asVector;
+	jaVector = copy.jaVector;
+
+	for (int i = 0; i < nz; ++i)
+	{
+		JA.get()[i] = copy.JA.get()[i];
+	}
+
+	for (int i = 0; i < nz; ++i)
+	{
+		AS.get()[i] = copy.AS.get()[i];
+	}
+
+	for (int i = 0; i < M + 1; ++i)
+	{
+		IRP.get()[i] = copy.IRP.get()[i];
+	}
 
 }
 
 
-void ReadMatrixCSR::calculateCSRValues(int * J)
+void ReadMatrixCSR::calculateCSRValues(std::vector<std::tuple<int, int, double> > rowsAndValues,int * J)
 {
 	
 	int IRPValue = 0;
@@ -145,21 +195,38 @@ void ReadMatrixCSR::displayPointerArray(int * arr)
 
 std::vector<int> ReadMatrixCSR::getIRP()
 {
-	std::vector<int> irpVector(IRP, IRP + M + 1);
+	//std::vector<int> irpVector(IRP, IRP + M + 1);
 	return irpVector;
 }
 
 std::vector<double> ReadMatrixCSR::getAS()
 {
-	std::vector<double> asVector(AS, AS + nz);
+	//std::vector<double> asVector(AS, AS + nz);
 	return  asVector;
 }
 
 std::vector<int> ReadMatrixCSR::getJA()
 {
-	std::vector<int> jaVector(JA, JA + nz);
+	//std::vector<int> jaVector(JA, JA + nz);
 	return jaVector;
 }
+
+double ReadMatrixCSR::getSelectedElementAS(int elemIndex) const
+{
+	return AS[elemIndex];
+}
+
+int ReadMatrixCSR::getSelectedElementJA(int elemIndex) const
+{
+	return JA[elemIndex];
+}
+
+int ReadMatrixCSR::getSelectedElementIRP(int elemIndex) const
+{
+	return IRP[elemIndex];
+}
+
+
 
 int ReadMatrixCSR::getM()
 {
@@ -189,7 +256,5 @@ std::string ReadMatrixCSR::getMatrixName()
 
 ReadMatrixCSR::~ReadMatrixCSR()
 {
-	delete[] AS;
-	delete[] JA;
-	delete[] IRP;
+	
 }

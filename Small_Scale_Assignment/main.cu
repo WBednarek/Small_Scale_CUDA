@@ -21,6 +21,7 @@
 #include  "deviceQueryDrv.h"
 
 
+
 /**
 Zmienc nazwu
 
@@ -158,9 +159,9 @@ int main(int argc, char *argv[])
 	readCudaParameters();
 
 	// Read input matrices
-	//ReadMatrixCSR matrixCSR(currentMattix);
+	ReadMatrixCSR matrixCSR(currentMattix);
 	ReadMatrixELL matrixELL(currentMattix);
-	//SimulationAndTheTests<ReadMatrixCSR> simCSR;
+	SimulationAndTheTests<ReadMatrixCSR> simCSR;
 	SimulationAndTheTests<ReadMatrixELL> simELLPack;
 	//std::cout<<"ELL SIZE: "<<sizeof(matrixELL)<<std::endl;
 
@@ -173,22 +174,23 @@ int main(int argc, char *argv[])
 	//Start Parallel computation
 	*/
 
-	//CUDA Run
-	//simELLPack.runCUDA(matrixELL, numberOfThreads, sizeOfBlock, maxNumberOfBlocks, timeToComplete);
 	
+
 	//sim.template runCUDA<ReadMatrixCSR>(matrixCSR, numberOfThreads, sizeOfBlock, maxNumberOfBlocks, timeToComplete);
 
-	//OpenMP Run
-	//simCSR.runOpenMP(matrixCSR, numberOfThreads, timeToComplete);
+
+	
 
 	int simulationRuns = 100;
 	unsigned int numberOfThreads = 4;
 	unsigned int sizeOfBlock = 64;
 	unsigned int maxNumberOfBlocks = 4096;
 
-	//simCSR.runOpenMP(matrixCSR, numberOfThreads, simulationRuns);
-	//simELLPack.runOpenMP(matrixELL, numberOfThreads, simulationRuns);
+	//OpenMP Run
+	simCSR.runOpenMP(matrixCSR, numberOfThreads, simulationRuns);
+	simELLPack.runOpenMP(matrixELL, numberOfThreads, simulationRuns);
 
+	//CUDA Run
 	//simCSR.runCUDA(matrixCSR, numberOfThreads, sizeOfBlock, maxNumberOfBlocks, simulationRuns);
 	simELLPack.runCUDA(matrixELL, numberOfThreads, sizeOfBlock, maxNumberOfBlocks, simulationRuns);
 	

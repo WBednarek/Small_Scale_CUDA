@@ -1,0 +1,10 @@
+OpenMP
+Number of matrix columns	 Performance MFLOPS
+2	7.38191
+3	12.7851
+4	12.7303
+8	17.0725
+
+
+
+

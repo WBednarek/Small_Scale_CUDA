@@ -11,22 +11,39 @@ OpenMP::~OpenMP()
 
 
 
-void OpenMP::OpenMPSolver(ReadMatrixCSR & mat, std::vector<double>& X, std::vector<double>& Y, unsigned int threadsNumber, double & timeToComplete)
+void OpenMP::OpenMPSolver(ReadMatrixCSR & mat, std::vector<double>& X, std::vector<double>& Y,  int threadsNumber, double & timeToComplete, unsigned int numberOfMatrixXColumn)
 {
-std::fill(Y.begin(), Y.end(), 0);
-unsigned int index = 0;
-unsigned int upperBound = 0;
+	int numberOfRows = mat.getN();
 
-#pragma omp parallel for num_threads(threadsNumber)
-for(int index = 0; index < mat.getM(); ++index)
-{
-upperBound = mat.getIRP().at(index + 1);
 
-for (int k = mat.getIRP().at(index); k < upperBound; ++k)
-{
-Y[index] += mat.getAS().at(k) * X[mat.getJA().at(k)];
-}
-}
+	std::chrono::high_resolution_clock::time_point start;
+	std::chrono::high_resolution_clock::time_point  end;
+	double fullTime = 0.0;
+	start = std::chrono::high_resolution_clock::now();
+
+	
+
+	#pragma omp parallel for num_threads(threadsNumber)
+	for (int i = 0; i < numberOfMatrixXColumn; ++i)
+	{
+		for (int index = 0; index < mat.getM(); ++index)
+		{
+			unsigned int upperBound = mat.getSelectedElementIRP(index + 1);
+
+			for (int k = mat.getIRP().at(index); k < upperBound; ++k)
+			{
+				//Y[outputIndex + index * numberOfRows] += mat.getSelectedElementAS(k) * X[mat.getSelectedElementJA(k) + index * numberOfRows];
+				Y[index + i * numberOfRows] += mat.getSelectedElementAS(k) * X[mat.getSelectedElementJA(k)+ i * numberOfRows];
+			}
+		}
+	}
+
+		
+
+	end = std::chrono::high_resolution_clock::now();
+	fullTime = std::chrono::duration_cast<std::chrono::nanoseconds>(end - start).count() / 1000000.0;
+	timeToComplete = fullTime;
+	
 
 }
 
@@ -45,10 +62,6 @@ void OpenMP::OpenMPSolver(ReadMatrixELL & mat, std::vector<double>& X, std::vect
 	}
 	
 	*/
-
-	
-
-
 std::chrono::high_resolution_clock::time_point start;
 std::chrono::high_resolution_clock::time_point  end;
 double fullTime = 0.0;
@@ -59,8 +72,8 @@ int numOfElemsInTheBiggestRow = mat.getNumberOfElementsInTheBiggestRow();
 
 
 
-#pragma omp parallel for num_threads(4)
-for (int i = 1; i < numberOfMatrixXColumn; ++i)
+#pragma omp parallel for num_threads(threadsNumber)
+for (int i = 0; i < numberOfMatrixXColumn; ++i)
 {
 	for (int outputIndex = 0; outputIndex < numberOfRows; ++outputIndex)
 	{

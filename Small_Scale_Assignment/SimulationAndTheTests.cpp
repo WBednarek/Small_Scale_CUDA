@@ -20,9 +20,8 @@ auto SimulationAndTheTests<classType>::calcuatePerformance(int NZ, double comple
 	return 2.0 * (float) NZ / completionTime / (float)1000.0;
 }
 
-
 template<class classType>
-void SimulationAndTheTests<classType>::runCUDA(classType mat , int numberOfThreads, int sizeOfBlock, int maximumBlocks, int numberOfSimulationRuns)
+void SimulationAndTheTests<classType>::runCUDA(classType mat, int numberOfThreads, int sizeOfBlock, int maximumBlocks, int numberOfSimulationRuns)
 {
 
 	std::ofstream results;
@@ -42,7 +41,7 @@ void SimulationAndTheTests<classType>::runCUDA(classType mat , int numberOfThrea
 	std::fill(X.begin(), X.end(), 1.0);
 	std::fill(Y.begin(), Y.end(), 0);
 
-	
+
 	std::string resultsFileName = (std::string) typeid(classType).name() + "CUDA" + mat.getMatrixName() + ".xls";
 	results.open(resultsFileName);
 	//In the .xls files next column separator is "\t" in Excel. 
@@ -77,27 +76,22 @@ void SimulationAndTheTests<classType>::runCUDA(classType mat , int numberOfThrea
 
 
 
-/*
-
-
-int NZtimesNumberOfMatrixColumns = mat.getNZ() * matricesNumberOfColumns[k];
-X.resize(NZtimesNumberOfMatrixColumns);
-Y.resize(NZtimesNumberOfMatrixColumns);
-std::fill(X.begin(), X.end(), 1.0);
-std::fill(Y.begin(), Y.end(), 0);
-
+	/*
+	int NZtimesNumberOfMatrixColumns = mat.getNZ() * matricesNumberOfColumns[k];
+	X.resize(NZtimesNumberOfMatrixColumns);
+	Y.resize(NZtimesNumberOfMatrixColumns);
+	std::fill(X.begin(), X.end(), 1.0);
+	std::fill(Y.begin(), Y.end(), 0);
+	}
+	results << "\n\n\n\n";
+	*/
 }
 
-results << "\n\n\n\n";
-
-
-*/
-}
 
 
 
 template<class classType>
-void SimulationAndTheTests<classType>::runOpenMP(classType  mat, int numberOfThreads, int numberOfSimulationRuns)
+void SimulationAndTheTests<classType>::runOpenMP(classType mat, int numberOfThreads, int numberOfSimulationRuns)
 {
 	std::ofstream results;
 	ReadMatrixELL matrixELL1("cage4.mtx");
