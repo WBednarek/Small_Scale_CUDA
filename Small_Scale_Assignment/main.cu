@@ -179,7 +179,38 @@ int main(int argc, char *argv[])
 	//sim.template runCUDA<ReadMatrixCSR>(matrixCSR, numberOfThreads, sizeOfBlock, maxNumberOfBlocks, timeToComplete);
 
 
-	
+	std::vector<std::string> matricesNames = { "adder_dcop_32.mtx",
+		"af23560.mtx",
+		"af_1_k101_b.mtx",
+		"amazon0302.mtx",
+		"bcsstk17.mtx",
+		"cage4.mtx",
+		 "cavity10.mtx",
+		"cavity10_b.mtx",
+		"cavity10_x.mtx",
+		"cop20k_A.mtx",
+		"dc1.mtx",
+		"dc1_b.mtx",
+		"FEM_3D_thermal1.mt",
+		"lung2.mtx",
+		"mac_econ_fwd500.mt",
+		"mcfe.mtx",
+		"mhd4800a.mtx",
+		"mhda416.mtx",
+		"olafu.mtx",
+		"olafu_b.mtx",
+		"olm1000.mtx",
+		"PR02R_b.mtx",
+		"PR02R_x.mtx",
+		"raefsky2.mtx",
+		"raefsky2_b.mtx",
+		"rdist2.mtx",
+		"roadNet - PA.mtx",
+		"thermal1.mtx",
+		"thermal1_b.mtx",
+		"thermal2_b.mtx",
+		"thermomech_TK.mtx",
+		"west2021.mtx" };
 
 	int simulationRuns = 100;
 	unsigned int numberOfThreads = 4;
