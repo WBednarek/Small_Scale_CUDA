@@ -5,6 +5,8 @@
 
 ReadMatrixELL::ReadMatrixELL(std::string matrixName)
 {
+	(*this).matrixName = matrixName;
+
 	MM_typecode matcode;
 	FILE *f;
 	int  *I, *J;
@@ -84,6 +86,16 @@ ReadMatrixELL::ReadMatrixELL(std::string matrixName)
 	fillZerosOneDimensional();
 	calculateELLValues(rowsAndValues, nonZeroValuesInTheRows);
 
+	for (int i = 0; i < nonZeroValuesInTheAllRows * numOfElementsInTheBiggestRow; ++i)
+	{
+		asVector.push_back(ASOneDimensional.get()[i]);
+	}
+
+	for (int i = 0; i < nonZeroValuesInTheAllRows * numOfElementsInTheBiggestRow; ++i)
+	{
+		jaVector.push_back(JAOneDimensional.get()[i]);
+	}
+
 }
 
 
@@ -105,10 +117,43 @@ void ReadMatrixELL::resizeMatrices(std::vector<std::tuple<int, int, double> > & 
 	rowsAndValues.resize(nz);
 	//Resize one dimensional
 	long long vectorSize = static_cast<long long>(M) * static_cast<long long>(nz);
-	(*this).JAOneDimensional = new int[vectorSize];
-	(*this).ASOneDimensional = new double[vectorSize];
+	(*this).JAOneDimensional = std::make_unique<int[]>(vectorSize); //new int[vectorSize];
+	(*this).ASOneDimensional = std::make_unique<double[]>(vectorSize);
+	/*(*this).JAOneDimensional = new int[vectorSize];
+	(*this).ASOneDimensional = new double[vectorSize];*/
 
 }
+
+
+/*
+Copy constructor
+*/
+
+//ReadMatrixELL::ReadMatrixELL(const ReadMatrixELL& copy)
+//{
+//	M = copy.M;
+//	N = copy.N;
+//	nz = copy.nz;
+//	numOfElementsInTheBiggestRow = copy.numOfElementsInTheBiggestRow;
+//	matrixName = copy.matrixName;
+//	nonZeroValuesInTheAllRows = copy.nonZeroValuesInTheAllRows;
+//
+//	long long vectorSize = static_cast<long long>(M) * static_cast<long long>(nz);
+//	(*this).JAOneDimensional = std::make_unique<int[]>(vectorSize); 
+//	(*this).ASOneDimensional = std::make_unique<double[]>(vectorSize);
+//	
+//	for (int i = 0; i < vectorSize; ++i)
+//	{
+//		JAOneDimensional.get()[i] = copy.JAOneDimensional.get()[i];
+//	}
+//	
+//	for (int i = 0; i < vectorSize; ++i)
+//	{
+//		ASOneDimensional.get()[i] = copy.ASOneDimensional.get()[i];
+//	}
+//
+//}
+
 
 void ReadMatrixELL::sortInputMatrixByTheRows(std::vector<std::tuple<int, int, double> > & rowsAndValues)
 {
@@ -282,13 +327,19 @@ void ReadMatrixELL::displayPointerArray(int * arr)
 
 std::vector<double> ReadMatrixELL::getAS()
 {
-	std::vector<double> asVector(ASOneDimensional, ASOneDimensional + nonZeroValuesInTheAllRows * numOfElementsInTheBiggestRow);
+
+	
+	
+	//std::vector<double> asVector(ASOneDimensional, ASOneDimensional + nonZeroValuesInTheAllRows * numOfElementsInTheBiggestRow);
 	return  asVector;
 }
 
 std::vector<int> ReadMatrixELL::getJA()
 {
-	std::vector<int> jaVector(JAOneDimensional, JAOneDimensional + nonZeroValuesInTheAllRows * numOfElementsInTheBiggestRow);
+	
+	
+	
+	//std::vector<int> jaVector(JAOneDimensional, JAOneDimensional + nonZeroValuesInTheAllRows * numOfElementsInTheBiggestRow);
 	return jaVector;
 }
 
@@ -333,6 +384,11 @@ int ReadMatrixELL::getSelectedElementJA(int elemIndex) const
 	return JAOneDimensional[elemIndex];
 }
 
+std::string ReadMatrixELL::getMatrixName()
+{
+	return matrixName;
+}
+
 
 
 /*
@@ -357,7 +413,7 @@ ReadMatrixELL::~ReadMatrixELL()
 	freeMemory<double>(AS);
 	*/
 	
-	delete[] ASOneDimensional;
-	delete[] JAOneDimensional;
+	//delete ASOneDimensional;
+	//delete JAOneDimensional;
 	
 }

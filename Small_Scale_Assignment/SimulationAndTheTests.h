@@ -11,11 +11,19 @@
 #include <random>
 #include <type_traits>
 
+#include <iostream>
+#include <stdio.h>
+#include <iterator>
+#include <string>
+#include <memory>
+#include <map>
+#include <iomanip>
+
 
 template<class classType>
 class SimulationAndTheTests
 {
-	std::ofstream results;
+	
 	std::vector<int> matricesNumberOfColumns;
 
 public:
@@ -26,9 +34,9 @@ public:
 	/**
 	Runs CUDA solution.
 	*/
-	void runCUDA(classType &mat, int numberOfThreads, int sizeOfBlock, int maximumBlocksdouble, double & timeToComplete);
+	void runCUDA(classType & mat, int numberOfThreads, int sizeOfBlock, int maximumBlocksdouble, int numberOfSimulationRuns);
 
-	void runOpenMP(classType &mat, int numberOfThreads, int numberOfSimulationRuns);
+	void runOpenMP(classType & mat, int numberOfThreads, int numberOfSimulationRuns);
 
 	/**
 	Make an vector for parallel matrix-vector multiplication

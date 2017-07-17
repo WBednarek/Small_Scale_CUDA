@@ -143,19 +143,15 @@ void readCudaParameters()
 
 
 
+
+
 int main(int argc, char *argv[])
 {
     
 	std::vector<std::string> matriresList;
-	
-	
 	//char deviceName[256];
-	
-
 	std::cout << "Running CUDA simulation" << std::endl;
-
 	std::cout << "List of matrices running on:" << std::endl;
-
 	std::string currentMattix = argv[1];
 	std::cout << "Argument 1 is: " << currentMattix << std::endl;
 
@@ -164,11 +160,9 @@ int main(int argc, char *argv[])
 	// Read input matrices
 	//ReadMatrixCSR matrixCSR(currentMattix);
 	ReadMatrixELL matrixELL(currentMattix);
-	//runSimulation<ReadMatrixCSR> simCSR;
+	//SimulationAndTheTests<ReadMatrixCSR> simCSR;
 	SimulationAndTheTests<ReadMatrixELL> simELLPack;
-
-
-	std::cout<<"ELL SIZE: "<<sizeof(matrixELL)<<std::endl;
+	//std::cout<<"ELL SIZE: "<<sizeof(matrixELL)<<std::endl;
 
 	//displayValues(matrixCSR.getJA(), matrixCSR.getIRP(), matrixELL.getAS());
 
@@ -181,7 +175,7 @@ int main(int argc, char *argv[])
 
 	//CUDA Run
 	//simELLPack.runCUDA(matrixELL, numberOfThreads, sizeOfBlock, maxNumberOfBlocks, timeToComplete);
-	//simCSR.runCUDA(matrixCSR, numberOfThreads, sizeOfBlock, maxNumberOfBlocks, timeToComplete);
+	
 	//sim.template runCUDA<ReadMatrixCSR>(matrixCSR, numberOfThreads, sizeOfBlock, maxNumberOfBlocks, timeToComplete);
 
 	//OpenMP Run
@@ -191,10 +185,14 @@ int main(int argc, char *argv[])
 	unsigned int numberOfThreads = 4;
 	unsigned int sizeOfBlock = 64;
 	unsigned int maxNumberOfBlocks = 4096;
-	//int numberOfMatrixXColumns = 8;
 
-	simELLPack.runOpenMP(matrixELL, numberOfThreads, simulationRuns);
+	//simCSR.runOpenMP(matrixCSR, numberOfThreads, simulationRuns);
+	//simELLPack.runOpenMP(matrixELL, numberOfThreads, simulationRuns);
+
+	//simCSR.runCUDA(matrixCSR, numberOfThreads, sizeOfBlock, maxNumberOfBlocks, simulationRuns);
+	simELLPack.runCUDA(matrixELL, numberOfThreads, sizeOfBlock, maxNumberOfBlocks, simulationRuns);
 	
+
 	system("pause");
     return 0;
 }

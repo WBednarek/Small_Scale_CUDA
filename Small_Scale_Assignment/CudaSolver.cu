@@ -356,8 +356,8 @@ void CUDASolver(ReadMatrixELL & mat, std::vector<double>& X, std::vector<double>
 		cudaStatus = cudaMemcpy(&Y[0], d_Y, N * sizeDouble, cudaMemcpyDeviceToHost);
 
 
-		cudaEventSynchronize(end);
-		cudaEventElapsedTime(&totalTimeOfExtecution, start, end);
+		//cudaEventSynchronize(end);
+		//cudaEventElapsedTime(&totalTimeOfExtecution, start, end);
 
 
 	}

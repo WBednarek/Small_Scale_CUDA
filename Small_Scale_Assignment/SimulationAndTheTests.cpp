@@ -22,61 +22,84 @@ auto SimulationAndTheTests<classType>::calcuatePerformance(int NZ, double comple
 
 
 template<class classType>
-void SimulationAndTheTests<classType>::runCUDA(classType & mat, int numberOfThreads, int sizeOfBlock, int maximumBlocksdouble, double & timeToComplete)
+void SimulationAndTheTests<classType>::runCUDA(classType & mat , int numberOfThreads, int sizeOfBlock, int maximumBlocks, int numberOfSimulationRuns)
 {
-	//results.imbue(std::locale(std::cout.getloc(), new DecimalSeparator<char>(',')));
-	//results.imbue(std::locale(std::cout.getloc(), new DecimalSeparator<char>(',')));
-	std::vector<double> X(mat.getN());
-	std::vector<double> result(mat.getN());
-	std::chrono::high_resolution_clock::time_point start;
-	std::chrono::high_resolution_clock::time_point  end;
-	double complete;
-	try
+
+	std::ofstream results;
+	ReadMatrixELL matrixELL1("cage4.mtx");
+	OpenMP omp;
+
+
+	double timeToComplete = 0;
+	double avarageTime = 0;
+	double avaragePerfomrance = 0;
+	std::vector<double> X;
+	std::vector<double> Y;
+
+	int NZtimesNumberOfMatrixColumns = mat.getNZ(); // *matricesNumberOfColumns[k];
+	X.resize(mat.getNZ()); // X.resize(NZtimesNumberOfMatrixColumns);
+	Y.resize(mat.getNZ()); // Y.resize(NZtimesNumberOfMatrixColumns);
+	std::fill(X.begin(), X.end(), 1.0);
+	std::fill(Y.begin(), Y.end(), 0);
+
+	
+	std::string resultsFileName = (std::string) typeid(classType).name() + "CUDA" + mat.getMatrixName() + ".xls";
+	results.open(resultsFileName);
+	//In the .xls files next column separator is "\t" in Excel. 
+	//When we want to use .csv extension files, depend on system separator could be "," or ";" .
+	results << "CUDA" << std::endl;
+	results << "Number of matrix columns\t Performance MFLOPS" << std::endl;
+	for (int k = 0; k < matricesNumberOfColumns.size(); ++k)
 	{
-		makeVector_X(X, mat.getNZ(), 2);
-		start = std::chrono::high_resolution_clock::now();
-		//Compute CUDA matrix-matrix, product
-		CUDASolver(mat, X, result, sizeOfBlock, maximumBlocks, timeToComplete);
+		for (int i = 0; i < numberOfSimulationRuns; ++i)
+		{
 
-		end = std::chrono::high_resolution_clock::now();
-		complete = std::chrono::duration_cast<std::chrono::microseconds>(end - start).count();
-		std::chrono::duration<double> diff = end - start;
-		std::cout << "Current Matrix Type: " << typeid(classType).name() << std::endl;
-		std::cout << "Time in milliseconds: " << diff.count() << " ms\n";
-		std::cout << "CUDA performance is: " << calcuatePerformance(mat, complete) << " MFLOPS" << std::endl;
+			std::chrono::high_resolution_clock::time_point start = std::chrono::high_resolution_clock::now();
 
-		
-		
-		std::cout << std::endl;
+			//Compute CUDA matrix by "tall" dense matrix multiplication product
+			CUDASolver(mat, X, Y, sizeOfBlock, maximumBlocks, timeToComplete);
+
+			std::chrono::high_resolution_clock::time_point end = std::chrono::high_resolution_clock::now();
+			double complete = std::chrono::duration_cast<std::chrono::nanoseconds>(end - start).count() / 1000000.0;
+			avarageTime += complete;
+			avaragePerfomrance += calcuatePerformance(NZtimesNumberOfMatrixColumns, complete);
+
+		}
+		avarageTime /= numberOfSimulationRuns;
+		avaragePerfomrance /= numberOfSimulationRuns;
+		//Save results to the file
+		results << matricesNumberOfColumns[k];
+		results << "\t" << avaragePerfomrance << "\n";
+
+		avarageTime = 0;
+		avaragePerfomrance = 0;
 	}
-	catch (std::exception & e)
-	{
-		std::cout << "Standard exception: " << e.what() << std::endl;
-	}
 
-	/*
-	
-	//Test code, seems to doesn't work
-	
-	if (std::is_same<classType, ReadMatrixCSR>::value)
-	{
-		std::cout << "CUDA performance is: " << calcuatePerformance<ReadMatrixCSR>(mat, complete) << " MFLOPS" << std::endl;
 
-	}
-	
-	
-	
-	*/
-	
+
+/*
+
+
+int NZtimesNumberOfMatrixColumns = mat.getNZ() * matricesNumberOfColumns[k];
+X.resize(NZtimesNumberOfMatrixColumns);
+Y.resize(NZtimesNumberOfMatrixColumns);
+std::fill(X.begin(), X.end(), 1.0);
+std::fill(Y.begin(), Y.end(), 0);
+
 }
 
+results << "\n\n\n\n";
+
+
+*/
+}
 
 
 
 template<class classType>
 void SimulationAndTheTests<classType>::runOpenMP(classType & mat, int numberOfThreads, int numberOfSimulationRuns)
 {
-
+	std::ofstream results;
 	ReadMatrixELL matrixELL1("cage4.mtx");
 	OpenMP omp;
 
@@ -92,9 +115,15 @@ void SimulationAndTheTests<classType>::runOpenMP(classType & mat, int numberOfTh
 	
 
 
-	std::string resultsFileName = (std::string) typeid(classType).name() + ".xls";
+	std::string resultsFileName = (std::string) typeid(classType).name() + "OpenMP" + mat.getMatrixName() + ".xls";
+	
+
 	results.open(resultsFileName); 
+	results << "OpenMP" << std::endl;
+	//In the .xls files next column separator is "\t" in Excel. 
+	//When we want to use .csv extension files, depend on system separator could be "," or ";" .
 	results << "Number of matrix columns\t Performance MFLOPS" << std::endl;
+	
 
 	for (int k = 0; k < matricesNumberOfColumns.size(); ++k )
 	{
@@ -108,8 +137,8 @@ void SimulationAndTheTests<classType>::runOpenMP(classType & mat, int numberOfTh
 		{
 
 			std::chrono::high_resolution_clock::time_point start = std::chrono::high_resolution_clock::now();
-			//Compute OpenMP matrix-matrix, product
-			omp.OpenMPSolver(matrixELL1, X, Y, numberOfThreads, timeToComplete, matricesNumberOfColumns[k]);
+			//Compute OpenMP matrix by "tall" dense matrix multiplication product
+			omp.OpenMPSolver(mat, X, Y, numberOfThreads, timeToComplete, matricesNumberOfColumns[k]);
 
 
 			std::chrono::high_resolution_clock::time_point  end = std::chrono::high_resolution_clock::now();
@@ -151,7 +180,7 @@ void SimulationAndTheTests<classType>::runOpenMP(classType & mat, int numberOfTh
 	//std::cout << "Average time in milliseconds: " << avarageTime << " ms\n";
 	//std::cout << "OpenMP average performance is: " << avaragePerfomrance << " MFLOPS" << std::endl;
 	//std::cout << "OpenMP average direct performance is: " << calcuatePerformance(NZtimesNumberOfMatrixColumns, avarageTime) << " MFLOPS" << std::endl;
-	
+	results << "\n\n\n\n";
 	
 	
 

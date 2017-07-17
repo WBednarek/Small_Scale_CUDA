@@ -8,6 +8,7 @@
 #include <algorithm>
 #include <fstream>
 #include <tuple>
+#include <memory>
 
 class ReadMatrixELL
 {
@@ -18,8 +19,13 @@ class ReadMatrixELL
 		int M, N, nz;
 		int numOfElementsInTheBiggestRow;
 		std::string matrixName;
-		int *JAOneDimensional;
-		double *ASOneDimensional;
+		std::unique_ptr<int[]>  JAOneDimensional;
+		std::unique_ptr<double[]>  ASOneDimensional;
+		std::vector<double> asVector;
+		std::vector<int> jaVector;
+		//int * JAOneDimensional;
+		//double * ASOneDimensional;
+
 		//std::vector<int> nonZeroValuesInTheRows;
 		int nonZeroValuesInTheAllRows;
 
@@ -34,27 +40,10 @@ class ReadMatrixELL
 
 		//Calculates noon zeros in selected row
 		void calclateNonZeroValuesInTheRows(std::vector<std::tuple<int, int, double> > & rowsAndValues, std::vector<int> & nonZeroValuesInTheRows);
-
 	
 
 		//Preparing one-dimensional matrix fling it with zeros
 		void fillZerosOneDimensional();
-
-
-
-
-		/*
-
-		int maxRow, maxColumn;
-
-		int **JA;
-		double **AS;
-		//int *IRP; // Pointer to IRP array
-		
-		//displaying 2D matrix
-		template<typename TYPE>
-		void displayELLMatrix(TYPE ** matrix);
-		*/
 
 
 		template<typename TYPE>
@@ -67,6 +56,7 @@ class ReadMatrixELL
 	public:
 
 		ReadMatrixELL(std::string matrixName);
+		//ReadMatrixELL::ReadMatrixELL(const ReadMatrixELL& copy);
 		~ReadMatrixELL();
 		std::vector<double> getAS();
 		std::vector<int> getJA();
@@ -76,6 +66,7 @@ class ReadMatrixELL
 		int getNumberOfElementsInTheBiggestRow();
 		double getSelectedElementAS(int elemIndex) const;
 		int getSelectedElementJA(int elemIndex) const;
+		std::string getMatrixName();
 
 
 

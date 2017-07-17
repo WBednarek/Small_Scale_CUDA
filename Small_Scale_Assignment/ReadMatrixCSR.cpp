@@ -5,7 +5,14 @@
 
 ReadMatrixCSR::ReadMatrixCSR(std::string matrixName)
 {
-	
+	(*this).matrixName = matrixName;
+	MM_typecode matcode;
+	FILE *f;
+	int  *I, *J;
+	int ret_code;
+	double *matrixValue;
+
+
 	if ((f = fopen(matrixName.c_str(), "r")) == NULL)
 	{
 		std::cout << "There is no matrix to read" << std::endl;
@@ -85,12 +92,12 @@ ReadMatrixCSR::ReadMatrixCSR(std::string matrixName)
 						
 	});
 
-	calculateCSRValues();
+	calculateCSRValues(J);
 
 }
 
 
-void ReadMatrixCSR::calculateCSRValues()
+void ReadMatrixCSR::calculateCSRValues(int * J)
 {
 	
 	int IRPValue = 0;
@@ -169,6 +176,11 @@ int ReadMatrixCSR::getN()
 	return N;
 }
 
+std::string ReadMatrixCSR::getMatrixName()
+{
+	return matrixName;
+}
+
 
 
 
@@ -177,7 +189,7 @@ int ReadMatrixCSR::getN()
 
 ReadMatrixCSR::~ReadMatrixCSR()
 {
-	delete[] (JA);
-	delete[] (IRP);
-	delete[] (AS);
+	delete[] AS;
+	delete[] JA;
+	delete[] IRP;
 }

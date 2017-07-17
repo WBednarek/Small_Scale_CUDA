@@ -14,12 +14,11 @@ class ReadMatrixCSR
 {
 
 private:
-	int ret_code;
-	MM_typecode matcode;
-	FILE *f;
+
+	
 	int M, N, nz;
-	int i, *I, *J;
-	double *matrixValue;
+	int i;
+	
 	std::string matrixName;
 	int * JA;
 	double * AS;
@@ -28,7 +27,7 @@ private:
 	//std::vector<std::pair<int, double> > rowsAndValues;
 	std::vector<std::tuple<int, int, double> > rowsAndValues;
 
-	void calculateCSRValues();
+	void calculateCSRValues(int * J);
 
 	void displayPointerArray(int * arr);
 
@@ -44,6 +43,7 @@ public:
 	int getM();
 	int getNZ();
 	int getN();
+	std::string getMatrixName();
 
 };
 
