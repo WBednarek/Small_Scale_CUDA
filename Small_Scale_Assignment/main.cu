@@ -150,9 +150,7 @@ int main(int argc, char *argv[])
 	
 	
 	//char deviceName[256];
-	unsigned int numberOfThreads = 4;
-	unsigned int sizeOfBlock = 64;
-	unsigned int maxNumberOfBlocks = 4096;
+	
 
 	std::cout << "Running CUDA simulation" << std::endl;
 
@@ -190,8 +188,12 @@ int main(int argc, char *argv[])
 	//simCSR.runOpenMP(matrixCSR, numberOfThreads, timeToComplete);
 
 	int simulationRuns = 100;
+	unsigned int numberOfThreads = 4;
+	unsigned int sizeOfBlock = 64;
+	unsigned int maxNumberOfBlocks = 4096;
+	//int numberOfMatrixXColumns = 8;
 
-	simELLPack.runOpenMP(matrixELL, numberOfThreads, 4, simulationRuns);
+	simELLPack.runOpenMP(matrixELL, numberOfThreads, simulationRuns);
 	
 	system("pause");
     return 0;

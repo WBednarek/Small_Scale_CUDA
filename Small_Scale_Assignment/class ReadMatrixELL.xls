@@ -1,0 +1,5 @@
+Number of matrix columns	 Performance MFLOPS
+2	1.45073
+3	14.9236
+4	28.809
+8	31.8036

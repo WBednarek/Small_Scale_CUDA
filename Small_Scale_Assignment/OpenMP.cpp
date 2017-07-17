@@ -1,4 +1,5 @@
 #include "OpenMP.h"
+#define export OMP_NUM_THREADS = 4
 
 OpenMP::OpenMP()
 {
@@ -37,47 +38,42 @@ void OpenMP::OpenMPSolver(ReadMatrixELL & mat, std::vector<double>& X, std::vect
 
 	/*
 	
-	
-	
-	*/
-
 	if ((mat.getM() == 0) || (mat.getN() == 0) || (mat.getNumberOfElementsInTheBiggestRow() == 0) || (Y.size() != mat.getN()))
 	{
 		std::cout << "EXCEPTION ERROR; MATRIX SIZE MISMATCH" << std::endl;
 		throw std::exception("EXEPTION ERROR; MATRIX SIZE MISMATCH");
 	}
+	
+	*/
 
-std::fill(Y.begin(), Y.end(), 0);
+	
+
+
 std::chrono::high_resolution_clock::time_point start;
 std::chrono::high_resolution_clock::time_point  end;
 double fullTime = 0.0;
 start = std::chrono::high_resolution_clock::now();
-//std::vector<double> run(1);
 int numberOfRows = mat.getM();
 int numOfElemsInTheBiggestRow = mat.getNumberOfElementsInTheBiggestRow();
 	
 
 
 
-#pragma omp parallel for num_threads(2)
-for (int outputIndex = 0; outputIndex < numberOfRows; ++outputIndex)
+#pragma omp parallel for num_threads(4)
+for (int i = 1; i < numberOfMatrixXColumn; ++i)
 {
-	for (int k = 0; k < numOfElemsInTheBiggestRow; ++k)
+	for (int outputIndex = 0; outputIndex < numberOfRows; ++outputIndex)
 	{
-		auto inputIndex = outputIndex * numOfElemsInTheBiggestRow + k;
-		Y[outputIndex] += mat.getSelectedElementAS(inputIndex) * X[mat.getSelectedElementJA(inputIndex)];
+		for (int k = 0; k < numOfElemsInTheBiggestRow; ++k)
+		{
+			long long inputIndex = outputIndex * numOfElemsInTheBiggestRow + k;
+			Y[outputIndex + i * numberOfRows] += mat.getSelectedElementAS(inputIndex) * X[mat.getSelectedElementJA(inputIndex) + i * numberOfRows] ;
+		}
 
-	}
-
-}
-/*
-for (int i = 1; i <= numberOfMatrixXColumn; ++i)
-{
-
-inputIndex = 0;
+	}	
 
 }
-*/
+
 
 
 
@@ -85,8 +81,9 @@ inputIndex = 0;
 end = std::chrono::high_resolution_clock::now();
 fullTime = std::chrono::duration_cast<std::chrono::nanoseconds>(end - start).count() / 1000000.0;
 timeToComplete = fullTime;
-std::cout << " TIME OF EELPACK OPENMPfewwefwefwef SOLUTION: " << fullTime << std::endl;
-	
+//std::cout << " TIME OF EELPACK OPENMPfewwefwefwef SOLUTION: " << fullTime << std::endl;
+//std::cout << " Threads number: " << omp_get_num_threads() << std::endl;
+//std::cout << " Processors number: " << omp_get_num_procs() << std::endl;
 
 }
 

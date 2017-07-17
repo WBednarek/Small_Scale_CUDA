@@ -1,6 +1,7 @@
 #pragma once
 #include "ReadMatrixCSR.h"
 #include "ReadMatrixELL.h"
+#include <omp.h>
 #include <iostream>
 #include <vector>
 #include <chrono>

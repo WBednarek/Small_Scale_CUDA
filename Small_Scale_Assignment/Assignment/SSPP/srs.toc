@@ -32,6 +32,6 @@
 \contentsline {chapter}{\numberline {7}Performance measurements}{37}{chapter.7}
 \contentsline {section}{\numberline {7.1}Matrix cage4.mtx}{37}{section.7.1}
 \contentsline {section}{\numberline {7.2}Matrix mhda416.mtx}{37}{section.7.2}
-\contentsline {chapter}{\numberline {8}Other Nonfunctional Requirements}{39}{chapter.8}
-\contentsline {section}{\numberline {8.1}Performance Requirements}{39}{section.8.1}
-\contentsline {chapter}{\numberline {9}Conclusions}{42}{chapter.9}
+\contentsline {chapter}{\numberline {8}Other Nonfunctional Requirements}{41}{chapter.8}
+\contentsline {section}{\numberline {8.1}Performance Requirements}{41}{section.8.1}
+\contentsline {chapter}{\numberline {9}Conclusions}{44}{chapter.9}
