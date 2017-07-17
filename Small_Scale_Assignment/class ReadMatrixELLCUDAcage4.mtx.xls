@@ -1,6 +1,6 @@
 CUDA
 Number of matrix columns	 Performance MFLOPS
-2	4.75806
-3	4.88591
-4	4.79505
-8	4.72589
+2	6.74247
+3	6.6828
+4	6.68365
+8	6.64998

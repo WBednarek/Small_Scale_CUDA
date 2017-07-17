@@ -22,7 +22,7 @@ auto SimulationAndTheTests<classType>::calcuatePerformance(int NZ, double comple
 
 
 template<class classType>
-void SimulationAndTheTests<classType>::runCUDA(classType & mat , int numberOfThreads, int sizeOfBlock, int maximumBlocks, int numberOfSimulationRuns)
+void SimulationAndTheTests<classType>::runCUDA(classType mat , int numberOfThreads, int sizeOfBlock, int maximumBlocks, int numberOfSimulationRuns)
 {
 
 	std::ofstream results;
@@ -97,7 +97,7 @@ results << "\n\n\n\n";
 
 
 template<class classType>
-void SimulationAndTheTests<classType>::runOpenMP(classType & mat, int numberOfThreads, int numberOfSimulationRuns)
+void SimulationAndTheTests<classType>::runOpenMP(classType  mat, int numberOfThreads, int numberOfSimulationRuns)
 {
 	std::ofstream results;
 	ReadMatrixELL matrixELL1("cage4.mtx");

@@ -129,30 +129,30 @@ void ReadMatrixELL::resizeMatrices(std::vector<std::tuple<int, int, double> > & 
 Copy constructor
 */
 
-//ReadMatrixELL::ReadMatrixELL(const ReadMatrixELL& copy)
-//{
-//	M = copy.M;
-//	N = copy.N;
-//	nz = copy.nz;
-//	numOfElementsInTheBiggestRow = copy.numOfElementsInTheBiggestRow;
-//	matrixName = copy.matrixName;
-//	nonZeroValuesInTheAllRows = copy.nonZeroValuesInTheAllRows;
-//
-//	long long vectorSize = static_cast<long long>(M) * static_cast<long long>(nz);
-//	(*this).JAOneDimensional = std::make_unique<int[]>(vectorSize); 
-//	(*this).ASOneDimensional = std::make_unique<double[]>(vectorSize);
-//	
-//	for (int i = 0; i < vectorSize; ++i)
-//	{
-//		JAOneDimensional.get()[i] = copy.JAOneDimensional.get()[i];
-//	}
-//	
-//	for (int i = 0; i < vectorSize; ++i)
-//	{
-//		ASOneDimensional.get()[i] = copy.ASOneDimensional.get()[i];
-//	}
-//
-//}
+ReadMatrixELL::ReadMatrixELL(const ReadMatrixELL& copy)
+{
+	M = copy.M;
+	N = copy.N;
+	nz = copy.nz;
+	numOfElementsInTheBiggestRow = copy.numOfElementsInTheBiggestRow;
+	matrixName = copy.matrixName;
+	nonZeroValuesInTheAllRows = copy.nonZeroValuesInTheAllRows;
+
+	long long vectorSize = static_cast<long long>(M) * static_cast<long long>(nz);
+	(*this).JAOneDimensional = std::make_unique<int[]>(vectorSize); 
+	(*this).ASOneDimensional = std::make_unique<double[]>(vectorSize);
+	
+	for (int i = 0; i < vectorSize; ++i)
+	{
+		JAOneDimensional.get()[i] = copy.JAOneDimensional.get()[i];
+	}
+	
+	for (int i = 0; i < vectorSize; ++i)
+	{
+		ASOneDimensional.get()[i] = copy.ASOneDimensional.get()[i];
+	}
+
+}
 
 
 void ReadMatrixELL::sortInputMatrixByTheRows(std::vector<std::tuple<int, int, double> > & rowsAndValues)

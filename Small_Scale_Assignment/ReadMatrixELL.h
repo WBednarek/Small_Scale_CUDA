@@ -56,7 +56,7 @@ class ReadMatrixELL
 	public:
 
 		ReadMatrixELL(std::string matrixName);
-		//ReadMatrixELL::ReadMatrixELL(const ReadMatrixELL& copy);
+		ReadMatrixELL::ReadMatrixELL(const ReadMatrixELL& copy);
 		~ReadMatrixELL();
 		std::vector<double> getAS();
 		std::vector<int> getJA();
