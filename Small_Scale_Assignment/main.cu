@@ -183,6 +183,9 @@ int main(int argc, char *argv[])
 	"cop20k_A.mtx"
 	"FEM_3D_thermal1.mtx",
 	"lung2.mtx",
+	"mac_econ_fwd500.mtx",
+	"olafu.mtx",
+	"raefsky2.mtx",
 */	
 	/*
 	done "adder_dcop_32.mtx", 
@@ -195,10 +198,10 @@ int main(int argc, char *argv[])
 	"cage4.mtx",
 	*/
 	std::vector<std::string> matricesNames = { 
-		"mac_econ_fwd500.mtx",
-		"olafu.mtx",
-		"raefsky2.mtx",
-		"roadNet - PA.mtx",
+		
+		
+	
+		"roadNet-PA.mtx",
 		"thermal1.mtx",
 
 		"thermomech_TK.mtx",

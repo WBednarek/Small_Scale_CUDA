@@ -788,6 +788,100 @@ Despite JA and AS are two dimensional arrays in ELLPack concept, in our real cod
 \end{algorithm}
 \FloatBarrier
 
+
+
+\chapter{Summary test plan}
+
+\section{Tests}
+
+In this section we will cover our tests approach. We will start with Performance tests. These are the most crucial in our project they are used to evaluate time of execution and the number of Floating point Operations Per Second (FLOPS). In our case we are considering Mega FLOPS (MFLOPS).
+\\
+We distinct the following tests:
+\\
+
+\begin{itemize}
+	\item Performance tests
+	\item Unit tests
+	
+\end{itemize}  
+
+As it was mentioned above with performance test we check how many Floating point Operations Per Second are performed in a selected problem.
+\\
+Unit tests are responsible for consistent checking and error finding.
+
+\subsection{Performance tests}
+We are using performance tests in order to evaluate proposed solution quality. During making this paper we occurred low efficiency of solution.  \\
+\\
+We are measuring the FLOPS for sparse matrix-vector product kernel is as follows:
+
+\begin{equation}
+FLOPS = \dfrac{2 \times NZ}{T}
+\end{equation}
+\\
+Where:
+\\
+NZ - number of non-zero values
+T - measured time in seconds
+\\
+For martix by "tall" dense matrix multiplication it takes the following form:
+
+\begin{equation}
+FLOPS = \dfrac{2 \times NZ \times k}{T}
+\end{equation}
+\\
+Where:
+\\
+k - is a number of columns  from matrix that will be multiplicated by a matrix from the external source (\textit{https://www.cise.ufl.edu/research/sparse/matrices/list_by_name.html}).
+
+Time measurement and performance calculation helped us with efforts of developing more efficient code.
+For instance in the OpenMP computing our code  many times checks selected element of AS and JA vectors. Time measurements was necessary in finding more effective solution. In this particular example we was referring to the std::vector object based on AS and JA pointer arrays. Researches helped us to acquire the knowledge that referring the the selected element of static array is more efficient than reference to std::vector element. That minor changes increased performance significantly. 
+\\
+\\
+\textbf{Performance test approach}
+Between the essential code that is being performed we are measuring the times using <chrono> library in C++. That library provides highly sensitive tools that allows us to perform relevant time measurements. In our software we used the following concept:
+\\
+\begin{lstlisting}
+for (int i = 0; i < numberOfSimulationRuns; ++i)
+	{
+
+	std::chrono::high_resolution_clock::time_point start = 
+	std::chrono::high_resolution_clock::now();
+	//Compute OpenMP matrix by "
+	//tall" dense matrix multiplication product or CUDA
+			
+	Matrixmultiplicationfunction();
+
+	std::chrono::high_resolution_clock::time_point  end = 
+	std::chrono::high_resolution_clock::now();
+	double complete =
+	 std::chrono::duration_cast<std::chrono::nanoseconds>
+	(end - start).count() / 1000000.0;
+
+	avarageTime += timeToComplete;
+	avaragePerfomrance += 
+	calcuatePerformance(NZtimesNumberOfMatrixColumns, timeToComplete);	
+			
+	}
+	avarageTime /= numberOfSimulationRuns;
+	avaragePerfomrance /= numberOfSimulationRuns;
+	storeResults();
+	avarageTime = 0;
+	avaragePerfomrance = 0;
+	}
+
+\end{lstlisting}
+
+
+We are also making average performance foe selected number of runs. That helps to get more precise results.
+
+
+\subsection{Unit tests}
+
+\textbf{ELLPack reading test} - loading files from the file to memory are really often risky operation. We have to check if all content was loaded properly. 
+\\
+\\
+\textbf{ELLPack transforming from MM format test} - 
+
 \chapter{Nvidia CUDA}
 
 CUDA is created by Nvidia parallel programming interface API model [1]. Programmer can use CUDA for computation purpose using its CUDA-enabled graphics processing unit. Thanks to Nvidia CUDA software developer can have acces to virtual instructions set of GPU needen for parallel computation.
@@ -1033,56 +1127,16 @@ In CUDA case we perform a sparse matrix-vector product for different runs.
 Each test was performed 10 times and results are average of all runs. In CUDA case each set of 10 runs is also in a for loop that iterates thought number of matrix column sizes (2,3,4,8), so 4 times. In CUDA case we have results of run 4 times set 10 runs a sparse matrix-vector product, column numbers don't apply into computations. 
 \\
 In OpenMP analogically we run 10 runs for average results and that set is run for 4 times for each column. In OpenMP case we applies number of columns to our computation and we check what is the impact of the bigger number of columns for a performance.
-\section{Matrix cage4.mtx}
-\begin{table}[h!]
-\centering
-\caption{Matrix cage4.mtx description}
-\label{my-label}
-\begin{tabular}{|l|l|}
-\hline
-\textbf{Test matrix 1}      & \textbf{Info}                                                                                                                                                                                  \\ \hline
-Author        & \begin{tabular}[c]{@{}l@{}}A. van Heukelum, T. Davis\end{tabular}                                                                                                   \\ \hline
-Rows           & \begin{tabular}[c]{@{}l@{}}  9 \end{tabular} \\ \hline
-Columns          & \begin{tabular}[c]{@{}l@{}}  9 \end{tabular} \\ \hline
-Non-zeros          & \begin{tabular}[c]{@{}l@{}}  49 \end{tabular} \\ \hline
-\end{tabular}
-\end{table}
-\FloatBarrier
 
-Results CUDA:
-
-\begin{itemize}
-\item  Execution Time: 6.00222 ms
-\item  Performance: 0.0163273 GFLOPS
-
-\end{itemize}
-
-
-
-\section{Matrix mhda416.mtx}
-\begin{table}[h!]
-\centering
-\caption{Matrix mhda416.mtx description}
-\label{my-label}
-\begin{tabular}{|l|l|}
-\hline
-\textbf{Test matrix 1}      & \textbf{Info}                                                                                                                                                                                  \\ \hline
-Author        & \begin{tabular}[c]{@{}l@{}}Tim Davis\end{tabular}                                                                                                   \\ \hline
-Rows           & \begin{tabular}[c]{@{}l@{}}  416 \end{tabular} \\ \hline
-Columns          & \begin{tabular}[c]{@{}l@{}}  416 \end{tabular} \\ \hline
-Non-zeros          & \begin{tabular}[c]{@{}l@{}}  8562 \end{tabular} \\ \hline
-\end{tabular}
-\end{table}
-\FloatBarrier
-
-Results CUDA:
-
-\begin{itemize}
-\item  Execution Time: 7.63228 ms
-\item  Performance:  2.24365 GFLOPS
-
-\end{itemize}
-
+d
+\\
+\\
+\\
+\\
+\\
+\\
+\\
+\\
 
 %Two images on half page
 %\begin{figure}[ht]
@@ -1256,6 +1310,78 @@ Results CUDA:
   \end{minipage} 
 \end{figure}
 \FloatBarrier
+
+
+
+
+
+
+\subsection{rdist2.mtx}
+
+\begin{figure}[ht] 
+  \label{ fig7} 
+  \begin{minipage}[b]{0.5\linewidth}
+    \centering
+    \includegraphics[width=.9\linewidth]{rdist2CSRMP.png} 
+    \caption{OpenMP CSR results} 
+    \vspace{4ex}
+  \end{minipage}%%
+  \begin{minipage}[b]{0.5\linewidth}
+    \centering
+    \includegraphics[width=.9\linewidth]{rdist2ELLMP.png} 
+    \caption{OpenMP ELLPack results} 
+    \vspace{4ex}
+  \end{minipage} 
+  \begin{minipage}[b]{0.5\linewidth}
+    \centering
+    \includegraphics[width=.9\linewidth]{rdist2CSRCUDA.png} 
+    \caption{CUDA CSR results} 
+    \vspace{4ex}
+  \end{minipage}%% 
+  \begin{minipage}[b]{0.5\linewidth}
+    \centering
+    \includegraphics[width=.9\linewidth]{rdist2ELLCUDA.png} 
+    \caption{CUDA ELLPack  results} 
+    \vspace{4ex}
+  \end{minipage} 
+\end{figure}
+\FloatBarrier
+
+
+
+
+\subsection{cavity10.mtx}
+
+\begin{figure}[ht] 
+  \label{ fig7} 
+  \begin{minipage}[b]{0.5\linewidth}
+    \centering
+    \includegraphics[width=.9\linewidth]{cavity10CSRMP.png} 
+    \caption{OpenMP CSR results} 
+    \vspace{4ex}
+  \end{minipage}%%
+  \begin{minipage}[b]{0.5\linewidth}
+    \centering
+    \includegraphics[width=.9\linewidth]{cavity10ELLMP.png} 
+    \caption{OpenMP ELLPack results} 
+    \vspace{4ex}
+  \end{minipage} 
+  \begin{minipage}[b]{0.5\linewidth}
+    \centering
+    \includegraphics[width=.9\linewidth]{cavity10CSRCUDA.png} 
+    \caption{CUDA CSR results} 
+    \vspace{4ex}
+  \end{minipage}%% 
+  \begin{minipage}[b]{0.5\linewidth}
+    \centering
+    \includegraphics[width=.9\linewidth]{cavity10ELLCUDA.png} 
+    \caption{CUDA ELLPack  results} 
+    \vspace{4ex}
+  \end{minipage} 
+\end{figure}
+\FloatBarrier
+
+
 
 \chapter{Other Nonfunctional Requirements}
 

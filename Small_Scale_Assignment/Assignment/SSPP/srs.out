@@ -22,20 +22,24 @@
 \BOOKMARK [2][-]{subsection.4.2.2}{CSR implementation approach}{section.4.2}% 22
 \BOOKMARK [1][-]{section.4.3}{Creating ELLPack format matrix}{chapter.4}% 23
 \BOOKMARK [2][-]{subsection.4.3.1}{ELLPack implementation approach}{section.4.3}% 24
-\BOOKMARK [0][-]{chapter.5}{Nvidia CUDA}{}% 25
-\BOOKMARK [1][-]{section.5.1}{Used software for CUDA}{chapter.5}% 26
-\BOOKMARK [1][-]{section.5.2}{CUDA features}{chapter.5}% 27
-\BOOKMARK [1][-]{section.5.3}{Detailed GPU data}{chapter.5}% 28
-\BOOKMARK [1][-]{section.5.4}{Used algorithm}{chapter.5}% 29
-\BOOKMARK [0][-]{chapter.6}{OpenMP}{}% 30
-\BOOKMARK [0][-]{chapter.7}{Performance measurements}{}% 31
-\BOOKMARK [1][-]{section.7.1}{Matrix cage4.mtx}{chapter.7}% 32
-\BOOKMARK [1][-]{section.7.2}{Matrix mhda416.mtx}{chapter.7}% 33
-\BOOKMARK [2][-]{subsection.7.2.1}{cage4.mtx}{section.7.2}% 34
-\BOOKMARK [2][-]{subsection.7.2.2}{adder\137dcop\13732.mtx}{section.7.2}% 35
-\BOOKMARK [2][-]{subsection.7.2.3}{olm1000.mtx}{section.7.2}% 36
-\BOOKMARK [2][-]{subsection.7.2.4}{mhda416.mtx}{section.7.2}% 37
-\BOOKMARK [2][-]{subsection.7.2.5}{mfce.mtx}{section.7.2}% 38
-\BOOKMARK [0][-]{chapter.8}{Other Nonfunctional Requirements}{}% 39
-\BOOKMARK [1][-]{section.8.1}{Performance Requirements}{chapter.8}% 40
-\BOOKMARK [0][-]{chapter.9}{Conclusions}{}% 41
+\BOOKMARK [0][-]{chapter.5}{Summary test plan}{}% 25
+\BOOKMARK [1][-]{section.5.1}{Tests}{chapter.5}% 26
+\BOOKMARK [2][-]{subsection.5.1.1}{Performance tests}{section.5.1}% 27
+\BOOKMARK [2][-]{subsection.5.1.2}{Unit tests}{section.5.1}% 28
+\BOOKMARK [0][-]{chapter.6}{Nvidia CUDA}{}% 29
+\BOOKMARK [1][-]{section.6.1}{Used software for CUDA}{chapter.6}% 30
+\BOOKMARK [1][-]{section.6.2}{CUDA features}{chapter.6}% 31
+\BOOKMARK [1][-]{section.6.3}{Detailed GPU data}{chapter.6}% 32
+\BOOKMARK [1][-]{section.6.4}{Used algorithm}{chapter.6}% 33
+\BOOKMARK [0][-]{chapter.7}{OpenMP}{}% 34
+\BOOKMARK [0][-]{chapter.8}{Performance measurements}{}% 35
+\BOOKMARK [1][-]{subsection.8.0.1}{cage4.mtx}{chapter.8}% 36
+\BOOKMARK [2][-]{subsection.8.0.2}{adder\137dcop\13732.mtx}{subsection.8.0.1}% 37
+\BOOKMARK [2][-]{subsection.8.0.3}{olm1000.mtx}{subsection.8.0.1}% 38
+\BOOKMARK [2][-]{subsection.8.0.4}{mhda416.mtx}{subsection.8.0.1}% 39
+\BOOKMARK [2][-]{subsection.8.0.5}{mfce.mtx}{subsection.8.0.1}% 40
+\BOOKMARK [2][-]{subsection.8.0.6}{rdist2.mtx}{subsection.8.0.1}% 41
+\BOOKMARK [2][-]{subsection.8.0.7}{cavity10.mtx}{subsection.8.0.1}% 42
+\BOOKMARK [0][-]{chapter.9}{Other Nonfunctional Requirements}{}% 43
+\BOOKMARK [1][-]{section.9.1}{Performance Requirements}{chapter.9}% 44
+\BOOKMARK [0][-]{chapter.10}{Conclusions}{}% 45
