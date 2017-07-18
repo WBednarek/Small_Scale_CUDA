@@ -1196,8 +1196,28 @@ In CUDA case we perform a sparse matrix-vector product for different runs.
 Each test was performed 10 times and results are average of all runs. In CUDA case each set of 10 runs is also in a for loop that iterates thought number of matrix column sizes (2,3,4,8), so 4 times. In CUDA case we have results of run 4 times set 10 runs a sparse matrix-vector product, column numbers don't apply into computations. 
 \\
 In OpenMP analogically we run 10 runs for average results and that set is run for 4 times for each column. In OpenMP case we applies number of columns to our computation and we check what is the impact of the bigger number of columns for a performance.
-
-d
+\\
+\\
+\\
+\\
+\\
+\\
+\\
+\\
+\\
+\\
+\\
+\\
+\\
+\\
+\\
+\\
+\\
+\\
+\\
+\\
+\\
+\\
 \\
 \\
 \\
@@ -1219,7 +1239,7 @@ d
 %  \caption{gregre}
 %%\end{figure}
 
-\subsection{cage4.mtx}
+\section{cage4.mtx}
 
 \begin{figure}[ht] 
   \label{ fig7} 
@@ -1250,7 +1270,9 @@ d
 \end{figure}
 \FloatBarrier
 
-\subsection{adder_dcop_32.mtx}
+
+
+\section{adder_dcop_32.mtx}
 
 \begin{figure}[ht] 
   \label{ fig7} 
@@ -1282,7 +1304,7 @@ d
 \FloatBarrier
 
 
-\subsection{olm1000.mtx}
+\section{olm1000.mtx}
 
 \begin{figure}[ht] 
   \label{ fig7} 
@@ -1316,7 +1338,7 @@ d
 
 
 
-\subsection{mhda416.mtx}
+\section{mhda416.mtx}
 
 \begin{figure}[ht] 
   \label{ fig7} 
@@ -1349,7 +1371,7 @@ d
 
 
 
-\subsection{mfce.mtx}
+\section{mfce.mtx}
 
 \begin{figure}[ht] 
   \label{ fig7} 
@@ -1385,7 +1407,7 @@ d
 
 
 
-\subsection{rdist2.mtx}
+\section{rdist2.mtx}
 
 \begin{figure}[ht] 
   \label{ fig7} 
@@ -1419,7 +1441,7 @@ d
 
 
 
-\subsection{cavity10.mtx}
+\section{cavity10.mtx}
 
 \begin{figure}[ht] 
   \label{ fig7} 
@@ -1506,7 +1528,12 @@ History:              & Created June, 2017 \\ \hline
 
 \chapter{Conclusions}
 
-Using parallel approach in programming can bring really big performance increase. We have to struggle with many constraints in each parallel solution of specific problem. Optimizing parallel code for each different problem is much more challenging comparing to single thread solutions. Developer have to predict many cases and uses many seemingly unusual optimization methods when we think about single thread like loop unrolling. Also it is necessary to have as less idle threads as possible - we want to force in the best case all resources to work.
+Using parallel approach in programming can bring really big performance increase. We have to struggle with many constraints in each parallel solution of specific problem.
+During the tests performance we observed that for OpenMP in many case we had a significant performance rise. It was not linear but for instance in cage4.mtx between 2 row and 8 there was approximately 2 times bigger performance for the second case. Not in all the tests we observed performance rise for a bigger number of columns, sometimes like in mhda416.mtx we received lower performance for the 8 columns than for 4.
+On our PC generally we achieved much more bigger performance than in OpenMP case, one of the reasons of that fact is only 4 threads old processor (released in 2009) against 384 CUDA cores. Of course in CUDA case we performed matrix-vector calculations, nevertheless in CUDA case performance was sometimes even over 10 times better like in the cavity10.mtx.
+\\
+\\
+ Optimizing parallel code for each different problem is much more challenging comparing to single thread solutions. Developer have to predict many cases and uses many seemingly unusual optimization methods when we think about single thread like loop unrolling. Also it is necessary to have as less idle threads as possible - we want to force in the best case all resources to work.
 
 \chapter{Appendix A}
 
@@ -1715,7 +1742,7 @@ int main(int argc, char *argv[])
 \end{lstlisting}
 
 
-\begin{lstlisting}[language=C++, caption=main.cu]
+\begin{lstlisting}[language=C++, caption=SimulationAndTheTests.h]
 
 #pragma once
 #ifndef _RUNSIMULATION_H_
@@ -1779,7 +1806,7 @@ public:
 
 
 
-\begin{lstlisting}[language=C++, caption=main.cu]
+\begin{lstlisting}[language=C++, caption=SimulationAndTheTests.cpp]
 
 #include "SimulationAndTheTests.h"
 
@@ -1993,13 +2020,13 @@ public:
 
 
 
+
 \end{lstlisting}
 
 
 
 
 \begin{lstlisting}[language=C++, caption=OpenMP.cpp]
-
 #include "OpenMP.h"
 #define export OMP_NUM_THREADS = 4
 
@@ -2034,18 +2061,14 @@ void OpenMP::OpenMPSolver(ReadMatrixCSR & mat, std::vector<double>& X, std::vect
 
 			for (int k = mat.getIRP().at(index); k < upperBound; ++k)
 			{
-				//Y[outputIndex + index * numberOfRows] += mat.getSelectedElementAS(k) * X[mat.getSelectedElementJA(k) + index * numberOfRows];
 				Y[index + i * numberOfRows] += mat.getSelectedElementAS(k) * X[mat.getSelectedElementJA(k)+ i * numberOfRows];
 			}
 		}
-	}
-
-		
+	}		
 
 	end = std::chrono::high_resolution_clock::now();
 	fullTime = std::chrono::duration_cast<std::chrono::nanoseconds>(end - start).count() / 1000000.0;
-	timeToComplete = fullTime;
-	
+	timeToComplete = fullTime;	
 
 }
 
@@ -2055,15 +2078,7 @@ void OpenMP::OpenMPSolver(ReadMatrixCSR & mat, std::vector<double>& X, std::vect
 void OpenMP::OpenMPSolver(ReadMatrixELL & mat, std::vector<double>& X, std::vector<double>& Y, int threadsNumber, double & timeToComplete, unsigned int numberOfMatrixXColumn)
 {	
 
-	/*
 	
-	if ((mat.getM() == 0) || (mat.getN() == 0) || (mat.getNumberOfElementsInTheBiggestRow() == 0) || (Y.size() != mat.getN()))
-	{
-		std::cout << "EXCEPTION ERROR; MATRIX SIZE MISMATCH" << std::endl;
-		throw std::exception("EXEPTION ERROR; MATRIX SIZE MISMATCH");
-	}
-	
-	*/
 std::chrono::high_resolution_clock::time_point start;
 std::chrono::high_resolution_clock::time_point  end;
 double fullTime = 0.0;
@@ -2089,18 +2104,13 @@ for (int i = 0; i < numberOfMatrixXColumn; ++i)
 
 }
 
-
-
-
-
 end = std::chrono::high_resolution_clock::now();
 fullTime = std::chrono::duration_cast<std::chrono::nanoseconds>(end - start).count() / 1000000.0;
 timeToComplete = fullTime;
-//std::cout << " TIME OF EELPACK OPENMPfewwefwefwef SOLUTION: " << fullTime << std::endl;
-//std::cout << " Threads number: " << omp_get_num_threads() << std::endl;
-//std::cout << " Processors number: " << omp_get_num_procs() << std::endl;
+
 
 }
+
 
 
 
@@ -2186,6 +2196,7 @@ public:
 
 
 \begin{lstlisting}[language=C++, caption=ReadMatrixCSR.cpp]
+
 #include "ReadMatrixCSR.h"
 
 
@@ -2383,19 +2394,18 @@ void ReadMatrixCSR::displayPointerArray(int * arr)
 
 std::vector<int> ReadMatrixCSR::getIRP()
 {
-	//std::vector<int> irpVector(IRP, IRP + M + 1);
 	return irpVector;
 }
 
 std::vector<double> ReadMatrixCSR::getAS()
 {
-	//std::vector<double> asVector(AS, AS + nz);
+
 	return  asVector;
 }
 
 std::vector<int> ReadMatrixCSR::getJA()
 {
-	//std::vector<int> jaVector(JA, JA + nz);
+
 	return jaVector;
 }
 
@@ -2446,7 +2456,6 @@ ReadMatrixCSR::~ReadMatrixCSR()
 {
 	
 }
-
 
 
 \end{lstlisting}
@@ -2539,6 +2548,8 @@ class ReadMatrixELL
 
 
 \begin{lstlisting}[language=C++, caption=ReadMatrixELL.cpp]
+
+
 #include "ReadMatrixELL.h"
 
 
@@ -2831,19 +2842,12 @@ void ReadMatrixELL::displayPointerArray(int * arr)
 
 std::vector<double> ReadMatrixELL::getAS()
 {
-
-	
-	
-	//std::vector<double> asVector(ASOneDimensional, ASOneDimensional + nonZeroValuesInTheAllRows * numOfElementsInTheBiggestRow);
 	return  asVector;
 }
 
 std::vector<int> ReadMatrixELL::getJA()
 {
-	
-	
-	
-	//std::vector<int> jaVector(JAOneDimensional, JAOneDimensional + nonZeroValuesInTheAllRows * numOfElementsInTheBiggestRow);
+
 	return jaVector;
 }
 
@@ -2901,7 +2905,6 @@ ReadMatrixELL::~ReadMatrixELL()
 
 	
 }
-
 
 
 
@@ -3288,6 +3291,7 @@ ReadMatrixELL::~ReadMatrixELL()
 
 \begin{lstlisting}[language=C++, caption=CudaSolver.cu]
 
+
 #include "CudaSolver.h"
 
 
@@ -3316,15 +3320,7 @@ __global__ void CSRCudaMatrixVectorProduct(const int &M, const int * JA, const i
 	unsigned int threadIndex = threadIdx.x;
 	
 	unsigned int selected = warpID;
-		
 
-	//int warpIndex = threadID / warpSize;
-
-	//int threadIndegOfWarp = threadID & (warpSize - 1);
-	//unsigned int gridSize = blockSize * gridDim.x * 2;
-
-	//storeArray[0] = 0;
-	//int index = warpIndex;
 
 	if (selected < M)
 	{
@@ -3350,53 +3346,7 @@ __global__ void CSRCudaMatrixVectorProduct(const int &M, const int * JA, const i
 		{
 			OUT[selected] = storeArray[threadIdx.x];
 		}
-
-	
-		//First thread stores output
-		
-
-		//__syncthreads();
-		
-		/*
-		Experimental solution not finished
-
-		//Block sizeOfInt up to 512
-		if (blockSize >= 512)
-		{
-			if (threadIndex < 256)
-			{
-				storeArray[threadIndex] += storeArray[threadIndex + 256];
-			}
-			__syncthreads();
-		}
-
-		//Block sizeOfInt up to 256
-		if (blockSize >= 256)
-		{
-			if (threadIndex < 128)
-			{
-				storeArray[threadIndex] += storeArray[threadIndex + 128];
-			}
-			__syncthreads();
-		}
-		//Block sizeOfInt up to 128
-		if (blockSize >= 128)
-		{
-			if (threadIndex < 64)
-			{
-				storeArray[threadIndex] += storeArray[threadIndex + 64];
-			}
-			__syncthreads();
-		}
-		*/
-		
-
-
-		
-
-	}
-
-	
+	}	
 	
 }
 
@@ -3416,7 +3366,7 @@ __global__ void ELLPackCudaMatrixVectorProduct(const int &M, const int & NZ, con
 		//All modern GPU have warp sizeOfInt 32
 		unsigned int warpIndex = threadCompIdx / warpSize;
 		unsigned int threadIndegOfWarp = threadCompIdx & (warpSize - 1);
-		//unsigned int gridSize = blockSize * gridDim.x * 2;
+
 
 		unsigned int limit = blockDim.x / 2;
 		storeArray[threadIdx.x] = 0;
@@ -3430,7 +3380,7 @@ __global__ void ELLPackCudaMatrixVectorProduct(const int &M, const int & NZ, con
 		}
 		__syncthreads();
 
-		// storeArray, OUT[block], limit
+	
 		while (limit > 0)
 		{
 			if (threadIdx.x < limit)
@@ -3447,12 +3397,9 @@ __global__ void ELLPackCudaMatrixVectorProduct(const int &M, const int & NZ, con
 		{
 			OUT[block] = storeArray[0];
 		}
-
-
 		block += maxBlocks;
 		
 	}
-	
 
 
 }

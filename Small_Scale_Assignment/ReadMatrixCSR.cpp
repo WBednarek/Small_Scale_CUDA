@@ -195,19 +195,18 @@ void ReadMatrixCSR::displayPointerArray(int * arr)
 
 std::vector<int> ReadMatrixCSR::getIRP()
 {
-	//std::vector<int> irpVector(IRP, IRP + M + 1);
 	return irpVector;
 }
 
 std::vector<double> ReadMatrixCSR::getAS()
 {
-	//std::vector<double> asVector(AS, AS + nz);
+
 	return  asVector;
 }
 
 std::vector<int> ReadMatrixCSR::getJA()
 {
-	//std::vector<int> jaVector(JA, JA + nz);
+
 	return jaVector;
 }
 

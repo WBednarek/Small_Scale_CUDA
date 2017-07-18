@@ -290,19 +290,12 @@ void ReadMatrixELL::displayPointerArray(int * arr)
 
 std::vector<double> ReadMatrixELL::getAS()
 {
-
-	
-	
-	//std::vector<double> asVector(ASOneDimensional, ASOneDimensional + nonZeroValuesInTheAllRows * numOfElementsInTheBiggestRow);
 	return  asVector;
 }
 
 std::vector<int> ReadMatrixELL::getJA()
 {
-	
-	
-	
-	//std::vector<int> jaVector(JAOneDimensional, JAOneDimensional + nonZeroValuesInTheAllRows * numOfElementsInTheBiggestRow);
+
 	return jaVector;
 }
 

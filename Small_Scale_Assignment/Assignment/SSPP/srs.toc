@@ -34,13 +34,13 @@
 \contentsline {section}{\numberline {6.4}Used algorithm}{35}{section.6.4}
 \contentsline {chapter}{\numberline {7}OpenMP}{38}{chapter.7}
 \contentsline {chapter}{\numberline {8}Performance measurements}{40}{chapter.8}
-\contentsline {subsection}{\numberline {8.0.1}cage4.mtx}{40}{subsection.8.0.1}
-\contentsline {subsection}{\numberline {8.0.2}adder_dcop_32.mtx}{41}{subsection.8.0.2}
-\contentsline {subsection}{\numberline {8.0.3}olm1000.mtx}{42}{subsection.8.0.3}
-\contentsline {subsection}{\numberline {8.0.4}mhda416.mtx}{43}{subsection.8.0.4}
-\contentsline {subsection}{\numberline {8.0.5}mfce.mtx}{44}{subsection.8.0.5}
-\contentsline {subsection}{\numberline {8.0.6}rdist2.mtx}{45}{subsection.8.0.6}
-\contentsline {subsection}{\numberline {8.0.7}cavity10.mtx}{46}{subsection.8.0.7}
+\contentsline {section}{\numberline {8.1}cage4.mtx}{41}{section.8.1}
+\contentsline {section}{\numberline {8.2}adder_dcop_32.mtx}{41}{section.8.2}
+\contentsline {section}{\numberline {8.3}olm1000.mtx}{42}{section.8.3}
+\contentsline {section}{\numberline {8.4}mhda416.mtx}{43}{section.8.4}
+\contentsline {section}{\numberline {8.5}mfce.mtx}{44}{section.8.5}
+\contentsline {section}{\numberline {8.6}rdist2.mtx}{45}{section.8.6}
+\contentsline {section}{\numberline {8.7}cavity10.mtx}{46}{section.8.7}
 \contentsline {chapter}{\numberline {9}Other Nonfunctional Requirements}{48}{chapter.9}
 \contentsline {section}{\numberline {9.1}Performance Requirements}{48}{section.9.1}
 \contentsline {chapter}{\numberline {10}Conclusions}{51}{chapter.10}
