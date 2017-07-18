@@ -148,67 +148,19 @@ void readCudaParameters()
 
 int main(int argc, char *argv[])
 {
-    
+
 	std::vector<std::string> matriresList;
-	//char deviceName[256];
-	std::cout << "Running CUDA simulation" << std::endl;
-	std::cout << "List of matrices running on:" << std::endl;
+	std::cout << "USAGE: put all matrices into your main project folder \nor mass one matrix as program parameter\n Program gives .xls files in the output in program main directory folder\n" << std::endl;
+	
 	std::string currentMattix = argv[1];
 	std::cout << "Argument 1 is: " << currentMattix << std::endl;
 
 	readCudaParameters();
 
-
-
-	//displayValues(matrixCSR.getJA(), matrixCSR.getIRP(), matrixELL.getAS());
-
-	//displayOneDimensionalELLValues(matrixELL.getJA(), matrixELL.getAS());
-	//displayValues(matrixCSR.getJA(), matrixCSR.getIRP() , matrixCSR.getAS());
-
-	/**
-	//Start Parallel computation
-	*/
-
-	
-
-	//sim.template runCUDA<ReadMatrixCSR>(matrixCSR, numberOfThreads, sizeOfBlock, maxNumberOfBlocks, timeToComplete);
-
-	/*"west2021.mtx"
-
-	"dc1.mtx",
-	"af23560.mtx",
-	mhd4800a.mtx",
-	"amazon0302.mtx",
-	"bcsstk17.mtx",
-	"cop20k_A.mtx"
-	"FEM_3D_thermal1.mtx",
-	"lung2.mtx",
-	"mac_econ_fwd500.mtx",
-	"olafu.mtx",
-	"raefsky2.mtx",
-*/	
-	/*
-	done "adder_dcop_32.mtx", 
-	"olafu_b.mtx",
-	"olm1000.mtx",
-	"mhda416.mtx",
-	"mcfe.mtx",
-	"rdist2.mtx",
-	"cavity10.mtx",
-	"cage4.mtx",
-	*/
-	std::vector<std::string> matricesNames = { 
+	std::vector<std::string> matricesNames = { 	
+		"cage4.mtx",
 		
-		
-	
-		"roadNet-PA.mtx",
-		"thermal1.mtx",
-
-		"thermomech_TK.mtx",
 		 };
-
-
-
 
 
 	int simulationRuns = 10;
@@ -216,6 +168,10 @@ int main(int argc, char *argv[])
 	unsigned int sizeOfBlock = 64;
 	unsigned int maxNumberOfBlocks = 4096;
 
+	std::cout << "The number of simulations repetitions: " << simulationRuns << std::endl << std::endl;;
+	/**
+	//Start Parallel computation
+	*/
 	for (auto it : matricesNames)
 	{
 		// Read input matrices
@@ -234,9 +190,6 @@ int main(int argc, char *argv[])
 		simELLPack.runCUDA(matrixELL, numberOfThreads, sizeOfBlock, maxNumberOfBlocks, simulationRuns);
 
 	}
-
-	
-	
 
 	system("pause");
     return 0;

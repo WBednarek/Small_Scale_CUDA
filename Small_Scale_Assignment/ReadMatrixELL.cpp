@@ -71,8 +71,7 @@ ReadMatrixELL::ReadMatrixELL(std::string matrixName)
 
 
 	resizeMatrices(rowsAndValues);
-	//std::cout << "This matrix has " << M << " rows " << N << " columns and  " << nz << " non zero values " << std::endl;
-	//getMatrixDataFromFileToTuple(rowsAndValues);
+
 
 	for (int i = 0; i < nz; ++i)
 	{
@@ -174,6 +173,11 @@ void ReadMatrixELL::sortInputMatrixByTheRows(std::vector<std::tuple<int, int, do
 }
 
 
+
+
+
+
+
 void ReadMatrixELL::calclateNonZeroValuesInTheRows(std::vector<std::tuple<int, int, double> > & rowsAndValues, std::vector<int> & nonZeroValuesInTheRows)
 {
 	int nonZeroValuesInThisRow = 0;
@@ -229,7 +233,7 @@ void ReadMatrixELL::fillZerosOneDimensional()
 
 
 
-void ReadMatrixELL::calculateELLValues(std::vector<std::tuple<int, int, double> > & rowsAndValues, std::vector<int> & nonZeroValuesInTheRows)
+void ReadMatrixELL::calculateELLValues(std::vector<std::tuple<int, int, double>>& rowsAndValues, std::vector<int>& nonZeroValuesInTheRows)
 {
 	int nzValueCounter = 0;
 	long long idx = 0;
@@ -248,51 +252,7 @@ void ReadMatrixELL::calculateELLValues(std::vector<std::tuple<int, int, double> 
 		}
 
 	}
-
-
-	/**
-		//Test displaying you can delete that
-	std::cout << "JA" << std::endl;
-	displayELLMatrix<int>(JA);
-
-	std::cout << "AS" << std::endl;
-	displayELLMatrix<double>(AS);
-
-	saveOneDimensionalELLMatrix<int>(JAOneDimensional, "JA");
-	saveOneDimensionalELLMatrix<double>(ASOneDimensional, "AS");
-
-
-	**/
-
 }
-
-
-
-/*
-//displaying 2D matrix
-template<typename TYPE>
-void ReadMatrixELL::displayELLMatrix(TYPE ** matrix)
-{
-//display AS or JA
-for (int i = 0; i < nonZeroValuesInTheRows.size(); ++i)
-{
-
-for (int j = 0; j < numOfElementsInTheBiggestRow; ++j)
-{
-std::cout << matrix[i][j] << " ";
-}
-std::cout << std::endl;
-
-}
-std::cout << std::endl;
-std::cout << std::endl;
-
-}
-
-
-*/
-
-
 
 
 //displaying 1D matrix
@@ -394,29 +354,9 @@ std::string ReadMatrixELL::getMatrixName()
 
 
 
-/*
-template<typename TYPE>
-void ReadMatrixELL::freeMemory(TYPE ** matrix)
-{
-for (int i = 0; i<M; i++)
-delete[] matrix[i];
-delete[] matrix;
-}
-
-*/
-
-
 
 ReadMatrixELL::~ReadMatrixELL()
 {
 
-	/*
-	
-	freeMemory<int>(JA);
-	freeMemory<double>(AS);
-	*/
-	
-	//delete ASOneDimensional;
-	//delete JAOneDimensional;
 	
 }

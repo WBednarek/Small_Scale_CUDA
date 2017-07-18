@@ -1,9 +1,9 @@
 class ReadMatrixCSR OpenMP
 Number of matrix columns	 Performance MFLOPS
-2	1.61101
-3	2.15824
-4	2.27908
-8	2.39305
+2	7.12778
+3	16.6916
+4	2.91363
+8	5.05935
 
 
 

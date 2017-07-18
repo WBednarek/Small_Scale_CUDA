@@ -1,6 +1,6 @@
-class ReadMatrixELL OpenMP	
+class ReadMatrixELL OpenMP
 Number of matrix columns	 Performance MFLOPS
-2	8.48255
-3	12.6547
-4	15.8957
-8	17.4429
+2	8.86792
+3	2.06867
+4	3.26408
+8	5.2799

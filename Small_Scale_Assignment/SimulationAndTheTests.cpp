@@ -32,6 +32,8 @@ void SimulationAndTheTests<classType>::runCUDA(classType & mat, int numberOfThre
 	double timeToComplete = 0;
 	double avarageTime = 0;
 	double avaragePerfomrance = 0;
+	double avgTime2 = 0;
+	double avaPerfomrance2 = 0;
 	std::vector<double> X;
 	std::vector<double> Y;
 
@@ -69,22 +71,14 @@ void SimulationAndTheTests<classType>::runCUDA(classType & mat, int numberOfThre
 		//Save results to the file
 		results << matricesNumberOfColumns[k];
 		results << "\t" << avaragePerfomrance << "\n";
-
+		avgTime2 += avarageTime;
+		avaPerfomrance2 = avaragePerfomrance;
 		avarageTime = 0;
 		avaragePerfomrance = 0;
 	}
+	std::cout << "Average CUDA time in milliseconds: " << avgTime2 / matricesNumberOfColumns.size() << " ms\n";
+	std::cout << "CUDA average performance is: " << avaPerfomrance2 / matricesNumberOfColumns.size() << " MFLOPS\n" << std::endl;
 
-
-
-	/*
-	int NZtimesNumberOfMatrixColumns = mat.getNZ() * matricesNumberOfColumns[k];
-	X.resize(NZtimesNumberOfMatrixColumns);
-	Y.resize(NZtimesNumberOfMatrixColumns);
-	std::fill(X.begin(), X.end(), 1.0);
-	std::fill(Y.begin(), Y.end(), 0);
-	}
-	results << "\n\n\n\n";
-	*/
 }
 
 
@@ -96,18 +90,14 @@ void SimulationAndTheTests<classType>::runOpenMP(classType &  mat, int numberOfT
 	std::ofstream results;
 	ReadMatrixELL matrixELL1("cage4.mtx");
 	OpenMP omp;
-
-
 	double timeToComplete = 0;
 	std::vector<double> X;
 	std::vector<double> Y;
 //	makeVector_X(X, mat.getN(), numberOfMatrixXColumns);
-	//makeVector_X(mat.getN(), numberOfMatrixXColumns);
-	//std::vector<double> Y(mat.getN() *  numberOfMatrixXColumns);
 	double avarageTime = 0;
 	double avaragePerfomrance = 0;
-	
-
+	double avgTime2 = 0;
+	double avaPerfomrance2 = 0;
 
 	std::string resultsFileName = (std::string) typeid(classType).name() + "OpenMP" + mat.getMatrixName() + ".xls";
 	
@@ -118,65 +108,46 @@ void SimulationAndTheTests<classType>::runOpenMP(classType &  mat, int numberOfT
 	//When we want to use .csv extension files, depend on system separator could be "," or ";" .
 	results << "Number of matrix columns\t Performance MFLOPS" << std::endl;
 	
-
-	for (int k = 0; k < matricesNumberOfColumns.size(); ++k )
+	try
 	{
-		int NZtimesNumberOfMatrixColumns = mat.getNZ() * matricesNumberOfColumns[k];
-		X.resize(NZtimesNumberOfMatrixColumns);
-		Y.resize(NZtimesNumberOfMatrixColumns);
-		std::fill(X.begin(), X.end(), 1.0);
-		std::fill(Y.begin(), Y.end(), 0);
-
-		for (int i = 0; i < numberOfSimulationRuns; ++i)
+		for (int k = 0; k < matricesNumberOfColumns.size(); ++k)
 		{
+			int NZtimesNumberOfMatrixColumns = mat.getNZ() * matricesNumberOfColumns[k];
+			X.resize(NZtimesNumberOfMatrixColumns);
+			Y.resize(NZtimesNumberOfMatrixColumns);
+			std::fill(X.begin(), X.end(), 1.0);
+			std::fill(Y.begin(), Y.end(), 0);
 
-			std::chrono::high_resolution_clock::time_point start = std::chrono::high_resolution_clock::now();
-			//Compute OpenMP matrix by "tall" dense matrix multiplication product
-			omp.OpenMPSolver(mat, X, Y, numberOfThreads, timeToComplete, matricesNumberOfColumns[k]);
-
-
-			std::chrono::high_resolution_clock::time_point  end = std::chrono::high_resolution_clock::now();
-			//double complete = std::chrono::duration_cast<std::chrono::nanoseconds>(end - start).count() / 1000000.0;
-			//std::chrono::duration<double> diff = end - start;
-			//std::cout << "Current Matrix Type: " << typeid(classType).name() << std::endl;
-			avarageTime += timeToComplete;
-			//std::cout << "timeToComplete in milliseconds: " << timeToComplete << " ms\n";
-			avaragePerfomrance += calcuatePerformance(NZtimesNumberOfMatrixColumns, timeToComplete);
-			//std::cout << "calcuatePerformance " << calcuatePerformance(NZtimesNumberOfMatrixColumns, timeToComplete) << " MFLOPS\n";
-
-			/*
-			try
+			for (int i = 0; i < numberOfSimulationRuns; ++i)
 			{
 
-
+				std::chrono::high_resolution_clock::time_point start = std::chrono::high_resolution_clock::now();
+				//Compute OpenMP matrix by "tall" dense matrix multiplication product
+				omp.OpenMPSolver(mat, X, Y, numberOfThreads, timeToComplete, matricesNumberOfColumns[k]);
+				std::chrono::high_resolution_clock::time_point  end = std::chrono::high_resolution_clock::now();
+				avarageTime += timeToComplete;
+				avaragePerfomrance += calcuatePerformance(NZtimesNumberOfMatrixColumns, timeToComplete);
 
 			}
-			catch (std::exception & e)
-			{
-				std::cout << "Standard exception: " << e.what() << std::endl;
-			}
-			*/
-			
-			
-			
-
+			//results << "Number of columns " << matricesNumberOfColumns[k] << "\n";
+			avarageTime /= numberOfSimulationRuns;
+			avaragePerfomrance /= numberOfSimulationRuns;
+			results << matricesNumberOfColumns[k];
+			results << "\t" << avaragePerfomrance << "\n";
+			avgTime2 += avarageTime;
+			avaPerfomrance2= avaragePerfomrance;
+			avarageTime = 0;
+			avaragePerfomrance = 0;
 		}
-		//results << "Number of columns " << matricesNumberOfColumns[k] << "\n";
-		avarageTime /= numberOfSimulationRuns;
-		avaragePerfomrance /= numberOfSimulationRuns;
-		results << matricesNumberOfColumns[k];
-		results << "\t" << avaragePerfomrance << "\n";
-		
-		avarageTime = 0;
-		avaragePerfomrance = 0;
+
+
+		std::cout << "Average OpenMP time in milliseconds: " << avgTime2 / matricesNumberOfColumns.size() << " ms\n";
+		std::cout << "OpenMP average performance is: " << avaPerfomrance2 / matricesNumberOfColumns.size() << " MFLOPS\n" << std::endl;
 	}
-	
-	//std::cout << "Average time in milliseconds: " << avarageTime << " ms\n";
-	//std::cout << "OpenMP average performance is: " << avaragePerfomrance << " MFLOPS" << std::endl;
-	//std::cout << "OpenMP average direct performance is: " << calcuatePerformance(NZtimesNumberOfMatrixColumns, avarageTime) << " MFLOPS" << std::endl;
-	results << "\n\n\n\n";
-	
-	
+	catch (std::exception & e)
+	{
+		std::cout << "Standard exception: " << e.what() << std::endl;
+	}
 
 
 }

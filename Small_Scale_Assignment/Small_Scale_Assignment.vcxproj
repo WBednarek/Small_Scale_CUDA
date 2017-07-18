@@ -199,7 +199,6 @@ copy "$(CudaToolkitBinDir)\cudart*.dll" "$(OutDir)"</Command>
     <ClCompile Include="ReadMatrixCSR.cpp" />
     <ClCompile Include="ReadMatrixELL.cpp" />
     <ClCompile Include="SimulationAndTheTests.cpp" />
-    <ClCompile Include="Source.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="ClassDiagram.cd" />

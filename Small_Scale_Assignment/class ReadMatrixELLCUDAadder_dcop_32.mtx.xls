@@ -1,6 +1,6 @@
-class ReadMatrixELL CUDA	
+class ReadMatrixELL CUDA
 Number of matrix columns	 Performance MFLOPS
-2	0.853089
-3	0.868319
-4	0.869826
-8	0.846335
+2	1.53511
+3	1.42224
+4	1.63366
+8	1.65811

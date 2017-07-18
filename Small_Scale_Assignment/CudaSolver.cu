@@ -26,15 +26,7 @@ __global__ void CSRCudaMatrixVectorProduct(const int &M, const int * JA, const i
 	unsigned int threadIndex = threadIdx.x;
 	
 	unsigned int selected = warpID;
-		
 
-	//int warpIndex = threadID / warpSize;
-
-	//int threadIndegOfWarp = threadID & (warpSize - 1);
-	//unsigned int gridSize = blockSize * gridDim.x * 2;
-
-	//storeArray[0] = 0;
-	//int index = warpIndex;
 
 	if (selected < M)
 	{
@@ -60,53 +52,7 @@ __global__ void CSRCudaMatrixVectorProduct(const int &M, const int * JA, const i
 		{
 			OUT[selected] = storeArray[threadIdx.x];
 		}
-
-	
-		//First thread stores output
-		
-
-		//__syncthreads();
-		
-		/*
-		Experimental solution not finished
-
-		//Block sizeOfInt up to 512
-		if (blockSize >= 512)
-		{
-			if (threadIndex < 256)
-			{
-				storeArray[threadIndex] += storeArray[threadIndex + 256];
-			}
-			__syncthreads();
-		}
-
-		//Block sizeOfInt up to 256
-		if (blockSize >= 256)
-		{
-			if (threadIndex < 128)
-			{
-				storeArray[threadIndex] += storeArray[threadIndex + 128];
-			}
-			__syncthreads();
-		}
-		//Block sizeOfInt up to 128
-		if (blockSize >= 128)
-		{
-			if (threadIndex < 64)
-			{
-				storeArray[threadIndex] += storeArray[threadIndex + 64];
-			}
-			__syncthreads();
-		}
-		*/
-		
-
-
-		
-
-	}
-
-	
+	}	
 	
 }
 
@@ -126,7 +72,7 @@ __global__ void ELLPackCudaMatrixVectorProduct(const int &M, const int & NZ, con
 		//All modern GPU have warp sizeOfInt 32
 		unsigned int warpIndex = threadCompIdx / warpSize;
 		unsigned int threadIndegOfWarp = threadCompIdx & (warpSize - 1);
-		//unsigned int gridSize = blockSize * gridDim.x * 2;
+
 
 		unsigned int limit = blockDim.x / 2;
 		storeArray[threadIdx.x] = 0;
@@ -140,7 +86,7 @@ __global__ void ELLPackCudaMatrixVectorProduct(const int &M, const int & NZ, con
 		}
 		__syncthreads();
 
-		// storeArray, OUT[block], limit
+	
 		while (limit > 0)
 		{
 			if (threadIdx.x < limit)
@@ -157,12 +103,9 @@ __global__ void ELLPackCudaMatrixVectorProduct(const int &M, const int & NZ, con
 		{
 			OUT[block] = storeArray[0];
 		}
-
-
 		block += maxBlocks;
 		
 	}
-	
 
 
 }

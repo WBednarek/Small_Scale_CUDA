@@ -26,13 +26,13 @@
 \contentsline {chapter}{\numberline {5}Summary test plan}{29}{chapter.5}
 \contentsline {section}{\numberline {5.1}Tests}{29}{section.5.1}
 \contentsline {subsection}{\numberline {5.1.1}Performance tests}{29}{subsection.5.1.1}
-\contentsline {subsection}{\numberline {5.1.2}Unit tests}{31}{subsection.5.1.2}
+\contentsline {subsection}{\numberline {5.1.2}Unit tests}{30}{subsection.5.1.2}
 \contentsline {chapter}{\numberline {6}Nvidia CUDA}{32}{chapter.6}
 \contentsline {section}{\numberline {6.1}Used software for CUDA}{32}{section.6.1}
 \contentsline {section}{\numberline {6.2}CUDA features}{32}{section.6.2}
 \contentsline {section}{\numberline {6.3}Detailed GPU data}{33}{section.6.3}
 \contentsline {section}{\numberline {6.4}Used algorithm}{35}{section.6.4}
-\contentsline {chapter}{\numberline {7}OpenMP}{39}{chapter.7}
+\contentsline {chapter}{\numberline {7}OpenMP}{38}{chapter.7}
 \contentsline {chapter}{\numberline {8}Performance measurements}{40}{chapter.8}
 \contentsline {subsection}{\numberline {8.0.1}cage4.mtx}{40}{subsection.8.0.1}
 \contentsline {subsection}{\numberline {8.0.2}adder_dcop_32.mtx}{41}{subsection.8.0.2}
@@ -44,3 +44,4 @@
 \contentsline {chapter}{\numberline {9}Other Nonfunctional Requirements}{48}{chapter.9}
 \contentsline {section}{\numberline {9.1}Performance Requirements}{48}{section.9.1}
 \contentsline {chapter}{\numberline {10}Conclusions}{51}{chapter.10}
+\contentsline {chapter}{\numberline {11}Appendix A}{52}{chapter.11}

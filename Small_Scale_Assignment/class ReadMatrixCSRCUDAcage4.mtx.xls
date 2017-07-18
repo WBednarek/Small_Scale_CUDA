@@ -1,6 +1,6 @@
 class ReadMatrixCSR CUDA
 Number of matrix columns	 Performance MFLOPS
-2	0.102072
-3	0.119893
-4	0.106634
-8	0.105002
+2	0.080747
+3	0.114219
+4	0.112958
+8	0.113392
