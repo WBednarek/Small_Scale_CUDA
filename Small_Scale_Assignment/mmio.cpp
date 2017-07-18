@@ -474,7 +474,7 @@ char  *mm_typecode_to_str(MM_typecode matcode)
     else
         return NULL;
 
-    /* check for element data type */
+    /* check for element storeArray type */
     if (mm_is_real(matcode))
         types[2] = MM_REAL_STR;
     else

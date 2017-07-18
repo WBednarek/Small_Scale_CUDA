@@ -21,7 +21,7 @@ auto SimulationAndTheTests<classType>::calcuatePerformance(int NZ, double comple
 }
 
 template<class classType>
-void SimulationAndTheTests<classType>::runCUDA(classType mat, int numberOfThreads, int sizeOfBlock, int maximumBlocks, int numberOfSimulationRuns)
+void SimulationAndTheTests<classType>::runCUDA(classType & mat, int numberOfThreads, int sizeOfBlock, int maximumBlocks, int numberOfSimulationRuns)
 {
 
 	std::ofstream results;
@@ -46,7 +46,7 @@ void SimulationAndTheTests<classType>::runCUDA(classType mat, int numberOfThread
 	results.open(resultsFileName);
 	//In the .xls files next column separator is "\t" in Excel. 
 	//When we want to use .csv extension files, depend on system separator could be "," or ";" .
-	results << "CUDA" << std::endl;
+	results << (std::string) typeid(classType).name() + " CUDA" << std::endl;
 	results << "Number of matrix columns\t Performance MFLOPS" << std::endl;
 	for (int k = 0; k < matricesNumberOfColumns.size(); ++k)
 	{
@@ -91,7 +91,7 @@ void SimulationAndTheTests<classType>::runCUDA(classType mat, int numberOfThread
 
 
 template<class classType>
-void SimulationAndTheTests<classType>::runOpenMP(classType mat, int numberOfThreads, int numberOfSimulationRuns)
+void SimulationAndTheTests<classType>::runOpenMP(classType &  mat, int numberOfThreads, int numberOfSimulationRuns)
 {
 	std::ofstream results;
 	ReadMatrixELL matrixELL1("cage4.mtx");
@@ -113,7 +113,7 @@ void SimulationAndTheTests<classType>::runOpenMP(classType mat, int numberOfThre
 	
 
 	results.open(resultsFileName); 
-	results << "OpenMP" << std::endl;
+	results << (std::string) typeid(classType).name() + " OpenMP" << std::endl;
 	//In the .xls files next column separator is "\t" in Excel. 
 	//When we want to use .csv extension files, depend on system separator could be "," or ";" .
 	results << "Number of matrix columns\t Performance MFLOPS" << std::endl;
@@ -136,7 +136,7 @@ void SimulationAndTheTests<classType>::runOpenMP(classType mat, int numberOfThre
 
 
 			std::chrono::high_resolution_clock::time_point  end = std::chrono::high_resolution_clock::now();
-			double complete = std::chrono::duration_cast<std::chrono::nanoseconds>(end - start).count() / 1000000.0;
+			//double complete = std::chrono::duration_cast<std::chrono::nanoseconds>(end - start).count() / 1000000.0;
 			//std::chrono::duration<double> diff = end - start;
 			//std::cout << "Current Matrix Type: " << typeid(classType).name() << std::endl;
 			avarageTime += timeToComplete;

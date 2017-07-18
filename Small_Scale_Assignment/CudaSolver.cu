@@ -3,10 +3,10 @@
 
 /**
 *
-* @param M Numner of rows
-* @param JA Array of column indieces
-* @param IRP Array of pointers to row start
-* @param AS Array of cooefficients
+* @param M Number of rows
+* @param JA Array of column JA
+* @param IRP Array of pointers to selected start
+* @param AS Array of coefficients
 * @param OUT Solution vector
 * @param blockAmount
 */
@@ -16,30 +16,55 @@ __global__ void CSRCudaMatrixVectorProduct(const int &M, const int * JA, const i
 {
 
 	//Based on local memory
-	extern __shared__ double data[];
+	extern __shared__ double storeArray[];
 
-	unsigned int warpSize = 32;
+	unsigned int warpSize = 32; //All modern GPU have warp sizeOfInt 32
+	unsigned int threadID = blockIdx.x * blockDim.x + threadIdx.x;
+	unsigned int warpID = threadID / warpSize;
+	unsigned int threadIndOfWarp = threadID & (warpSize - 1);
 
 	unsigned int threadIndex = threadIdx.x;
-	unsigned int threadCompInx = blockIdx.x * blockDim.x+ threadIdx.x;
-	//All modern GPU have warp sizeOfInt 32
-	int warpIndex = threadCompInx / warpSize;
+	
+	unsigned int selected = warpID;
+		
 
-	int threadIndegOfWarp = threadCompInx & (warpSize - 1);
+	//int warpIndex = threadID / warpSize;
+
+	//int threadIndegOfWarp = threadID & (warpSize - 1);
 	//unsigned int gridSize = blockSize * gridDim.x * 2;
 
-	data[0] = 0;
-	int index = warpIndex;
+	//storeArray[0] = 0;
+	//int index = warpIndex;
 
-	if (index < M)
+	if (selected < M)
 	{
+		unsigned int rowBegining = IRP[selected];
+		unsigned int endOfRow = IRP[selected + 1];
 
-		data[threadIdx.x] = 0;
-		for (unsigned j = IRP[index] + threadIdx.x; index < IRP[index + 1]; j+= warpSize)
+		storeArray[threadIdx.x] = 0;
+		for (unsigned j = rowBegining + threadIndOfWarp; j < endOfRow; j+= warpSize)
 		{
-			data[threadIdx.x] += AS[j] * IN[JA[j]];
+			storeArray[threadIdx.x] += AS[j] * IN[JA[j]];
 		
 		}
+
+
+		if (threadIndOfWarp < 16) storeArray[threadIdx.x] += storeArray[threadIdx.x + 16];
+		if (threadIndOfWarp < 8) storeArray[threadIdx.x] += storeArray[threadIdx.x + 8];
+		if (threadIndOfWarp < 4) storeArray[threadIdx.x] += storeArray[threadIdx.x + 4];
+		if (threadIndOfWarp < 2) storeArray[threadIdx.x] += storeArray[threadIdx.x + 2];
+		if (threadIndOfWarp < 1) storeArray[threadIdx.x] += storeArray[threadIdx.x + 1];
+
+
+		if (threadIndOfWarp == 0)
+		{
+			OUT[selected] = storeArray[threadIdx.x];
+		}
+
+	
+		//First thread stores output
+		
+
 		//__syncthreads();
 		
 		/*
@@ -50,7 +75,7 @@ __global__ void CSRCudaMatrixVectorProduct(const int &M, const int * JA, const i
 		{
 			if (threadIndex < 256)
 			{
-				data[threadIndex] += data[threadIndex + 256];
+				storeArray[threadIndex] += storeArray[threadIndex + 256];
 			}
 			__syncthreads();
 		}
@@ -60,7 +85,7 @@ __global__ void CSRCudaMatrixVectorProduct(const int &M, const int * JA, const i
 		{
 			if (threadIndex < 128)
 			{
-				data[threadIndex] += data[threadIndex + 128];
+				storeArray[threadIndex] += storeArray[threadIndex + 128];
 			}
 			__syncthreads();
 		}
@@ -69,7 +94,7 @@ __global__ void CSRCudaMatrixVectorProduct(const int &M, const int * JA, const i
 		{
 			if (threadIndex < 64)
 			{
-				data[threadIndex] += data[threadIndex + 64];
+				storeArray[threadIndex] += storeArray[threadIndex + 64];
 			}
 			__syncthreads();
 		}
@@ -77,21 +102,7 @@ __global__ void CSRCudaMatrixVectorProduct(const int &M, const int * JA, const i
 		
 
 
-		if (threadIndex < warpSize)
-		{
-			
-			if (threadIndegOfWarp < 16) data[threadIndex] += data[threadIndex + 16];
-			if (threadIndegOfWarp < 8) data[threadIndex] += data[threadIndex + 8];
-			if (threadIndegOfWarp < 4) data[threadIndex] += data[threadIndex + 4];
-			if (threadIndegOfWarp < 2) data[threadIndex] += data[threadIndex + 2];
-			if (threadIndegOfWarp < 1) data[threadIndex] += data[threadIndex + 1];
-		}
-
-		//First thread stores output
-		if (threadIndex == 0)
-		{
-			OUT[index] = data[threadIdx.x];
-		}
+		
 
 	}
 
@@ -103,7 +114,7 @@ __global__ void CSRCudaMatrixVectorProduct(const int &M, const int * JA, const i
 __global__ void ELLPackCudaMatrixVectorProduct(const int &M, const int & NZ, const int * JA, const double * AS, double * IN, double * OUT, int & maxBlocks)
 {
 	//Based on local memory
-	extern __shared__ double data[];
+	extern __shared__ double storeArray[];
 
 	unsigned int block = blockIdx.x;
 	unsigned int warpSize = 32;
@@ -118,23 +129,23 @@ __global__ void ELLPackCudaMatrixVectorProduct(const int &M, const int & NZ, con
 		//unsigned int gridSize = blockSize * gridDim.x * 2;
 
 		unsigned int limit = blockDim.x / 2;
-		data[threadIdx.x] = 0;
+		storeArray[threadIdx.x] = 0;
 
 		while (threadIndex < NZ)
 		{
-			data[threadIdx.x] += AS[threadCompIdx] * IN[JA[threadCompIdx]];
+			storeArray[threadIdx.x] += AS[threadCompIdx] * IN[JA[threadCompIdx]];
 
 			threadIndex += blockDim.x;
 			threadCompIdx += blockDim.x;
 		}
 		__syncthreads();
 
-		// data, OUT[block], limit
+		// storeArray, OUT[block], limit
 		while (limit > 0)
 		{
 			if (threadIdx.x < limit)
 			{
-				data[threadIdx.x] = data[threadIdx.x] + data[threadIdx.x + limit];
+				storeArray[threadIdx.x] = storeArray[threadIdx.x] + storeArray[threadIdx.x + limit];
 			}
 
 			__syncthreads();
@@ -144,7 +155,7 @@ __global__ void ELLPackCudaMatrixVectorProduct(const int &M, const int & NZ, con
 
 		if (threadIdx.x == 0)
 		{
-			OUT[block] = data[0];
+			OUT[block] = storeArray[0];
 		}
 
 
@@ -222,7 +233,7 @@ void CUDASolver(ReadMatrixCSR &mat, std::vector<double> &  X, std::vector<double
 
 
 
-		//Copy data from host to device memory
+		//Copy storeArray from host to device memory
 		cudaStatus = cudaMemcpy(d_runParam, &hostArrayM[0], sizeOfInt * 2, cudaMemcpyHostToDevice);
 		cudaStatus = cudaMemcpy(d_JA, &hostJA, sizeOfInt * NZ, cudaMemcpyHostToDevice);
 		cudaStatus = cudaMemcpy(d_IRP, &hostIRP, sizeOfInt * (M + 1), cudaMemcpyHostToDevice);
@@ -335,7 +346,7 @@ void CUDASolver(ReadMatrixELL & mat, std::vector<double>& X, std::vector<double>
 
 
 
-		//Copy data from host to device memory
+		//Copy storeArray from host to device memory
 		cudaStatus = cudaMemcpy(d_runParam, &hostArrayM[0], sizeOfInt * 3, cudaMemcpyHostToDevice);
 		cudaStatus = cudaMemcpy(d_JA, &hostJA, sizeOfInt * NZ, cudaMemcpyHostToDevice);
 		cudaStatus = cudaMemcpy(d_AS, &hostAS, sizeDouble* NZ, cudaMemcpyHostToDevice);

@@ -89,7 +89,7 @@ int mm_is_valid(MM_typecode matcode);		/* too complex for a macro */
 
    MM_matrix_typecode: 4-character sequence
 
-				    ojbect 		sparse/   	data        storage 
+				    ojbect 		sparse/   	storeArray        storage 
 						  		dense     	type        scheme
 
    string position:	 [0]        [1]			[2]         [3]

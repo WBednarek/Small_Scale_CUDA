@@ -31,7 +31,12 @@
 \contentsline {chapter}{\numberline {6}OpenMP}{36}{chapter.6}
 \contentsline {chapter}{\numberline {7}Performance measurements}{37}{chapter.7}
 \contentsline {section}{\numberline {7.1}Matrix cage4.mtx}{37}{section.7.1}
-\contentsline {section}{\numberline {7.2}Matrix mhda416.mtx}{37}{section.7.2}
-\contentsline {chapter}{\numberline {8}Other Nonfunctional Requirements}{41}{chapter.8}
-\contentsline {section}{\numberline {8.1}Performance Requirements}{41}{section.8.1}
-\contentsline {chapter}{\numberline {9}Conclusions}{44}{chapter.9}
+\contentsline {section}{\numberline {7.2}Matrix mhda416.mtx}{38}{section.7.2}
+\contentsline {subsection}{\numberline {7.2.1}cage4.mtx}{38}{subsection.7.2.1}
+\contentsline {subsection}{\numberline {7.2.2}adder_dcop_32.mtx}{39}{subsection.7.2.2}
+\contentsline {subsection}{\numberline {7.2.3}olm1000.mtx}{40}{subsection.7.2.3}
+\contentsline {subsection}{\numberline {7.2.4}mhda416.mtx}{41}{subsection.7.2.4}
+\contentsline {subsection}{\numberline {7.2.5}mfce.mtx}{42}{subsection.7.2.5}
+\contentsline {chapter}{\numberline {8}Other Nonfunctional Requirements}{44}{chapter.8}
+\contentsline {section}{\numberline {8.1}Performance Requirements}{44}{section.8.1}
+\contentsline {chapter}{\numberline {9}Conclusions}{47}{chapter.9}

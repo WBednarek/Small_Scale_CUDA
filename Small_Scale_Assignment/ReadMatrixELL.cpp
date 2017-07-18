@@ -30,7 +30,7 @@ ReadMatrixELL::ReadMatrixELL(std::string matrixName)
 
 
 	/*  This is how one can screen matrix types if their application */
-	/*  only supports a subset of the Matrix Market data types.      */
+	/*  only supports a subset of the Matrix Market storeArray types.      */
 
 	if (mm_is_complex(matcode) && mm_is_matrix(matcode) &&
 		mm_is_sparse(matcode))
@@ -137,6 +137,9 @@ ReadMatrixELL::ReadMatrixELL(const ReadMatrixELL& copy)
 	numOfElementsInTheBiggestRow = copy.numOfElementsInTheBiggestRow;
 	matrixName = copy.matrixName;
 	nonZeroValuesInTheAllRows = copy.nonZeroValuesInTheAllRows;
+	jaVector = copy.jaVector;
+	asVector = copy.asVector;
+
 
 	long long vectorSize = static_cast<long long>(M) * static_cast<long long>(nz);
 	(*this).JAOneDimensional = std::make_unique<int[]>(vectorSize); 
@@ -296,8 +299,8 @@ std::cout << std::endl;
 template<typename TYPE>
 void ReadMatrixELL::saveOneDimensionalELLMatrix(TYPE * matrix, std::string name, std::vector<int> & nonZeroValuesInTheRows)
 {
-	std::ofstream data(name + " ELLONEDIMENSIONAL.txt");
-		data << name << std::endl;
+	std::ofstream storeArray(name + " ELLONEDIMENSIONAL.txt");
+		storeArray << name << std::endl;
 		long long idx = 0;
 	//save to file one-dimensional AS or JA
 	for (int i = 0; i < nonZeroValuesInTheRows.size(); ++i)
@@ -305,13 +308,13 @@ void ReadMatrixELL::saveOneDimensionalELLMatrix(TYPE * matrix, std::string name,
 		for (int j = 0; j < numOfElementsInTheBiggestRow; ++j)
 		{
 			idx = i * static_cast<long long>(numOfElementsInTheBiggestRow) + j;
-			data << matrix[idx]<< " ";
+			storeArray << matrix[idx]<< " ";
 		}
-		data << std::endl;
+		storeArray << std::endl;
 
 	}
-	data << std::endl;
-	data << std::endl;
+	storeArray << std::endl;
+	storeArray << std::endl;
 
 }
 

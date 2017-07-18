@@ -30,7 +30,7 @@ ReadMatrixCSR::ReadMatrixCSR(std::string matrixName)
 
 
 	/*  This is how one can screen matrix types if their application */
-	/*  only supports a subset of the Matrix Market data types.      */
+	/*  only supports a subset of the Matrix Market storeArray types.      */
 
 	if (mm_is_complex(matcode) && mm_is_matrix(matcode) &&
 		mm_is_sparse(matcode))

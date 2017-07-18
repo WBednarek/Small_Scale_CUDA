@@ -297,17 +297,17 @@ inline char *sdkFindFilePath(const char *filename, const char *executable_path)
 {
     // <executable_name> defines a variable that is replaced with the name of the executable
 
-    // Typical relative search paths to locate needed companion files (e.g. sample input data, or JIT source files)
+    // Typical relative search paths to locate needed companion files (e.g. sample input storeArray, or JIT source files)
     // The origin for the relative search may be the .exe file, a .bat file launching an .exe, a browser .exe launching the .exe or .bat, etc
     const char *searchPath[] =
     {
         "./",                                       // same dir
         "./<executable_name>_data_files/",
         "./common/",                                // "/common/" subdir
-        "./common/data/",                           // "/common/data/" subdir
-        "./data/",                                  // "/data/" subdir
+        "./common/data/",                           // "/common/storeArray/" subdir
+        "./data/",                                  // "/storeArray/" subdir
         "./src/",                                   // "/src/" subdir
-        "./src/<executable_name>/data/",            // "/src/<executable_name>/data/" subdir
+        "./src/<executable_name>/data/",            // "/src/<executable_name>/storeArray/" subdir
         "./inc/",                                   // "/inc/" subdir
         "./0_Simple/",                              // "/0_Simple/" subdir
         "./1_Utilities/",                           // "/1_Utilities/" subdir
@@ -320,20 +320,20 @@ inline char *sdkFindFilePath(const char *filename, const char *executable_path)
         "./8_Android/",                             // "/8_Android/" subdir
         "./samples/",                               // "/samples/" subdir
 
-        "./0_Simple/<executable_name>/data/",        // "/0_Simple/<executable_name>/data/" subdir
-        "./1_Utilities/<executable_name>/data/",     // "/1_Utilities/<executable_name>/data/" subdir
-        "./2_Graphics/<executable_name>/data/",      // "/2_Graphics/<executable_name>/data/" subdir
-        "./3_Imaging/<executable_name>/data/",       // "/3_Imaging/<executable_name>/data/" subdir
-        "./4_Finance/<executable_name>/data/",       // "/4_Finance/<executable_name>/data/" subdir
-        "./5_Simulations/<executable_name>/data/",   // "/5_Simulations/<executable_name>/data/" subdir
-        "./6_Advanced/<executable_name>/data/",      // "/6_Advanced/<executable_name>/data/" subdir
+        "./0_Simple/<executable_name>/data/",        // "/0_Simple/<executable_name>/storeArray/" subdir
+        "./1_Utilities/<executable_name>/data/",     // "/1_Utilities/<executable_name>/storeArray/" subdir
+        "./2_Graphics/<executable_name>/data/",      // "/2_Graphics/<executable_name>/storeArray/" subdir
+        "./3_Imaging/<executable_name>/data/",       // "/3_Imaging/<executable_name>/storeArray/" subdir
+        "./4_Finance/<executable_name>/data/",       // "/4_Finance/<executable_name>/storeArray/" subdir
+        "./5_Simulations/<executable_name>/data/",   // "/5_Simulations/<executable_name>/storeArray/" subdir
+        "./6_Advanced/<executable_name>/data/",      // "/6_Advanced/<executable_name>/storeArray/" subdir
         "./7_CUDALibraries/<executable_name>/",      // "/7_CUDALibraries/<executable_name>/" subdir
-        "./7_CUDALibraries/<executable_name>/data/", // "/7_CUDALibraries/<executable_name>/data/" subdir
+        "./7_CUDALibraries/<executable_name>/data/", // "/7_CUDALibraries/<executable_name>/storeArray/" subdir
 
         "../",                                      // up 1 in tree
         "../common/",                               // up 1 in tree, "/common/" subdir
-        "../common/data/",                          // up 1 in tree, "/common/data/" subdir
-        "../data/",                                 // up 1 in tree, "/data/" subdir
+        "../common/data/",                          // up 1 in tree, "/common/storeArray/" subdir
+        "../data/",                                 // up 1 in tree, "/storeArray/" subdir
         "../src/",                                  // up 1 in tree, "/src/" subdir
         "../inc/",                                  // up 1 in tree, "/inc/" subdir
 
@@ -349,8 +349,8 @@ inline char *sdkFindFilePath(const char *filename, const char *executable_path)
         "../samples/<executable_name>/data/",        // up 1 in tree, "/samples/<executable_name>/" subdir
         "../../",                                        // up 2 in tree
         "../../common/",                                 // up 2 in tree, "/common/" subdir
-        "../../common/data/",                            // up 2 in tree, "/common/data/" subdir
-        "../../data/",                                   // up 2 in tree, "/data/" subdir
+        "../../common/data/",                            // up 2 in tree, "/common/storeArray/" subdir
+        "../../data/",                                   // up 2 in tree, "/storeArray/" subdir
         "../../src/",                                    // up 2 in tree, "/src/" subdir
         "../../inc/",                                    // up 2 in tree, "/inc/" subdir
         "../../sandbox/<executable_name>/data/",         // up 2 in tree, "/sandbox/<executable_name>/" subdir
@@ -366,11 +366,11 @@ inline char *sdkFindFilePath(const char *filename, const char *executable_path)
         "../../samples/<executable_name>/data/",         // up 2 in tree, "/samples/<executable_name>/" subdir
         "../../../",                                        // up 3 in tree
         "../../../src/<executable_name>/",                  // up 3 in tree, "/src/<executable_name>/" subdir
-        "../../../src/<executable_name>/data/",             // up 3 in tree, "/src/<executable_name>/data/" subdir
+        "../../../src/<executable_name>/data/",             // up 3 in tree, "/src/<executable_name>/storeArray/" subdir
         "../../../src/<executable_name>/src/",              // up 3 in tree, "/src/<executable_name>/src/" subdir
         "../../../src/<executable_name>/inc/",              // up 3 in tree, "/src/<executable_name>/inc/" subdir
         "../../../sandbox/<executable_name>/",              // up 3 in tree, "/sandbox/<executable_name>/" subdir
-        "../../../sandbox/<executable_name>/data/",         // up 3 in tree, "/sandbox/<executable_name>/data/" subdir
+        "../../../sandbox/<executable_name>/data/",         // up 3 in tree, "/sandbox/<executable_name>/storeArray/" subdir
         "../../../sandbox/<executable_name>/src/",          // up 3 in tree, "/sandbox/<executable_name>/src/" subdir
         "../../../sandbox/<executable_name>/inc/",          // up 3 in tree, "/sandbox/<executable_name>/inc/" subdir
         "../../../0_Simple/<executable_name>/data/",        // up 3 in tree, "/0_Simple/<executable_name>/" subdir
@@ -393,15 +393,15 @@ inline char *sdkFindFilePath(const char *filename, const char *executable_path)
         "../../../8_Android/<executable_name>/",       // up 3 in tree, "/8_Android/<executable_name>/" subdir
         "../../../samples/<executable_name>/data/",         // up 3 in tree, "/samples/<executable_name>/" subdir
         "../../../common/",                                 // up 3 in tree, "../../../common/" subdir
-        "../../../common/data/",                            // up 3 in tree, "../../../common/data/" subdir
-        "../../../data/",                                   // up 3 in tree, "../../../data/" subdir
+        "../../../common/data/",                            // up 3 in tree, "../../../common/storeArray/" subdir
+        "../../../data/",                                   // up 3 in tree, "../../../storeArray/" subdir
         "../../../../",                                // up 4 in tree
         "../../../../src/<executable_name>/",          // up 4 in tree, "/src/<executable_name>/" subdir
-        "../../../../src/<executable_name>/data/",     // up 4 in tree, "/src/<executable_name>/data/" subdir
+        "../../../../src/<executable_name>/data/",     // up 4 in tree, "/src/<executable_name>/storeArray/" subdir
         "../../../../src/<executable_name>/src/",      // up 4 in tree, "/src/<executable_name>/src/" subdir
         "../../../../src/<executable_name>/inc/",      // up 4 in tree, "/src/<executable_name>/inc/" subdir
         "../../../../sandbox/<executable_name>/",      // up 4 in tree, "/sandbox/<executable_name>/" subdir
-        "../../../../sandbox/<executable_name>/data/", // up 4 in tree, "/sandbox/<executable_name>/data/" subdir
+        "../../../../sandbox/<executable_name>/data/", // up 4 in tree, "/sandbox/<executable_name>/storeArray/" subdir
         "../../../../sandbox/<executable_name>/src/",  // up 4 in tree, "/sandbox/<executable_name>/src/" subdir
         "../../../../sandbox/<executable_name>/inc/",   // up 4 in tree, "/sandbox/<executable_name>/inc/" subdir
         "../../../../0_Simple/<executable_name>/data/",     // up 4 in tree, "/0_Simple/<executable_name>/" subdir
@@ -424,15 +424,15 @@ inline char *sdkFindFilePath(const char *filename, const char *executable_path)
         "../../../../8_Android/<executable_name>/",    // up 4 in tree, "/8_Android/<executable_name>/" subdir
         "../../../../samples/<executable_name>/data/",      // up 4 in tree, "/samples/<executable_name>/" subdir
         "../../../../common/",                              // up 4 in tree, "../../../common/" subdir
-        "../../../../common/data/",                         // up 4 in tree, "../../../common/data/" subdir
-        "../../../../data/",                                // up 4 in tree, "../../../data/" subdir
+        "../../../../common/data/",                         // up 4 in tree, "../../../common/storeArray/" subdir
+        "../../../../data/",                                // up 4 in tree, "../../../storeArray/" subdir
         "../../../../../",                                // up 5 in tree
         "../../../../../src/<executable_name>/",          // up 5 in tree, "/src/<executable_name>/" subdir
-        "../../../../../src/<executable_name>/data/",     // up 5 in tree, "/src/<executable_name>/data/" subdir
+        "../../../../../src/<executable_name>/data/",     // up 5 in tree, "/src/<executable_name>/storeArray/" subdir
         "../../../../../src/<executable_name>/src/",      // up 5 in tree, "/src/<executable_name>/src/" subdir
         "../../../../../src/<executable_name>/inc/",      // up 5 in tree, "/src/<executable_name>/inc/" subdir
         "../../../../../sandbox/<executable_name>/",      // up 5 in tree, "/sandbox/<executable_name>/" subdir
-        "../../../../../sandbox/<executable_name>/data/", // up 5 in tree, "/sandbox/<executable_name>/data/" subdir
+        "../../../../../sandbox/<executable_name>/data/", // up 5 in tree, "/sandbox/<executable_name>/storeArray/" subdir
         "../../../../../sandbox/<executable_name>/src/",  // up 5 in tree, "/sandbox/<executable_name>/src/" subdir
         "../../../../../sandbox/<executable_name>/inc/",   // up 5 in tree, "/sandbox/<executable_name>/inc/" subdir
         "../../../../../0_Simple/<executable_name>/data/",     // up 5 in tree, "/0_Simple/<executable_name>/" subdir
@@ -446,7 +446,7 @@ inline char *sdkFindFilePath(const char *filename, const char *executable_path)
         "../../../../../8_Android/<executable_name>/data/",    // up 5 in tree, "/8_Android/<executable_name>/" subdir
         "../../../../../samples/<executable_name>/data/",      // up 5 in tree, "/samples/<executable_name>/" subdir
         "../../../../../common/",                         // up 5 in tree, "../../../common/" subdir
-        "../../../../../common/data/",                    // up 5 in tree, "../../../common/data/" subdir
+        "../../../../../common/data/",                    // up 5 in tree, "../../../common/storeArray/" subdir
     };
 
     // Extract the executable name

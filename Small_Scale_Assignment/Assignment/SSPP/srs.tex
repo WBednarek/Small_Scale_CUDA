@@ -1025,7 +1025,14 @@ void OpenMPCSR(int numberOfThreads,  int M, double *AsCSR,
 
 \chapter{Performance measurements}
 
-
+Performance in all cases was measured in MFLOPS. 
+For OpenMP we use maximum number of threads available on our PC which is 4. We are checking performance differences related to number of columns in matrices multiplicated by matrices from the internet.
+\\
+In CUDA case we perform a sparse matrix-vector product for different runs.
+\\
+Each test was performed 10 times and results are average of all runs. In CUDA case each set of 10 runs is also in a for loop that iterates thought number of matrix column sizes (2,3,4,8), so 4 times. In CUDA case we have results of run 4 times set 10 runs a sparse matrix-vector product, column numbers don't apply into computations. 
+\\
+In OpenMP analogically we run 10 runs for average results and that set is run for 4 times for each column. In OpenMP case we applies number of columns to our computation and we check what is the impact of the bigger number of columns for a performance.
 \section{Matrix cage4.mtx}
 \begin{table}[h!]
 \centering
@@ -1077,46 +1084,178 @@ Results CUDA:
 \end{itemize}
 
 
-\begin{figure}[ht]
-  \centering
-  \includegraphics[scale=0.5]{CodeMap.png}
-  \caption{gssr}
+%Two images on half page
+%\begin{figure}[ht]
+%  \centering
+ % \includegraphics[scale=0.5]{CodeMap.png}
+ % \caption{gssr}
 
-  \vspace*{\floatsep}% https://tex.stackexchange.com/q/26521/5764
+%  \vspace*{\floatsep}% https://%tex.stackexchange.com/q/26521/5764
 
-  \includegraphics[scale=0.5]{CodeMap.png}
-  \caption{gregre}
-\end{figure}
+%  \includegraphics[scale=0.5]{CodeMap.png}
+%  \caption{gregre}
+%%\end{figure}
 
+\subsection{cage4.mtx}
 
 \begin{figure}[ht] 
   \label{ fig7} 
   \begin{minipage}[b]{0.5\linewidth}
     \centering
-    \includegraphics[width=.5\linewidth]{CodeMap.png} 
-    \caption{Initial condition} 
+    \includegraphics[width=.9\linewidth]{cage4CSRMP.png} 
+    \caption{OpenMP CSR results} 
     \vspace{4ex}
   \end{minipage}%%
   \begin{minipage}[b]{0.5\linewidth}
     \centering
-    \includegraphics[width=.5\linewidth]{CodeMap.png} 
-    \caption{Rupture} 
+    \includegraphics[width=.9\linewidth]{cage4EllMP.png} 
+    \caption{OpenMP ELLPack results} 
     \vspace{4ex}
   \end{minipage} 
   \begin{minipage}[b]{0.5\linewidth}
     \centering
-    \includegraphics[width=.5\linewidth]{CodeMap.png} 
-    \caption{DFT, Initial condition} 
+    \includegraphics[width=.9\linewidth]{cage4CSRCUDA.png} 
+    \caption{CUDA CSR results} 
     \vspace{4ex}
   \end{minipage}%% 
   \begin{minipage}[b]{0.5\linewidth}
     \centering
-    \includegraphics[width=.5\linewidth]{CodeMap.png} 
-    \caption{DFT, rupture} 
+    \includegraphics[width=.9\linewidth]{cage4ELLCUDA.png} 
+    \caption{CUDA ELLPack  results} 
     \vspace{4ex}
   \end{minipage} 
 \end{figure}
+\FloatBarrier
 
+\subsection{adder_dcop_32.mtx}
+
+\begin{figure}[ht] 
+  \label{ fig7} 
+  \begin{minipage}[b]{0.5\linewidth}
+    \centering
+    \includegraphics[width=.9\linewidth]{adderCSRMP.png} 
+    \caption{OpenMP CSR results} 
+    \vspace{4ex}
+  \end{minipage}%%
+  \begin{minipage}[b]{0.5\linewidth}
+    \centering
+    \includegraphics[width=.9\linewidth]{adderEllMP.png} 
+    \caption{OpenMP ELLPack results} 
+    \vspace{4ex}
+  \end{minipage} 
+  \begin{minipage}[b]{0.5\linewidth}
+    \centering
+    \includegraphics[width=.9\linewidth]{adderCSRCUDA.png} 
+    \caption{CUDA CSR results} 
+    \vspace{4ex}
+  \end{minipage}%% 
+  \begin{minipage}[b]{0.5\linewidth}
+    \centering
+    \includegraphics[width=.9\linewidth]{adderELLCUDA.png} 
+    \caption{CUDA ELLPack  results} 
+    \vspace{4ex}
+  \end{minipage} 
+\end{figure}
+\FloatBarrier
+
+
+\subsection{olm1000.mtx}
+
+\begin{figure}[ht] 
+  \label{ fig7} 
+  \begin{minipage}[b]{0.5\linewidth}
+    \centering
+    \includegraphics[width=.9\linewidth]{olm100CSRMP.png} 
+    \caption{OpenMP CSR results} 
+    \vspace{4ex}
+  \end{minipage}%%
+  \begin{minipage}[b]{0.5\linewidth}
+    \centering
+    \includegraphics[width=.9\linewidth]{olm100ELLMP.png} 
+    \caption{OpenMP ELLPack results} 
+    \vspace{4ex}
+  \end{minipage} 
+  \begin{minipage}[b]{0.5\linewidth}
+    \centering
+    \includegraphics[width=.9\linewidth]{olm100CSRCUDA.png} 
+    \caption{CUDA CSR results} 
+    \vspace{4ex}
+  \end{minipage}%% 
+  \begin{minipage}[b]{0.5\linewidth}
+    \centering
+    \includegraphics[width=.9\linewidth]{olm100ELLCUDA.png} 
+    \caption{CUDA ELLPack  results} 
+    \vspace{4ex}
+  \end{minipage} 
+\end{figure}
+\FloatBarrier
+
+
+
+
+\subsection{mhda416.mtx}
+
+\begin{figure}[ht] 
+  \label{ fig7} 
+  \begin{minipage}[b]{0.5\linewidth}
+    \centering
+    \includegraphics[width=.9\linewidth]{mhda416CSRMP.png} 
+    \caption{OpenMP CSR results} 
+    \vspace{4ex}
+  \end{minipage}%%
+  \begin{minipage}[b]{0.5\linewidth}
+    \centering
+    \includegraphics[width=.9\linewidth]{mhda416ELLMP.png} 
+    \caption{OpenMP ELLPack results} 
+    \vspace{4ex}
+  \end{minipage} 
+  \begin{minipage}[b]{0.5\linewidth}
+    \centering
+    \includegraphics[width=.9\linewidth]{mhda416CSRCUDA.png} 
+    \caption{CUDA CSR results} 
+    \vspace{4ex}
+  \end{minipage}%% 
+  \begin{minipage}[b]{0.5\linewidth}
+    \centering
+    \includegraphics[width=.9\linewidth]{mhda416ELLCUDA.png} 
+    \caption{CUDA ELLPack  results} 
+    \vspace{4ex}
+  \end{minipage} 
+\end{figure}
+\FloatBarrier
+
+
+
+\subsection{mfce.mtx}
+
+\begin{figure}[ht] 
+  \label{ fig7} 
+  \begin{minipage}[b]{0.5\linewidth}
+    \centering
+    \includegraphics[width=.9\linewidth]{mcfeCSRMP.png} 
+    \caption{OpenMP CSR results} 
+    \vspace{4ex}
+  \end{minipage}%%
+  \begin{minipage}[b]{0.5\linewidth}
+    \centering
+    \includegraphics[width=.9\linewidth]{mcfeELLMP.png} 
+    \caption{OpenMP ELLPack results} 
+    \vspace{4ex}
+  \end{minipage} 
+  \begin{minipage}[b]{0.5\linewidth}
+    \centering
+    \includegraphics[width=.9\linewidth]{mcfeCSRCUDA.png} 
+    \caption{CUDA CSR results} 
+    \vspace{4ex}
+  \end{minipage}%% 
+  \begin{minipage}[b]{0.5\linewidth}
+    \centering
+    \includegraphics[width=.9\linewidth]{mcfeELLCUDA.png} 
+    \caption{CUDA ELLPack  results} 
+    \vspace{4ex}
+  \end{minipage} 
+\end{figure}
+\FloatBarrier
 
 \chapter{Other Nonfunctional Requirements}
 

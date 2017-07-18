@@ -33,34 +33,34 @@ void displayValues(std::vector<int> JA, std::vector<int> IRP, std::vector<double
 {
 
 	//Output file in to the project folder
-	std::ofstream data("output4.txt");
-	if (data.is_open())
+	std::ofstream storeArray("output4.txt");
+	if (storeArray.is_open())
 	{
-		data << "JA has folllowing values: ";
+		storeArray << "JA has folllowing values: ";
 		for (std::vector<int>::const_iterator i = JA.begin(); i != JA.end(); ++i)
 		{
-			data << *i << ' ';
+			storeArray << *i << ' ';
 		}
 
-		data << std::endl;
+		storeArray << std::endl;
 
 		
 
-		data << "IRP has folllowing values: ";
+		storeArray << "IRP has folllowing values: ";
 		for (std::vector<int>::const_iterator i = IRP.begin(); i != IRP.end(); ++i)
 		{
-			data << *i << ' ';
+			storeArray << *i << ' ';
 		}
 
-		data << std::endl;
+		storeArray << std::endl;
 
-		data << "AS has folllowing values: ";
+		storeArray << "AS has folllowing values: ";
 		for (std::vector<double>::const_iterator i = AS.begin(); i != AS.end(); ++i)
 		{
-			data << *i << ' ';
+			storeArray << *i << ' ';
 		}
 
-		data << std::endl;
+		storeArray << std::endl;
 
 	}
 
@@ -72,25 +72,25 @@ void displayOneDimensionalELLValues(std::vector<int> JA, std::vector<double> AS)
 {
 
 	//Output file in to the project folder
-	std::ofstream data("ELLOneDimesionalNEW.txt");
-	if (data.is_open())
+	std::ofstream storeArray("ELLOneDimesionalNEW.txt");
+	if (storeArray.is_open())
 	{
-		data << "JA has folllowing values: ";
+		storeArray << "JA has folllowing values: ";
 		for (std::vector<int>::const_iterator i = JA.begin(); i != JA.end(); ++i)
 		{
-			data << *i << ' ';
+			storeArray << *i << ' ';
 		}
 
-		data << std::endl;
+		storeArray << std::endl;
 
 
-		data << "AS has the following values: ";
+		storeArray << "AS has the following values: ";
 		for (std::vector<double>::const_iterator i = AS.begin(); i != AS.end(); ++i)
 		{
-			data << *i << ' ';
+			storeArray << *i << ' ';
 		}
 
-		data << std::endl;
+		storeArray << std::endl;
 
 	}
 
@@ -158,12 +158,7 @@ int main(int argc, char *argv[])
 
 	readCudaParameters();
 
-	// Read input matrices
-	ReadMatrixCSR matrixCSR(currentMattix);
-	ReadMatrixELL matrixELL(currentMattix);
-	SimulationAndTheTests<ReadMatrixCSR> simCSR;
-	SimulationAndTheTests<ReadMatrixELL> simELLPack;
-	//std::cout<<"ELL SIZE: "<<sizeof(matrixELL)<<std::endl;
+
 
 	//displayValues(matrixCSR.getJA(), matrixCSR.getIRP(), matrixELL.getAS());
 
@@ -178,52 +173,66 @@ int main(int argc, char *argv[])
 
 	//sim.template runCUDA<ReadMatrixCSR>(matrixCSR, numberOfThreads, sizeOfBlock, maxNumberOfBlocks, timeToComplete);
 
+	/*"west2021.mtx"
 
-	std::vector<std::string> matricesNames = { "adder_dcop_32.mtx",
-		"af23560.mtx",
-		"af_1_k101_b.mtx",
-		"amazon0302.mtx",
-		"bcsstk17.mtx",
-		"cage4.mtx",
-		 "cavity10.mtx",
-		"cavity10_b.mtx",
-		"cavity10_x.mtx",
-		"cop20k_A.mtx",
-		"dc1.mtx",
-		"dc1_b.mtx",
-		"FEM_3D_thermal1.mt",
-		"lung2.mtx",
-		"mac_econ_fwd500.mt",
-		"mcfe.mtx",
-		"mhd4800a.mtx",
-		"mhda416.mtx",
+	"dc1.mtx",
+	"af23560.mtx",
+	mhd4800a.mtx",
+	"amazon0302.mtx",
+	"bcsstk17.mtx",
+	"cop20k_A.mtx"
+	"FEM_3D_thermal1.mtx",
+	"lung2.mtx",
+*/	
+	/*
+	done "adder_dcop_32.mtx", 
+	"olafu_b.mtx",
+	"olm1000.mtx",
+	"mhda416.mtx",
+	"mcfe.mtx",
+	"rdist2.mtx",
+	"cavity10.mtx",
+	"cage4.mtx",
+	*/
+	std::vector<std::string> matricesNames = { 
+		"mac_econ_fwd500.mtx",
 		"olafu.mtx",
-		"olafu_b.mtx",
-		"olm1000.mtx",
-		"PR02R_b.mtx",
-		"PR02R_x.mtx",
 		"raefsky2.mtx",
-		"raefsky2_b.mtx",
-		"rdist2.mtx",
 		"roadNet - PA.mtx",
 		"thermal1.mtx",
-		"thermal1_b.mtx",
-		"thermal2_b.mtx",
-		"thermomech_TK.mtx",
-		"west2021.mtx" };
 
-	int simulationRuns = 100;
+		"thermomech_TK.mtx",
+		 };
+
+
+
+
+
+	int simulationRuns = 10;
 	unsigned int numberOfThreads = 4;
 	unsigned int sizeOfBlock = 64;
 	unsigned int maxNumberOfBlocks = 4096;
 
-	//OpenMP Run
-	simCSR.runOpenMP(matrixCSR, numberOfThreads, simulationRuns);
-	simELLPack.runOpenMP(matrixELL, numberOfThreads, simulationRuns);
+	for (auto it : matricesNames)
+	{
+		// Read input matrices
+		ReadMatrixCSR matrixCSR(it);
+		ReadMatrixELL matrixELL(it);
+		SimulationAndTheTests<ReadMatrixCSR> simCSR;
+		SimulationAndTheTests<ReadMatrixELL> simELLPack;
+		//std::cout<<"ELL SIZE: "<<sizeof(matrixELL)<<std::endl;
 
-	//CUDA Run
-	//simCSR.runCUDA(matrixCSR, numberOfThreads, sizeOfBlock, maxNumberOfBlocks, simulationRuns);
-	simELLPack.runCUDA(matrixELL, numberOfThreads, sizeOfBlock, maxNumberOfBlocks, simulationRuns);
+		//OpenMP Run
+		simCSR.runOpenMP(matrixCSR, numberOfThreads, simulationRuns);
+		simELLPack.runOpenMP(matrixELL, numberOfThreads, simulationRuns);
+
+		//CUDA Run
+		simCSR.runCUDA(matrixCSR, numberOfThreads, sizeOfBlock, maxNumberOfBlocks, simulationRuns);
+		simELLPack.runCUDA(matrixELL, numberOfThreads, sizeOfBlock, maxNumberOfBlocks, simulationRuns);
+
+	}
+
+	
 	
 
 	system("pause");
